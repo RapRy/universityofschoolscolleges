@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
-import { Button, Container, Grid, Typography, Box } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import axios from 'axios'
+import React, { useState, useEffect } from 'react';
+import { Button, Container, Grid, Typography, Box } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import Loader from 'react-loader-spinner';
 
-import Input from './Input'
+import Input from './Input';
+import * as api from '../../api';
+import { sign_in, sign_up, toggle_loading } from '../../redux/authReducer';
 
 const useStyles = makeStyles({
     mainContainer: {
@@ -69,23 +73,97 @@ const useStyles = makeStyles({
     }
 })
 
-const initialState = { username: "", email: "", schoolId: "", password: "", confirmPassword: "" }
+const initialState = { username: "", email: "", schoolId: "", password: "", confirmPassword: "" };
+const initialErrors = { username: "", email: "", schoolId: "",  password: "", confirmPassword: "" };
 
 const Auth = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+    const { loading } = useSelector(state => state.auth);
+
     const classes = useStyles();
 
     const [formData, setFormData] = useState(initialState);
-    const [switchForm, setSwitchForm] = useState(false)
+    const [switchForm, setSwitchForm] = useState(false);
+    const [errors, setErrors] = useState(initialErrors);
 
     const handleInputChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        if(e.target.name === "schoolId"){
+            if(isNaN(e.target.value)){
+                e.target.value = e.target.value.replace(e.target.value.substr(e.target.value.length - 1), "");
+            }else{
+                setFormData({ ...formData, [e.target.name]: e.target.value })
+                setErrors({ ...errors, [e.target.name]: "" })
+            }
+        }else{
+            setFormData({ ...formData, [e.target.name]: e.target.value })
+            setErrors({ ...errors, [e.target.name]: "" })
+        }
     }
 
-    const handleSubmit = (e) => {
+    const handleSwitchForm = () => {
+        setSwitchForm(prevState => !prevState);
+        setErrors(initialErrors);
+        setFormData(initialState);
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:5000/users/signup', formData)
+        
+        dispatch(toggle_loading(true));
+
+        if(switchForm){
+            if(formData.username === ""){
+                setErrors({ ...errors, ['username']: "Field required." })
+            }else if(formData.email === ""){
+                setErrors({ ...errors, ['email']: "Field required." })
+            }else if(formData.schoolId === ""){
+                setErrors({ ...errors, ['schoolId']: "Field required." })
+            }else if(formData.password === ""){
+                setErrors({ ...errors, ['password']: "Field required." })
+            }else if(formData.confirmPassword === ""){
+                setErrors({ ...errors, ['confirmPassword']: "Field required." })
+            }else if(formData.password.length > 8){
+                setErrors({ ...errors, ['password']: "Password must be 8 characters." })
+            }else if(formData.password !== formData.confirmPassword){
+                setErrors({ ...errors, ['confirmPassword']: "Password didn't match." })
+            }else{
+                let { data, status } = await api.signUp(formData);
+
+                dispatch(toggle_loading(false));
+
+                if(status === 200){
+                    localStorage.setItem('profile', JSON.stringify({ ...data }));
+
+                    dispatch(sign_up(data));
+                }
+            }
+        }else{
+            if(formData.email === ""){
+                setErrors({ ...errors, ['email']: "Field required." })
+            }else if(formData.password === ""){
+                setErrors({ ...errors, ['password']: "Field required." })
+            }else{
+                let { data, status } = await api.signIn(formData);
+
+                dispatch(toggle_loading(false));
+
+                if(status === 200){
+                    localStorage.setItem('profile', JSON.stringify({ ...data }));
+
+                    dispatch(sign_in(data));
+
+                    history.push('/forum');
+                }
+            }
+        }
     }
 
+    useEffect(() => {
+        if(localStorage.getItem('profile') !== null){
+            history.push('/forum')
+        }
+    }, []);
 
     return (
         <Grid container direction="row" justify="center" alignItems="center" className={classes.mainContainer}>
@@ -95,17 +173,20 @@ const Auth = () => {
                         <Typography variant="h5" align="left" className={classes.h5}>University of Schools Colleges</Typography>
                         <Typography variant="h2" className={classes.h2}>Welcome to the Forum</Typography>
                         <Typography variant="body1" className={classes.paraghrap}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget rhoncus, convallis integer pulvinar eget nulla viverra quis. Quis leo a donec turpis non. Est, purus auctor viverra faucibus at nulla auctor eleifend odio.</Typography>
-                        <Button onClick={() => setSwitchForm(prevState => !prevState)} variant="outlined" size="large" disableRipple className={classes.button}>{ switchForm ? "SIGN IN" : "SIGN UP" }</Button>
+                        <Button onClick={() => handleSwitchForm()} variant="outlined" size="large" disableRipple className={classes.button}>{ switchForm ? "SIGN IN" : "SIGN UP" }</Button>
                     </Grid>
                     <Grid item container justify="center" alignItems="center" direction="column" xs={12} md={6} className={classes.form}>
                         <Typography variant="h4" className={classes.h4}>{ switchForm ? "Create Account" : "Sign in to Forum" }</Typography>
                         <Typography variant="body1" className={classes.paraghrap}>{ switchForm ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit." : "Lorem ipsum dolor sit amet." }</Typography>
+                        {
+                            loading && <Loader type="ThreeDots" color="#00bfff" height={50} width={100} />
+                        }
                         <form onSubmit={handleSubmit}>
-                            { switchForm && <Input type={"text"} label={"Username"} name={"username"} handleInputChange={handleInputChange} /> }
-                            <Input type={"email"} label={"Email"} name={"email"} handleInputChange={handleInputChange} />
-                            { switchForm && <Input type={"text"} label={"Student ID"} name={"schoolId"} handleInputChange={handleInputChange} /> }
-                            <Input type={"password"} label={"Password"} name={"password"} handleInputChange={handleInputChange} />
-                            { switchForm &&  <Input type={"password"} label={"Confirm Password"} name={"confirmPassword"} handleInputChange={handleInputChange} />}
+                            { switchForm && <Input type={"text"} label={"Username"} name={"username"} errors={errors} handleInputChange={handleInputChange} /> }
+                            <Input type={"email"} label={"Email"} name={"email"} errors={errors} handleInputChange={handleInputChange} />
+                            { switchForm && <Input type={"text"} label={"Student ID"} name={"schoolId"} errors={errors} handleInputChange={handleInputChange} /> }
+                            <Input type={"password"} label={"Password"} name={"password"} errors={errors} handleInputChange={handleInputChange} />
+                            { switchForm &&  <Input type={"password"} label={"Confirm Password"} name={"confirmPassword"} errors={errors} handleInputChange={handleInputChange} />}
                             <Box textAlign="center" paddingTop="30px">
                                 <Button type="submit" className={classes.button2}>{ switchForm ? "Create" : "Login" }</Button>
                             </Box>

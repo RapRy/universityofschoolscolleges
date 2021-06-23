@@ -22,12 +22,14 @@ const useStyles = makeStyles({
     }
 })
 
-const Input = ({ type, label, name, handleInputChange }) => {
+const Input = ({ type, label, name, handleInputChange, errors }) => {
     const classes = useStyles()
 
     return (
         <TextField 
-            label={label} 
+            error={errors[name] === "" ? false : true}
+            helperText={errors[name]}
+            label={ errors[name] === "" ? label : "Error"} 
             variant="outlined" 
             fullWidth margin="normal" 
             type={type} name={name} 
