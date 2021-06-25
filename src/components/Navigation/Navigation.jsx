@@ -8,7 +8,7 @@ const Navigation = ({ type }) => {
     const classes = useStyles();
 
     return (
-        <AppBar color="primary" position="relative">
+        <AppBar position="relative" className={classes.appBar}>
             <Container className={classes.container}>
                 <Grid container direction="row" alignItems="center">
                     <Grid item xs={6}>
@@ -20,7 +20,11 @@ const Navigation = ({ type }) => {
                         }
                     </Grid>
                     <Grid item xs={6}>
-                        <UserMenu />
+                        {
+                            type !== "" ?
+                                <UserMenu />
+                            : ""
+                        }
                     </Grid>
                 </Grid>
             </Container>
@@ -29,6 +33,9 @@ const Navigation = ({ type }) => {
 }
 
 const useStyles = makeStyles({
+    appBar: {
+        background: "#4f4f4f"
+    },
     container: {
         padding:"15px 10px"
     },

@@ -5,73 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Loader from 'react-loader-spinner';
 
-import Input from './Input';
+import Input from '../Globals/Forms/Input';
 import * as api from '../../api';
 import { sign_in, sign_up, toggle_loading } from '../../redux/authReducer';
-
-const useStyles = makeStyles({
-    mainContainer: {
-        background: "#c4c4c4",
-        height: "100vh"
-    },
-    formContainer: {
-        background: "#fff",
-        padding: 0,
-        margin: "0px 30px"
-    },
-    welcome: {
-        background: "#f2f2f2",
-        padding: "20px",
-        textAlign: 'center',
-        position: 'relative'
-    },
-    h5: {
-        fontSize: "1.1rem",
-        fontWeight: 900,
-        color: "#828282",
-        position: "absolute",
-        top: "20px",
-        left: "20px"
-    },
-    h2: {
-        fontSize: "2.2rem",
-        fontWeight: 700,
-        color: "#4f4f4f",
-        padding: "0px 80px 20px"
-    },
-    paraghrap: {
-        color: "#4f4f4f",
-        fontSize: ".8rem",
-        padding: "0px 20px 30px",
-        lineHeight: "1.6"
-    },
-    button: {
-        borderRadius: "0px",
-        margin: "0 auto",
-        fontSize: ".95rem",
-        fontWeight: 300,
-        color: "#828282",
-        padding: "7px 40px"
-    },
-    button2: {
-        borderRadius: "0px",
-        margin: "0 auto",
-        fontSize: ".95rem",
-        fontWeight: 300,
-        color: "#f2f2f2",
-        padding: "7px 40px",
-        background: "#828282"
-    },
-    h4: {
-        fontSize: "1.5rem",
-        fontWeight: 700,
-        color: "#4f4f4f",
-        paddingBottom: "10px"
-    },
-    form: {
-        padding: "50px 50px",
-    }
-})
 
 const initialState = { username: "", email: "", schoolId: "", password: "", confirmPassword: "" };
 const initialErrors = { username: "", email: "", schoolId: "",  password: "", confirmPassword: "" };
@@ -197,5 +133,69 @@ const Auth = () => {
         </Grid>
     )
 }
+
+const useStyles = makeStyles({
+    mainContainer: {
+        background: "#c4c4c4",
+        height: "100vh"
+    },
+    formContainer: {
+        background: "#fff",
+        padding: 0,
+        margin: "0px 30px"
+    },
+    welcome: {
+        background: "#f2f2f2",
+        padding: "20px",
+        textAlign: 'center',
+        position: 'relative'
+    },
+    h5: {
+        fontSize: "1.1rem",
+        fontWeight: 900,
+        color: "#828282",
+        position: "absolute",
+        top: "20px",
+        left: "20px"
+    },
+    h2: {
+        fontSize: "2.2rem",
+        fontWeight: 700,
+        color: "#4f4f4f",
+        padding: "0px 80px 20px"
+    },
+    paraghrap: {
+        color: "#4f4f4f",
+        fontSize: ".8rem",
+        padding: "0px 20px 30px",
+        lineHeight: "1.6"
+    },
+    button: {
+        borderRadius: "0px",
+        margin: "0 auto",
+        fontSize: ".95rem",
+        fontWeight: 300,
+        color: "#828282",
+        padding: "7px 40px"
+    },
+    button2: {
+        borderRadius: "0px",
+        margin: "0 auto",
+        fontSize: ".95rem",
+        fontWeight: 300,
+        color: "#f2f2f2",
+        padding: "7px 40px",
+        background: "#828282"
+    },
+    h4: {
+        fontSize: "1.5rem",
+        fontWeight: 700,
+        color: "#4f4f4f",
+        paddingBottom: "10px"
+    },
+    form: {
+        padding: "50px 50px",
+    }
+})
 
 export default Auth
