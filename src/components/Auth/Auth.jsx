@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Container, Grid, Typography, Box } from '@material-ui/core';
+import { Button, Container, Grid, Typography, Box, Backdrop, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Loader from 'react-loader-spinner';
 
 import Input from '../Globals/Forms/Input';
-import * as api from '../../api';
-import { sign_in, sign_up, toggle_loading } from '../../redux/authReducer';
+import { sign_up, sign_in } from '../../redux/authReducer';
 
 const initialState = { username: "", email: "", schoolId: "", password: "", confirmPassword: "" };
 const initialErrors = { username: "", email: "", schoolId: "",  password: "", confirmPassword: "" };
@@ -15,7 +13,7 @@ const initialErrors = { username: "", email: "", schoolId: "",  password: "", co
 const Auth = () => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const { loading } = useSelector(state => state.auth);
+    const { status, error } = useSelector(state => state.auth);
 
     const classes = useStyles();
 
@@ -45,8 +43,6 @@ const Auth = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        dispatch(toggle_loading(true));
 
         if(switchForm){
             if(formData.username === ""){
@@ -64,15 +60,7 @@ const Auth = () => {
             }else if(formData.password !== formData.confirmPassword){
                 setErrors({ ...errors, ['confirmPassword']: "Password didn't match." })
             }else{
-                let { data, status } = await api.signUp(formData);
-
-                dispatch(toggle_loading(false));
-
-                if(status === 200){
-                    localStorage.setItem('profile', JSON.stringify({ ...data }));
-
-                    dispatch(sign_up(data));
-                }
+                dispatch(sign_up(formData))
             }
         }else{
             if(formData.email === ""){
@@ -80,17 +68,8 @@ const Auth = () => {
             }else if(formData.password === ""){
                 setErrors({ ...errors, ['password']: "Field required." })
             }else{
-                let { data, status } = await api.signIn(formData);
-
-                dispatch(toggle_loading(false));
-
-                if(status === 200){
-                    localStorage.setItem('profile', JSON.stringify({ ...data }));
-
-                    dispatch(sign_in(data));
-
-                    history.push('/forum');
-                }
+                const data = { formData, history }
+                dispatch(sign_in(data))
             }
         }
     }
@@ -99,7 +78,7 @@ const Auth = () => {
         if(localStorage.getItem('profile') !== null){
             history.push('/forum')
         }
-    }, []);
+    }, [dispatch]);
 
     return (
         <Grid container direction="row" justify="center" alignItems="center" className={classes.mainContainer}>
@@ -114,9 +93,10 @@ const Auth = () => {
                     <Grid item container justify="center" alignItems="center" direction="column" xs={12} md={6} className={classes.form}>
                         <Typography variant="h4" className={classes.h4}>{ switchForm ? "Create Account" : "Sign in to Forum" }</Typography>
                         <Typography variant="body1" className={classes.paraghrap}>{ switchForm ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit." : "Lorem ipsum dolor sit amet." }</Typography>
-                        {
-                            loading && <Loader type="ThreeDots" color="#00bfff" height={50} width={100} />
-                        }
+                        { error.login !== undefined &&  <Typography variant="body1" className={classes.paraghrapError}>{ error.login }</Typography>}        
+                        <Backdrop open={status === "loading" ? true : false} style={{ zIndex: 5 }}>
+                            <CircularProgress color="inherit" />
+                        </Backdrop>
                         <form onSubmit={handleSubmit}>
                             { switchForm && <Input type={"text"} label={"Username"} name={"username"} errors={errors} handleInputChange={handleInputChange} /> }
                             <Input type={"email"} label={"Email"} name={"email"} errors={errors} handleInputChange={handleInputChange} />
@@ -169,6 +149,12 @@ const useStyles = makeStyles({
         fontSize: ".8rem",
         padding: "0px 20px 30px",
         lineHeight: "1.6"
+    },
+    paraghrapError: {
+        color: "#FF0000",
+        fontSize: ".9rem",
+        padding: "0px 20px 20px",
+        fontWeight: 700
     },
     button: {
         borderRadius: "0px",

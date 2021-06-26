@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Container, Grid } from '@material-ui/core'
+import { Container, Grid, Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -48,16 +48,23 @@ const ForumStatsPanel = () => {
                 profile.result?.accountType === 1 ?
                     <Grid container justify="space-evenly" direction="row" className={classes.grid}>
                         <AdminStatData numData={activeUsersCount} stringData="Active Members" />
+                        <Divider orientation="vertical" flexItem />
                         <AdminStatData numData={registeredUsersCount} stringData="Registered Members" />
+                        <Divider orientation="vertical" flexItem />
                         <AdminStatData numData={categoriesCount} stringData="Categories" />
+                        <Divider orientation="vertical" flexItem />
                         <AdminStatData numData={topicsCount} stringData="Topics" />
+                        <Divider orientation="vertical" flexItem />
                         <AdminStatData numData={repliesCount} stringData="Replies" />
                     </Grid>
                 :
                     <Grid container direction="column" className={classes.grid}>
                         <UserStatData numData={activeUsersCount} stringData="Members" />
+                        <Divider />
                         <UserStatData numData={categoriesCount} stringData="Categories"  />
+                        <Divider />
                         <UserStatData numData={topicsCount} stringData="Topics"  />
+                        <Divider />
                         <UserStatData numData={repliesCount} stringData="Replies"  />
                     </Grid>
             }
@@ -69,7 +76,7 @@ const useStyles = makeStyles({
     grid: {
         background: "#e0e0e0",
         marginTop: "15px",
-        padding: "0 20px"
+        padding: "10px 20px"
     }
 })
 

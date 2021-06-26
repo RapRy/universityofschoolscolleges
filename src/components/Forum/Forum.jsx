@@ -6,7 +6,7 @@ import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom'
 
 import Navigation from '../Navigation/Navigation';
 import SideNavigation from '../SideNavigation/SideNavigation';
-import { sign_in } from '../../redux/authReducer';
+import { sign_in_LS } from '../../redux/authReducer';
 
 import Overview from './Overview/Overview';
 import Categories from './Categories/Categories';
@@ -23,7 +23,7 @@ const Forum = () => {
         if(!_.isEmpty(profile)){
             return
         }else if(localStorage.getItem('profile') !== null){
-            dispatch(sign_in(JSON.parse(localStorage.getItem('profile'))));
+            dispatch(sign_in_LS(JSON.parse(localStorage.getItem('profile'))));
         }else{
             history.push('/auth');
         }

@@ -1,6 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import ReactNotification from 'react-notifications-component'
+import { Backdrop, CircularProgress } from '@material-ui/core';
 
 import './index.css';
 
@@ -11,9 +11,7 @@ const Home = lazy(() => import('./components/Home/Home'));
 const App = () => {
     return (
         <BrowserRouter>
-
-          <ReactNotification />
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<Backdrop open={true} style={{zIndex:5}}><CircularProgress /></Backdrop>}>
               <Switch>
                 <Route exact path="/" component={Home} />
                 <Route exact path="/auth" component={Auth} />

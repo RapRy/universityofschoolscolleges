@@ -13,17 +13,7 @@ const CategoriesPanel = () => {
 
     useEffect(() => {
         try {
-            const fetchCategories = async () => {
-                const { data, status } = await api.getCategories()
-
-                if(status === 200){
-                    dispatch(update_categories({
-                        categories: data.categories, loading: true
-                    }))
-                }
-            }
-
-            fetchCategories()
+            dispatch(update_categories())
         } catch (error) {
             console.log(error)
         }

@@ -14,7 +14,7 @@ const AdminStatData = ({ numData, stringData }) => {
 }
 
 const MainContainer = styled(Container)({
-    padding: "15px 25px",
+    padding: "5px 25px",
 })
 
 const NumType = styled(Typography)({
@@ -22,7 +22,7 @@ const NumType = styled(Typography)({
     fontSize: "2.6rem",
     color: "#4F4F4F",
     textAlign: "center",
-    marginBottom: "15px"
+    marginBottom: "10px"
 })
 
 const StringType = styled(Typography)({

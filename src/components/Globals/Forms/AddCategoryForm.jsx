@@ -3,9 +3,7 @@ import { Container, Button, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import { useDispatch } from 'react-redux';
-import 'react-notifications-component/dist/theme.css'
-import 'animate.css/animate.min.css'
-import { store as notif } from 'react-notifications-component'
+import { useSnackbar } from 'notistack'
 
 import Input from './Input';
 import * as api from '../../../api';
@@ -21,6 +19,8 @@ const AddCategoryForm = () => {
 
     const [errors, setErrors] = useState(initialErrors)
     const [formData, setFormData] = useState(initialState) 
+
+    const { enqueueSnackbar } = useSnackbar()
 
     const handleInputChange = (e) => {
         setFormData({ name: e.target.value })
@@ -40,13 +40,13 @@ const AddCategoryForm = () => {
         if(status === 200){
 
             if(data.status === 0){
-                notification('warning', data.message);
+                setErrors({ name: data.message })
                 return
             }
             
             dispatch(add_category({ ...data.result }));
 
-            notification("success", `${formData.name} added`)
+            enqueueSnackbar(`${formData.name} added`, { variant: "success" })
 
             setFormData({ name: "" })
         }
@@ -84,20 +84,5 @@ const useStyles = makeStyles({
         background: "#828282"
     }
 })
-
-const notification = (messageType, message) => {
-    notif.addNotification({
-        message,
-        type: messageType,
-        insert: "top-center",
-        container: "top-center",
-        animationIn: ["animate__animated", "animate__fadeIn"],
-        animationOut: ["animate__animated", "animate__fadeOut"],
-        dismiss: {
-            duration: 6000,
-            onScreen: true
-        }
-    })
-}
 
 export default AddCategoryForm

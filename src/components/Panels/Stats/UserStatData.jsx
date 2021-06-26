@@ -5,21 +5,14 @@ import { styled } from '@material-ui/styles'
 const UserStatData = ({ numData, stringData }) => {
 
     return (
-        <GridContainer item>
+        <Grid item>
             <MainContainer>
                 <NumType variant="h2">{numData}</NumType>
                 <StringType variant="body1">{stringData}</StringType>
             </MainContainer>
-        </GridContainer>
+        </Grid>
     )
 }
-
-const GridContainer  = styled(Grid)({
-    borderBottom: "1px solid #c4c4c4",
-    '&:last-child': {
-        borderBottom: "none"
-    }
-})
 
 const MainContainer = styled(Container)({
     padding: "15px 0px"

@@ -1,25 +1,76 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+
+import * as api from '../api'
+
+export const sign_up = createAsyncThunk(
+    'auth/sign_up',
+    async (formData) => {
+        let { data, status } = await api.signUp(formData);
+
+        if(status === 200){
+            localStorage.setItem('profile', JSON.stringify({ ...data }));
+
+            return data;
+        }
+    }
+)
+
+export const sign_in = createAsyncThunk(
+    'auth/sign_in',
+    async ({ formData, history }) => {
+        let { data, status } = await api.signIn(formData);
+
+        console.log(status)
+
+        if(status === 200){
+            localStorage.setItem('profile', JSON.stringify({ ...data }));
+
+            history.push('/forum')
+
+            return data;
+        }
+    }
+)
 
 export const authSlice = createSlice({
-    name: "authSlice",
+    name: "auth",
     initialState: {
-        loading: false,
-        errors: [],
+        status: "idle",
+        error: {},
         profile: {}
     },
     reducers: {
-        sign_in: (state, action) => {
+        sign_in_LS: (state, action) => {
             state.profile = { ...action.payload }
+        }
+    },
+    extraReducers: {
+        [sign_up.pending]: (state) => {
+            state.status = "loading"
         },
-        sign_up: (state, action) => {
+        [sign_up.fulfilled]: (state, action) => {
+            console.log(action)
             state.profile = { ...action.payload }
+            state.status = "idle"
         },
-        toggle_loading: (state, action) => {
-            state.loading = action.payload
+        [sign_up.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [sign_in.pending]: (state) => {
+            state.status = "loading"
+            state.error = {}
+        },
+        [sign_in.fulfilled]: (state, action) => {
+            state.profile = { ...action.payload }
+            state.status = "idle"
+        },
+        [sign_in.rejected]: (state) => {
+            state.status = "failed"
+            state.error = { login: "Invalid Credentials" }
         }
     }
 })
 
-export const { sign_in, sign_up, toggle_loading } = authSlice.actions
+export const { sign_in_LS } = authSlice.actions
 
 export default authSlice.reducer

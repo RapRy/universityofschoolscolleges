@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container } from '@material-ui/core'
+import { Container, Divider } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles';
 
 import CategoryHeader from './CategoryHeader';
@@ -10,6 +10,7 @@ const Category = ({ cat }) => {
     return (
         <Container className={classes.container}>
             <CategoryHeader cat={cat} />
+            <Divider />
         </Container>
     )
 }

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 export const statsSlice = createSlice({
-    name: "statsSlice",
+    name: "stats",
     initialState: {
         activeUsersCount: 0,
         registeredUsersCount: 0,
