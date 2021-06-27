@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Container, Button, Grid } from '@material-ui/core'
+import { Container, Button, Grid, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles';
 import CreateNewFolderIcon from '@material-ui/icons/CreateNewFolder';
 import { useDispatch } from 'react-redux';
@@ -14,6 +14,7 @@ const initialState = { name: "" };
 
 const AddCategoryForm = () => {
     const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
 
     const dispatch = useDispatch();
 
@@ -55,12 +56,12 @@ const AddCategoryForm = () => {
     return (
         <Container className={classes.container}>
            <form onSubmit={handleFormSubmit}>
-               <Grid container direction="row" justify="space-evenly" spacing={2}>
-                   <Grid item xs={9}>
+               <Grid container direction="row" spacing={max600 === true ? 0 : 2}>
+                   <Grid item sm={9} xs={12}>
                         <Input type={"text"} name={"name"} label={"set category name"} handleInputChange={handleInputChange} errors={errors} />
                    </Grid>
-                   <Grid item xs={3}>
-                        <Button type="submit" className={classes.buttonSubmit} startIcon={<CreateNewFolderIcon />}>ADD CATEGORY</Button>
+                   <Grid item sm={3} xs={12}>
+                        <Button type="submit" fullWidth={max600} className={classes.buttonSubmit} startIcon={<CreateNewFolderIcon />}>ADD CATEGORY</Button>
                    </Grid>
                </Grid>
             </form> 
@@ -68,11 +69,14 @@ const AddCategoryForm = () => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     container: {
         background: "#E0E0E0",
         marginTop: "30px",
-        paddingBottom: "8px"
+        paddingBottom: "8px",
+        [theme.breakpoints.down('xs')]: {
+            paddingBottom: "15px"
+        }
     },
     buttonSubmit: {
         borderRadius: "0px",
@@ -81,8 +85,11 @@ const useStyles = makeStyles({
         fontWeight: 300,
         color: "#f2f2f2",
         padding: "13px 15px",
-        background: "#828282"
+        background: "#828282",
+        [theme.breakpoints.down('xs')]: {
+            margin: "6px auto 0"
+        }
     }
-})
+}))
 
 export default AddCategoryForm

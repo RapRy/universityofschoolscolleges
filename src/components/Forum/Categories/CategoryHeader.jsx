@@ -1,5 +1,5 @@
 import React from 'react'
-import { Typography, Grid } from '@material-ui/core'
+import { Typography, Grid, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import DeleteIcon from '@material-ui/icons/Delete'
@@ -8,6 +8,7 @@ import IconBtn from '../../Globals/IconBtn'
 
 const CategoryHeader = ({ cat }) => {
     const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
 
     const handleAddTopic = () => {
         console.log('add')
@@ -18,25 +19,25 @@ const CategoryHeader = ({ cat }) => {
     }
 
     return (
-        <Grid container direction="row" alignItems="center" justify="space-between" spacing={1} style={{ paddingBottom: "20px" }}>
-            <Grid item md={"auto"} xs={12}>
+        <Grid container direction={ max600 === true ? "column" : "row" } alignItems="center" justify="space-between" spacing={ max600 === true ? 3 : 1 } style={{ paddingBottom: "20px" }}>
+            <Grid item md={"auto"} sm={12} xs={12}>
                 <Typography variant="h4" className={classes.typoH4}>{ cat.name }</Typography>
             </Grid>
-            <Grid item md={"auto"} xs={12}>
+            <Grid item md={3} sm={4} xs={12}>
                 <Grid container direction="row" className={classes.statsGrid}>
-                    <Grid item xs={"auto"} style={{marginRight: "15px"}}>
+                    <Grid item sm={5} style={{marginRight: "15px"}}>
                         <Typography variant="h5" className={classes.typoH5}>{cat.meta.topics}</Typography>
                         <Typography variant="body1" className={classes.body1}>Topics</Typography>
                     </Grid>
 
-                    <Grid item xs={"auto"}>
+                    <Grid item sm={5}>
                         <Typography variant="h5" className={classes.typoH5}>{cat.meta.replies}</Typography>
                         <Typography variant="body1" className={classes.body1}>Replies</Typography>
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item md={8} xs={12}>
-                <Grid container direction="row" justify="flex-end">
+            <Grid item md={7} sm={8} xs={12}>
+                <Grid container direction="row" justify={ max600 === true ? "center" : "flex-end" }>
                     <IconBtn icon={<PostAddIcon />} text="Add Topic" handleClick={handleAddTopic} />
                     <IconBtn icon={<DeleteIcon />} text="Delete" handleClick={handleDelete} />
                 </Grid>

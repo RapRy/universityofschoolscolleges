@@ -1,11 +1,12 @@
 import React from 'react'
-import { AppBar, Typography, Container, Grid } from '@material-ui/core'
+import { AppBar, Typography, Container, Grid, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
 import UserMenu from './UserMenu'
 
 const Navigation = ({ type }) => {
     const classes = useStyles();
+    const max960 = useMediaQuery('(max-width:960px)');
 
     return (
         <AppBar position="relative" className={classes.appBar}>
@@ -21,9 +22,16 @@ const Navigation = ({ type }) => {
                     </Grid>
                     <Grid item xs={6}>
                         {
-                            type !== "" ?
-                                <UserMenu />
-                            : ""
+                            max960 === true ?
+                                <p>yes</p>
+                            :
+                                <>
+                                    {
+                                        type !== "" ?
+                                            <UserMenu />
+                                        : ""
+                                    }
+                                </>
                         }
                     </Grid>
                 </Grid>
@@ -32,9 +40,9 @@ const Navigation = ({ type }) => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     appBar: {
-        background: "#4f4f4f"
+        background: theme.palette.primary.dark
     },
     container: {
         padding:"15px 10px"
@@ -42,11 +50,13 @@ const useStyles = makeStyles({
     headerH5: {
         fontWeight: 700,
         fontSize: "1.3rem",
+        color: theme.palette.primary.contrastText
     },
     headerH6: {
         fontWeight: 500,
         fontSize: "1rem",
+        color: theme.palette.primary.contrastText
     }
-})
+}))
 
 export default Navigation

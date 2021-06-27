@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import PanelHeader from '../Globals/PanelHeader'
 import PanelButton from '../Globals/PanelButton'
-import * as api from '../../api'
 import { update_categories } from '../../redux/categoriesReducer'
 
 const CategoriesPanel = () => {

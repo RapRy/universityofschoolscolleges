@@ -75,6 +75,7 @@ const Auth = () => {
     }
 
     useEffect(() => {
+
         if(localStorage.getItem('profile') !== null){
             history.push('/forum')
         }
@@ -114,21 +115,23 @@ const Auth = () => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     mainContainer: {
-        background: "#c4c4c4",
-        height: "100vh"
+        background: "#c4c4c4"
     },
     formContainer: {
         background: "#fff",
         padding: 0,
-        margin: "0px 30px"
+        margin: "30px"
     },
     welcome: {
         background: "#f2f2f2",
         padding: "20px",
         textAlign: 'center',
-        position: 'relative'
+        position: 'relative',
+        [theme.breakpoints.down('sm')]: {
+            padding: "20px 20px 60px"
+        }
     },
     h5: {
         fontSize: "1.1rem",
@@ -142,7 +145,10 @@ const useStyles = makeStyles({
         fontSize: "2.2rem",
         fontWeight: 700,
         color: "#4f4f4f",
-        padding: "0px 80px 20px"
+        padding: "0px 80px 20px",
+        [theme.breakpoints.down("sm")]: {
+            padding: "60px 80px 20px"
+        }
     },
     paraghrap: {
         color: "#4f4f4f",
@@ -182,6 +188,6 @@ const useStyles = makeStyles({
     form: {
         padding: "50px 50px",
     }
-})
+}))
 
 export default Auth

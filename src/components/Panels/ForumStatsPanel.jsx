@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Container, Grid, Divider } from '@material-ui/core'
+import { Container, Grid, Divider, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -10,6 +10,7 @@ import { update_count } from '../../redux/statsReducer'
 
 const ForumStatsPanel = () => {
     const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
 
     const { profile } = useSelector(state => state.auth)
     const { activeUsersCount, categoriesCount, registeredUsersCount, topicsCount, repliesCount } = useSelector(state => state.stats)
@@ -17,6 +18,7 @@ const ForumStatsPanel = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
+        console.log(max600)
         try {
             const fetchCount = async (API) => {
                 try {
@@ -46,15 +48,15 @@ const ForumStatsPanel = () => {
             <PanelHeader title="forum statistics" />
             {
                 profile.result?.accountType === 1 ?
-                    <Grid container justify="space-evenly" direction="row" className={classes.grid}>
+                    <Grid container justify="space-evenly" direction={max600 === true ? "column" : "row"} className={classes.grid}>
                         <AdminStatData numData={activeUsersCount} stringData="Active Members" />
-                        <Divider orientation="vertical" flexItem />
+                        <Divider orientation={max600 === true ? "horizontal" : "vertical"} flexItem={!max600} />
                         <AdminStatData numData={registeredUsersCount} stringData="Registered Members" />
-                        <Divider orientation="vertical" flexItem />
+                        <Divider orientation={max600 === true ? "horizontal" : "vertical"} flexItem={!max600} />
                         <AdminStatData numData={categoriesCount} stringData="Categories" />
-                        <Divider orientation="vertical" flexItem />
+                        <Divider orientation={max600 === true ? "horizontal" : "vertical"} flexItem={!max600} />
                         <AdminStatData numData={topicsCount} stringData="Topics" />
-                        <Divider orientation="vertical" flexItem />
+                        <Divider orientation={max600 === true ? "horizontal" : "vertical"} flexItem={!max600} />
                         <AdminStatData numData={repliesCount} stringData="Replies" />
                     </Grid>
                 :

@@ -44,7 +44,7 @@ const UserMenu = () => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
     rootRadius: {
         borderRadius: 0
     },
@@ -54,23 +54,24 @@ const useStyles = makeStyles({
     input: {
         fontSize: ".8rem",
         fontWeight: 500,
-        color: "#4f4f4f",
-        background: "#f2f2f2",
+        color: theme.palette.secondary.main,
+        background: theme.palette.primary.contrastText,
         borderRadius: "0px",
         padding: "10px 15px"
     },
     iconBtn: {
-        background: "#bdbdbd",
+        background: theme.palette.primary.light,
         borderRadius: "0",
         marginLeft: "10px",
         height: "35px",
-        color: "#f2f2f2"
+        color: theme.palette.primary.contrastText
     },
     body1: {
         display: "inline-block",
         marginRight: "15px",
-        fontSize: ".95rem"
+        fontSize: ".95rem",
+        color: theme.palette.primary.contrastText
     }
-})
+}))
 
 export default UserMenu
