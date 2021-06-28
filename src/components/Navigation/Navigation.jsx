@@ -1,12 +1,17 @@
-import React from 'react'
-import { AppBar, Typography, Container, Grid, useMediaQuery } from '@material-ui/core'
+import React, { useState } from 'react'
+import { AppBar, Typography, Container, Grid, useMediaQuery, Drawer } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
+import MenuIcon from '@material-ui/icons/Menu';
 
 import UserMenu from './UserMenu'
+import ProfileMenu from './ProfileMenu'
+import SearchBar from './SearchBar';
 
 const Navigation = ({ type }) => {
     const classes = useStyles();
     const max960 = useMediaQuery('(max-width:960px)');
+
+    const [showAside, setShowAside] = useState(false)
 
     return (
         <AppBar position="relative" className={classes.appBar}>
@@ -21,9 +26,19 @@ const Navigation = ({ type }) => {
                         }
                     </Grid>
                     <Grid item xs={6}>
+                    <Drawer anchor="right" open={showAside} onClose={() => setShowAside(prevState => !prevState)}>
+                        <ProfileMenu />
+                    </Drawer>
                         {
                             max960 === true ?
-                                <p>yes</p>
+                            <Grid container direction="row" spacing={1} alignItems="center">
+                                <Grid item xs={11}>
+                                    <SearchBar />
+                                </Grid>
+                                <Grid item xs={1}>
+                                    <MenuIcon onClick={() => setShowAside(prevState => !prevState)} />
+                                </Grid>
+                            </Grid>
                             :
                                 <>
                                     {

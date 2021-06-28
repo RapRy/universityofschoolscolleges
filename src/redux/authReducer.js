@@ -32,6 +32,19 @@ export const sign_in = createAsyncThunk(
     }
 )
 
+export const logout = createAsyncThunk(
+    'auth/logout',
+    async (history, thunkAPI) => {
+        localStorage.removeItem('profile')
+
+        const test = thunkAPI.getState()
+
+        console.log(test)
+
+        history.push('/')
+    }
+)
+
 export const authSlice = createSlice({
     name: "auth",
     initialState: {
@@ -67,6 +80,17 @@ export const authSlice = createSlice({
         [sign_in.rejected]: (state) => {
             state.status = "failed"
             state.error = { login: "Invalid Credentials" }
+        },
+        [logout.pending]: (state) => {
+            state.status = "loading"
+        },
+        [logout.fulfilled]: (state) => {
+            state.error = {}
+            state.profile = {}
+            state.status = "idle"
+        },
+        [logout.rejected]: (state) => {
+            state.status = "failed"
         }
     }
 })
