@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     numType: {
         fontWeight: 900,
         fontSize: "2.6rem",
-        color: "#4F4F4F",
+        color: theme.palette.primary.dark,
         textAlign: "center",
         marginBottom: "10px",
         [theme.breakpoints.down('sm')]: {
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
     },
     stringType: {
         fontWeight: 500,
-        color: "#828282",
+        color: theme.palette.secondary.dark,
         textTransform: "uppercase",
         textAlign: "center",
         [theme.breakpoints.down('sm')]: {

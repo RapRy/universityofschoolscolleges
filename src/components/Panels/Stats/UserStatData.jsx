@@ -22,13 +22,13 @@ const useStyles = makeStyles((theme) => ({
     numType: {
         fontWeight: 900,
         fontSize: "2rem",
-        color: "#4F4F4F",
+        color: theme.palette.primary.dark,
         display: "inline-block" 
     },
     stringType: {
         fontWeight: 500,
         fontSize: ".9rem",
-        color: "#828282",
+        color: theme.palette.secondary.dark,
         textTransform: "uppercase",
         display: "inline-block",
         position: "relative",

@@ -2,26 +2,6 @@ import React from 'react'
 import { TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-const useStyles = makeStyles({
-    rootRadius: {
-        borderRadius: 0
-    },
-    notchedOutline: {
-        borderColor: "transparent"
-    },
-    input: {
-        fontSize: ".8rem",
-        fontWeight: 700,
-        color: "#4f4f4f",
-        background: "#f2f2f2",
-        borderRadius: "0px"
-    },
-    label: {
-        fontSize: ".8rem",
-        color: "#828282"
-    }
-})
-
 const Input = ({ type, label, name, handleInputChange, errors }) => {
     const classes = useStyles()
 
@@ -49,5 +29,25 @@ const Input = ({ type, label, name, handleInputChange, errors }) => {
         />
     )
 }
+
+const useStyles = makeStyles(theme => ({
+    rootRadius: {
+        borderRadius: 0
+    },
+    notchedOutline: {
+        borderColor: "transparent"
+    },
+    input: {
+        fontSize: ".8rem",
+        fontWeight: 700,
+        color: theme.palette.secondary.dark,
+        background: theme.palette.secondary.contrastText,
+        borderRadius: "0px"
+    },
+    label: {
+        fontSize: ".8rem",
+        color: theme.palette.secondary.dark
+    }
+}))
 
 export default Input

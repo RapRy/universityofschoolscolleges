@@ -42,7 +42,7 @@ const Navigation = ({ type }) => {
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        background: theme.palette.primary.dark
+        background: theme.palette.primary.color1
     },
     container: {
         padding:"15px 10px"

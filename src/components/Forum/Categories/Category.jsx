@@ -15,12 +15,12 @@ const Category = ({ cat }) => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     container: {
-        background: "#E0E0E0",
+        background: theme.palette.secondary.light,
         marginTop: "30px",
         padding: "20px"
     }
-})
+}))
 
 export default Category

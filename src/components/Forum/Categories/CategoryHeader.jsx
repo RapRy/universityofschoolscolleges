@@ -46,28 +46,28 @@ const CategoryHeader = ({ cat }) => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     typoH4: {
-        color: "#4f4f4f",
+        color: theme.palette.primary.dark,
         fontSize: '.95rem',
         fontWeight: 700
     },
     statsGrid: {
         padding:"5px 15px",
-        background: "#F2F2F2"
+        background: theme.palette.secondary.contrastText
     },
     typoH5: {
-        color: "#4f4f4f",
+        color: theme.palette.primary.dark,
         fontSize: '1.2rem',
         fontWeight: 900,
         marginRight: "5px",
         display: "inline-block"
     },
     body1: {
-        color: "#828282",
+        color: theme.palette.secondary.dark,
         fontSize: '.8rem',
         display: "inline-block"
     }
-})
+}))
 
 export default CategoryHeader

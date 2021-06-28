@@ -1,7 +1,6 @@
 import React, { lazy, Suspense } from 'react'
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { Backdrop, CircularProgress, ThemeProvider, createMuiTheme } from '@material-ui/core';
-import { grey, blueGrey } from '@material-ui/core/colors';
 
 import './index.css';
 
@@ -12,8 +11,20 @@ const Home = lazy(() => import('./components/Home/Home'));
 const App = () => {
     const theme = createMuiTheme({
       palette: {
-        primary: blueGrey,
-        secondary: grey
+        primary: {
+          main: "#A02725",
+          dark: "#2A3EB1",
+          light: "#EE5450",
+          contrastText: "#FAFCFF"
+        },
+        secondary: {
+          main: "#868686",
+          dark: "#434343",
+          light: "#E3E3E3",
+          contrastText: "#FFFFFF"
+        }
+      },
+      overrides: {
       }
     })
 

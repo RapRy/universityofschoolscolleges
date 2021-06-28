@@ -74,12 +74,12 @@ const ForumStatsPanel = () => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     grid: {
-        background: "#e0e0e0",
+        background: theme.palette.secondary.light,
         marginTop: "15px",
         padding: "10px 20px"
     }
-})
+}))
 
 export default ForumStatsPanel

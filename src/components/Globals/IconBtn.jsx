@@ -12,16 +12,19 @@ const IconBtn = ({ icon, text, handleClick }) => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     btn: {
         borderRadius: "0px",
         marginLeft: "10px",
         fontSize: ".85rem",
         fontWeight: 300,
-        color: "#f2f2f2",
+        color: theme.palette.secondary.contrastText,
         padding: "5px 15px",
-        background: "#828282"
+        background: theme.palette.primary.main,
+        '&:hover': {
+            background: theme.palette.primary.main
+        }
     }
-})
+}))
 
 export default IconBtn

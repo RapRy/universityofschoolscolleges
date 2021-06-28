@@ -15,14 +15,14 @@ const Overview = () => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     typoH2: {
         fontWeight: 700,
         fontSize: "1.2rem",
         marginTop: "40px",
         textTransform: "uppercase",
-        color: "#4F4F4F"
+        color: theme.palette.secondary.dark
     }
-})
+}))
 
 export default Overview

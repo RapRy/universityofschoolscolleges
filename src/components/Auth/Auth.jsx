@@ -15,11 +15,11 @@ const Auth = () => {
     const history = useHistory();
     const { status, error } = useSelector(state => state.auth);
 
-    const classes = useStyles();
-
     const [formData, setFormData] = useState(initialState);
     const [switchForm, setSwitchForm] = useState(false);
     const [errors, setErrors] = useState(initialErrors);
+
+    const classes = useStyles({ switchForm });
 
     const handleInputChange = (e) => {
         if(e.target.name === "schoolId"){
@@ -88,12 +88,12 @@ const Auth = () => {
                     <Grid item container direction="column" xs={12} md={6} justify="center" alignItems="center" className={classes.welcome}>
                         <Typography variant="h5" align="left" className={classes.h5}>University of Schools Colleges</Typography>
                         <Typography variant="h2" className={classes.h2}>Welcome to the Forum</Typography>
-                        <Typography variant="body1" className={classes.paraghrap}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget rhoncus, convallis integer pulvinar eget nulla viverra quis. Quis leo a donec turpis non. Est, purus auctor viverra faucibus at nulla auctor eleifend odio.</Typography>
-                        <Button onClick={() => handleSwitchForm()} variant="outlined" size="large" disableRipple className={classes.button}>{ switchForm ? "SIGN IN" : "SIGN UP" }</Button>
+                        <Typography variant="body1" className={`${classes.pColorWhite} ${classes.paraghrap}`}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eget rhoncus, convallis integer pulvinar eget nulla viverra quis. Quis leo a donec turpis non. Est, purus auctor viverra faucibus at nulla auctor eleifend odio.</Typography>
+                        <Button onClick={() => handleSwitchForm()} size="large" disableRipple className={classes.button}>{ switchForm ? "SIGN IN" : "SIGN UP" }</Button>
                     </Grid>
                     <Grid item container justify="center" alignItems="center" direction="column" xs={12} md={6} className={classes.form}>
                         <Typography variant="h4" className={classes.h4}>{ switchForm ? "Create Account" : "Sign in to Forum" }</Typography>
-                        <Typography variant="body1" className={classes.paraghrap}>{ switchForm ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit." : "Lorem ipsum dolor sit amet." }</Typography>
+                        <Typography variant="body1" className={`${classes.pColorBlack} ${classes.paraghrap}`}>{ switchForm ? "Lorem ipsum dolor sit amet, consectetur adipiscing elit." : "Lorem ipsum dolor sit amet." }</Typography>
                         { error.login !== undefined &&  <Typography variant="body1" className={classes.paraghrapError}>{ error.login }</Typography>}        
                         <Backdrop open={status === "loading" ? true : false} style={{ zIndex: 5 }}>
                             <CircularProgress color="inherit" />
@@ -117,15 +117,15 @@ const Auth = () => {
 
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
-        background: "#c4c4c4"
+        background: theme.palette.secondary.light
     },
     formContainer: {
-        background: "#fff",
+        background: theme.palette.primary.contrastText,
         padding: 0,
         margin: "30px"
     },
     welcome: {
-        background: "#f2f2f2",
+        background: props => props.switchForm ? theme.palette.primary.light : theme.palette.primary.main,
         padding: "20px",
         textAlign: 'center',
         position: 'relative',
@@ -136,7 +136,7 @@ const useStyles = makeStyles((theme) => ({
     h5: {
         fontSize: "1.1rem",
         fontWeight: 900,
-        color: "#828282",
+        color: theme.palette.secondary.contrastText,
         position: "absolute",
         top: "20px",
         left: "20px"
@@ -144,17 +144,22 @@ const useStyles = makeStyles((theme) => ({
     h2: {
         fontSize: "2.2rem",
         fontWeight: 700,
-        color: "#4f4f4f",
+        color: theme.palette.secondary.contrastText,
         padding: "0px 80px 20px",
         [theme.breakpoints.down("sm")]: {
             padding: "60px 80px 20px"
         }
     },
     paraghrap: {
-        color: "#4f4f4f",
         fontSize: ".8rem",
         padding: "0px 20px 30px",
         lineHeight: "1.6"
+    },
+    pColorWhite: {
+        color: theme.palette.secondary.contrastText,
+    },
+    pColorBlack: {
+        color: theme.palette.secondary.main,
     },
     paraghrapError: {
         color: "#FF0000",
@@ -167,8 +172,13 @@ const useStyles = makeStyles((theme) => ({
         margin: "0 auto",
         fontSize: ".95rem",
         fontWeight: 300,
-        color: "#828282",
-        padding: "7px 40px"
+        color: theme.palette.secondary.contrastText,
+        padding: "7px 40px",
+        border: `1px solid ${theme.palette.secondary.contrastText}`,
+        '&:hover': {
+            border: props => props.switchForm ? `1px solid ${theme.palette.primary.main}` : `1px solid ${theme.palette.primary.light}`,
+            background: 'none',
+        }
     },
     button2: {
         borderRadius: "0px",
@@ -177,7 +187,7 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 300,
         color: "#f2f2f2",
         padding: "7px 40px",
-        background: "#828282"
+        background: theme.palette.primary.dark
     },
     h4: {
         fontSize: "1.5rem",

@@ -71,7 +71,7 @@ const AddCategoryForm = () => {
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        background: "#E0E0E0",
+        background: theme.palette.secondary.light,
         marginTop: "30px",
         paddingBottom: "8px",
         [theme.breakpoints.down('xs')]: {
@@ -83,9 +83,12 @@ const useStyles = makeStyles((theme) => ({
         margin: "16px auto 0",
         fontSize: ".9rem",
         fontWeight: 300,
-        color: "#f2f2f2",
+        color: theme.palette.secondary.contrastText,
         padding: "13px 15px",
-        background: "#828282",
+        background: theme.palette.primary.dark,
+        '&:hover': {
+            background: theme.palette.primary.dark
+        },
         [theme.breakpoints.down('xs')]: {
             margin: "6px auto 0"
         }

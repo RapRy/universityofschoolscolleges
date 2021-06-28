@@ -23,7 +23,7 @@ const UserMenu = () => {
                                 InputProps={{
                                     classes:{
                                         root: classes.rootRadius,
-                                        input: classes.input
+                                        input: classes.input,
                                     }
                                 }}
                             />
@@ -54,8 +54,8 @@ const useStyles = makeStyles((theme) => ({
     input: {
         fontSize: ".8rem",
         fontWeight: 500,
-        color: theme.palette.secondary.main,
-        background: theme.palette.primary.contrastText,
+        color: theme.palette.secondary.dark,
+        background: theme.palette.secondary.contrastText,
         borderRadius: "0px",
         padding: "10px 15px"
     },
@@ -64,7 +64,10 @@ const useStyles = makeStyles((theme) => ({
         borderRadius: "0",
         marginLeft: "10px",
         height: "35px",
-        color: theme.palette.primary.contrastText
+        color: theme.palette.primary.contrastText,
+        '&:hover': {
+            background: theme.palette.primary.light
+        }
     },
     body1: {
         display: "inline-block",

@@ -10,6 +10,7 @@ import { sign_in_LS } from '../../redux/authReducer';
 
 import Overview from './Overview/Overview';
 import Categories from './Categories/Categories';
+import Empty from '../Globals/Empty/Empty'
 
 const Forum = () => {
 
@@ -37,6 +38,7 @@ const Forum = () => {
                     <SideNavigation />
                 </Grid>
                 <Grid item md={9} xs={12}>
+                    <Empty message="No Topics fro this category" />
                     <Switch>
                         <Route exact path={path}>
                             { profile.result?.accountType === 1 && <Overview /> }
