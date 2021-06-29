@@ -10,7 +10,7 @@ import TextArea from './TextArea'
 import * as api from '../../../api'
 
 const initialErrors = { title: "", ref: { category: "" }, description: "" };
-const initialState = { title: "", ref: { category: "", creator: JSON.parse(localStorage.getItem('profile')).result._id }, description: "" };
+const initialState = { title: "", ref: { category: "", creator: JSON.parse(localStorage.getItem('profile'))?.result._id }, description: "" };
 
 const AddTopicForm = () => {
     const classes = useStyles()
