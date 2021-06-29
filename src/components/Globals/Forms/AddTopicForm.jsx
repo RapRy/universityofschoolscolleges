@@ -91,10 +91,10 @@ const AddTopicForm = () => {
                                 <Input type="text" name="title" label="set title" handleInputChange={handleInputChange} errors={errors} />
                             </Grid>
                             <Grid item md={4}>
-                                <FormControl error={ errors.ref.category !== "" ? true : false }>
-                                    <InputLabel id="topicSelect">{ errors.ref.category !== "" ? errors.ref.category : "select category" }</InputLabel>
-                                    <Select labelId="topicSelect" variant="filled" value={select} onChange={handleSelectChange}>
-                                        <MenuItem value="select category" disabled>select category</MenuItem>
+                                <FormControl classes={{ root: classes.selectInput }} variant="outlined" error={ errors.ref.category !== "" ? true : false }>
+                                    <InputLabel htmlFor="selectNative">{ errors.ref.category !== "" ? errors.ref.category : "select category" }</InputLabel>
+                                    <Select native inputProps={{ id: "selectNative" }} variant="outlined" value={select} onChange={handleSelectChange}>
+                                        <MenuItem value="" disabled>select category</MenuItem>
                                         {
                                             categories.map((cat) => <MenuItem key={cat._id} value={cat.name}>{cat.name}</MenuItem>)
                                         }
@@ -133,6 +133,9 @@ const useStyles = makeStyles(theme => ({
         [theme.breakpoints.down('xs')]: {
             margin: "6px auto 0"
         }
+    },
+    selectInput: {
+        minWidth: "200px"
     }
 }))
 
