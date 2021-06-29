@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom'
 
 import { logout } from '../../redux/authReducer';
 
-const ProfileMenu = () => {
+const ProfileMenu = ({ max960 }) => {
     const { profile } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
@@ -18,11 +18,16 @@ const ProfileMenu = () => {
 
     return (
         <div style={{ width: "250px" }}>
-            <Box>
-                <Avatar />
-                <Typography>{profile.result?.username}</Typography>
-            </Box>
-            <Divider />
+            {
+                max960 &&
+                    <>
+                        <Box>
+                            <Avatar />  
+                            <Typography>{profile.result?.username}</Typography>
+                        </Box>
+                        <Divider />
+                    </>
+            }
             <Box>
                 <Button variant="contained" color="secondary" startIcon={<ExitToAppIcon />} onClick={handleLogout}>Logout</Button>
             </Box>

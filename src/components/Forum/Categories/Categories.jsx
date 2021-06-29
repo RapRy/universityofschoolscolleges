@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import AddCategoryForm from '../../Globals/Forms/AddCategoryForm';
 import { update_categories } from '../../../redux/categoriesReducer';
 import Category from './Category';
+import Empty from '../../Globals/Empty/Empty'
 
 const Categories = () => {
     const classes = useStyles();
@@ -24,11 +25,12 @@ const Categories = () => {
 
     return (
         <Container>
-           <Typography className={classes.typoH2} variant="h2">Categories</Typography>
+            <Typography className={classes.typoH2} variant="h2">Categories</Typography>
            <AddCategoryForm />
 
            { status === "loading" && <LinearProgress style={{ margin: "30px 0" }} /> }
-           
+
+            { (status === 'idle' && categories.length === 0) && <Empty message="No created categories" /> }
            {
                categories.map((cat) => (
                    <Category key={cat._id} cat={cat} />
@@ -38,14 +40,14 @@ const Categories = () => {
     )
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
     typoH2: {
         fontWeight: 700,
         fontSize: "1.2rem",
         marginTop: "40px",
         textTransform: "uppercase",
-        color: "#4F4F4F"
+        color: theme.palette.secondary.dark
     }
-})
+}))
 
 export default Categories

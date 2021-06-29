@@ -11,6 +11,7 @@ import { sign_in_LS } from '../../redux/authReducer';
 import Overview from './Overview/Overview';
 import Categories from './Categories/Categories';
 import Empty from '../Globals/Empty/Empty'
+import Topics from './Topics/Topics';
 
 const Forum = () => {
 
@@ -38,7 +39,7 @@ const Forum = () => {
                     <SideNavigation />
                 </Grid>
                 <Grid item md={9} xs={12}>
-                    <Empty message="No Topics fro this category" />
+                    {/* <Empty message="No Topics fro this category" /> */}
                     <Switch>
                         <Route exact path={path}>
                             { profile.result?.accountType === 1 && <Overview /> }
@@ -46,6 +47,10 @@ const Forum = () => {
 
                         <Route path={`${path}/categories`}>
                             { profile.result?.accountType === 1 && <Categories /> }
+                        </Route>
+
+                        <Route path={`${path}/:topic`}>
+                            { profile.result?.accountType === 1 && <Topics /> }
                         </Route>
                     </Switch>
                 </Grid>

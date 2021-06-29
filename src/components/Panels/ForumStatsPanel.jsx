@@ -18,7 +18,6 @@ const ForumStatsPanel = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        console.log(max600)
         try {
             const fetchCount = async (API) => {
                 try {

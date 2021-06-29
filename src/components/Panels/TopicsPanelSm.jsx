@@ -37,7 +37,7 @@ const TopicsPanelSm = ({ header, request }) => {
                         <ListItem key={i}>
                             <Link to={`forum`} style={{ textDecoration: "none", overflowX: "hidden" }}>
                                 <ListItemText primary={top.primary} classes={{ primary: classes.topicName }} />
-                                <ListItemIcon><SvgIcon component={top.icon} classes={{ root: classes.svg }} /></ListItemIcon>
+                                <ListItemIcon classes={{ root: classes.listIcon }}><SvgIcon component={top.icon} classes={{ root: classes.svg }} /></ListItemIcon>
                                 <ListItemText primary={top.secondary} classes={{ root: classes.secondaryItem, primary: classes.secondaryTextItem }} />
                             </Link>
                         </ListItem>
@@ -57,10 +57,14 @@ const useStyles = makeStyles(theme => ({
         overflowX: 'hidden',
         textOverflow: "ellipsis"
     },
+    listIcon: {
+        display: "inline"
+    },
     svg: {
         color: theme.palette.secondary.main,
         fontSize: '1rem',
-        verticalAlign: "middle"
+        verticalAlign: "middle",
+
     },
     secondaryItem: {
         display: "inline-block"

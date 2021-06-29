@@ -1,10 +1,12 @@
 import React from 'react'
-import { Container, Grid } from '@material-ui/core'
+import { Container, Grid, Divider } from '@material-ui/core'
+import { useSelector } from 'react-redux'
 
 import PanelHeader from '../Globals/PanelHeader'
 import PanelButton from '../Globals/PanelButton'
 
 const ManagePanel = ({ manage }) => {
+    const { categories } = useSelector(state => state.categories)
 
     return (
         <Grid item xs={12} sm={6} md={12}>
@@ -12,6 +14,15 @@ const ManagePanel = ({ manage }) => {
                 <PanelHeader title={manage.header} />
                 {
                     manage.options.map((opt, i) => <PanelButton opt={opt} key={i} />)
+                }
+                {
+                    manage.header === "manage forum" &&
+                        <>
+                            <Divider style={{ marginTop: "15px" }} />
+                            {
+                                categories.map(cat => <PanelButton opt={cat} key={cat._id} />)
+                            }
+                        </>
                 }
             </Container>
         </Grid>

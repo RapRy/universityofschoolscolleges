@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 
 import SearchBar from './SearchBar'
 
-const UserMenu = () => {
+const UserMenu = ({ setShowAside, showAside }) => {
     const classes = useStyles();
 
     const { profile } = useSelector(state => state.auth);
@@ -15,7 +15,7 @@ const UserMenu = () => {
             <Grid item xs={9}>
                 <SearchBar />  
             </Grid>
-            <Grid item xs={3} container direction="row" justify="flex-end" alignItems="center">
+            <Grid item xs={3} container direction="row" justify="flex-end" alignItems="center" onClick={() => setShowAside(!showAside)}>
                 <Typography variant="body1" className={classes.body1}>{profile.result?.username}</Typography>
                 <Avatar />
             </Grid>

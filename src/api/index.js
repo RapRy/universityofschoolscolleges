@@ -14,5 +14,8 @@ export const signUp = (formData) => API.post('/users/signup', formData);
 export const signIn = (formData) => API.post('/users/signin', formData);
 
 export const getCategories = () => API.get('/categories');
+export const getCategory = (id) => API.get(`/categories/${id}`)
 export const getCategoriesCount = () => API.get('/categories/categoriesCount');
 export const addCategory = (formData) => API.post('/categories/add', formData)
+
+export const publishTopic = (formData) => API.post('/topics/publish', formData);

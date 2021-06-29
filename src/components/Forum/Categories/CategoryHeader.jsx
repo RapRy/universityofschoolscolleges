@@ -26,13 +26,13 @@ const CategoryHeader = ({ cat }) => {
             <Grid item md={3} sm={4} xs={12}>
                 <Grid container direction="row" className={classes.statsGrid}>
                     <Grid item sm={5} style={{marginRight: "15px"}}>
-                        <Typography variant="h5" className={classes.typoH5}>{cat.meta.topics}</Typography>
-                        <Typography variant="body1" className={classes.body1}>Topics</Typography>
+                        <Typography variant="h5" className={classes.typoH5}>{cat.meta.topics.length}</Typography>
+                        <Typography variant="body1" className={classes.body1}>{ cat.meta.topics.length === 1 ? "Topic" : "Topics" }</Typography>
                     </Grid>
 
                     <Grid item sm={5}>
-                        <Typography variant="h5" className={classes.typoH5}>{cat.meta.replies}</Typography>
-                        <Typography variant="body1" className={classes.body1}>Replies</Typography>
+                        <Typography variant="h5" className={classes.typoH5}>{cat.meta.replies.length}</Typography>
+                        <Typography variant="body1" className={classes.body1}>{ cat.meta.replies.length === 1 ? "Reply" : "Replies" }</Typography>
                     </Grid>
                 </Grid>
             </Grid>

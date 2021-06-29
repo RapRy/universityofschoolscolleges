@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button } from '@material-ui/core'
-import { styled, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import { Link, useRouteMatch } from 'react-router-dom'
 
 const PanelButton = ({ opt }) => {

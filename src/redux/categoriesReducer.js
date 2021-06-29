@@ -11,11 +11,25 @@ export const update_categories = createAsyncThunk(
     }
 )
 
+export const set_selected = createAsyncThunk(
+    'categories/set_selected',
+    async (topicId) => {
+        if(topicId === "topics"){
+            return { name: "select category" }
+        }
+
+        const { data, status } = await api.getCategory(topicId)
+
+        if(status === 200) return data.category
+    }
+)
+
 export const categoriesSlice = createSlice({
     name: "categories",
     initialState: {
         status: "idle",
-        categories: []
+        categories: [],
+        selectedCat: {}
     },
     reducers: {
         update_categories: (state, action) => {
@@ -36,6 +50,16 @@ export const categoriesSlice = createSlice({
             state.status = "idle"
         },
         [update_categories.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [set_selected.pending]: (state) => {
+            state.status = "loading"
+        },
+        [set_selected.fulfilled]: (state, action) => {
+            state.selectedCat = action.payload
+            state.status = "idle"
+        },
+        [set_selected.rejected]: (state) => {
             state.status = "failed"
         }
     }
