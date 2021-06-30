@@ -15,7 +15,7 @@ export const set_selected = createAsyncThunk(
     'categories/set_selected',
     async (topicId) => {
         if(topicId === "topics"){
-            return { name: "select category" }
+            return { name: "" }
         }
 
         const { data, status } = await api.getCategory(topicId)

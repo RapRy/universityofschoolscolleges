@@ -20,13 +20,10 @@ export const sign_in = createAsyncThunk(
     async ({ formData, history }) => {
         let { data, status } = await api.signIn(formData);
 
-        console.log(status)
-
         if(status === 200){
             localStorage.setItem('profile', JSON.stringify({ ...data }));
 
             history.push('/forum')
-
             return data;
         }
     }
@@ -36,10 +33,6 @@ export const logout = createAsyncThunk(
     'auth/logout',
     async (history, thunkAPI) => {
         localStorage.removeItem('profile')
-
-        const test = thunkAPI.getState()
-
-        console.log(test)
 
         history.push('/')
     }

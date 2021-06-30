@@ -1,17 +1,22 @@
 import React from 'react'
 import { Typography, Grid, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core'
+import { useDispatch } from 'react-redux';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 import DeleteIcon from '@material-ui/icons/Delete'
 
 import IconBtn from '../../Globals/IconBtn'
+import { set_selected } from '../../../redux/categoriesReducer';
 
-const CategoryHeader = ({ cat }) => {
+const CategoryHeader = ({ cat, setShowForm, showForm }) => {
     const classes = useStyles()
     const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
 
+    const dispatch = useDispatch()
+
     const handleAddTopic = () => {
-        console.log('add')
+        showForm === false && dispatch(set_selected(cat._id))
+        setShowForm(prevState => !prevState)
     }
 
     const handleDelete = () => {

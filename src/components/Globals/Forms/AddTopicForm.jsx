@@ -19,7 +19,7 @@ const AddTopicForm = () => {
 
     const [errors, setErrors] = useState(initialErrors)
     const [formData, setFormData] = useState(initialState)
-    const [select, setSelect] = useState("select category")
+    const [select, setSelect] = useState("")
 
     const { enqueueSnackbar } = useSnackbar()
 
@@ -51,7 +51,7 @@ const AddTopicForm = () => {
             return
         }
 
-        if(formData.ref.category === "" || formData.ref.category === "select category"){
+        if(formData.ref.category === "" || formData.ref.category === "select category" || formData.ref.category === null){
             setErrors({ ...errors, ['ref']: { ['category']: "Field required." } })
             return
         }
@@ -75,7 +75,7 @@ const AddTopicForm = () => {
     }
 
     useEffect(() => {
-        setSelect(selectedCat.name || "select category")
+        setSelect(selectedCat.name)
         const ref = { ...formData.ref, ['category']: selectedCat._id || null }
         setFormData({ ...formData, ['ref']: ref })
 
@@ -87,16 +87,35 @@ const AddTopicForm = () => {
                 <Grid container direction="column">
                     <Grid item>
                         <Grid container direction="row" justify="space-around" alignItems='center' spacing={2}>
-                            <Grid item md={8}>
+                            <Grid item md={9}>
                                 <Input type="text" name="title" label="set title" handleInputChange={handleInputChange} errors={errors} />
                             </Grid>
-                            <Grid item md={4}>
-                                <FormControl classes={{ root: classes.selectInput }} variant="outlined" error={ errors.ref.category !== "" ? true : false }>
-                                    <InputLabel htmlFor="selectNative">{ errors.ref.category !== "" ? errors.ref.category : "select category" }</InputLabel>
-                                    <Select native inputProps={{ id: "selectNative" }} variant="outlined" value={select} onChange={handleSelectChange}>
-                                        <MenuItem value="" disabled>select category</MenuItem>
+                            <Grid item md={3}>
+                                <FormControl classes={{ root: classes.formControl }} error={ errors.ref.category !== "" ? true : false }>
+                                    <InputLabel id="demo-simple-select-error-label" classes={{ root: classes.label }}>
+                                        { errors.ref.category !== "" ? errors.ref.category : "select category" }
+                                    </InputLabel>
+                                    <Select
+                                        disableUnderline
+                                        variant="filled"
+                                        labelId="demo-simple-select-error-label"
+                                        id="demo-simple-select-error"
+                                        value={select || ""}
+                                        onChange={handleSelectChange}
+                                        classes={{
+                                            root: classes.select
+                                        }}
+                                        inputProps={{
+                                            classes: {
+                                                root: classes.input
+                                            }
+                                        }}
+                                    >
+                                    <MenuItem value="" disabled classes={{ root: classes.input }}>
+                                        <em>select category</em>
+                                    </MenuItem>
                                         {
-                                            categories.map((cat) => <MenuItem key={cat._id} value={cat.name}>{cat.name}</MenuItem>)
+                                            categories.map((cat) => <MenuItem classes={{ root: classes.input }} key={cat._id} value={cat.name}>{cat.name}</MenuItem>)
                                         }
                                     </Select>
                                 </FormControl>
@@ -117,15 +136,16 @@ const AddTopicForm = () => {
 
 const useStyles = makeStyles(theme => ({
     containerRoot: {
-        background: theme.palette.secondary.light
+        background: theme.palette.secondary.light,
+        marginTop: "30px"
     },
     buttonSubmit: {
         borderRadius: "0px",
-        margin: "16px auto 0",
+        margin: "16px auto",
         fontSize: ".9rem",
         fontWeight: 300,
         color: theme.palette.secondary.contrastText,
-        padding: "13px 15px",
+        padding: "10px 20px",
         background: theme.palette.primary.dark,
         '&:hover': {
             background: theme.palette.primary.dark
@@ -134,8 +154,26 @@ const useStyles = makeStyles(theme => ({
             margin: "6px auto 0"
         }
     },
-    selectInput: {
-        minWidth: "200px"
+    formControl: {
+        marginTop: "10px",
+        width: "100%"
+    },
+    label: {
+        fontSize: ".8rem",
+        color: theme.palette.secondary.dark,
+        marginLeft: "10px",
+        zIndex: 2
+    },
+    select: {
+        background: theme.palette.secondary.contrastText,
+        borderRadius: "0px",
+    },
+    input: {
+        fontSize: ".8rem",
+        fontWeight: 700,
+        color: theme.palette.secondary.dark,
+        background: theme.palette.secondary.contrastText,
+        borderRadius: "0px"
     }
 }))
 

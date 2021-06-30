@@ -8,6 +8,7 @@ API.interceptors.request.use((req) => {
     return req;
 })
 
+export const getUser = (id) => API.get(`/users/${id}`)
 export const getActiveUsersCount = () => API.get('/users/activeCount');
 export const getRegisteredCount = () => API.get('/users/registeredCount')
 export const signUp = (formData) => API.post('/users/signup', formData);
@@ -19,3 +20,4 @@ export const getCategoriesCount = () => API.get('/categories/categoriesCount');
 export const addCategory = (formData) => API.post('/categories/add', formData)
 
 export const publishTopic = (formData) => API.post('/topics/publish', formData);
+export const getTopics = (id) => API.get(`/topics/${id}`)

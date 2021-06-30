@@ -8,7 +8,8 @@ const TextArea = ({ type, label, name, handleInputChange, errors }) => {
     return (
         <TextField
             multiline
-            rows={4}
+            className={classes.padd0}
+            rows={6}
             rowsMax={10}
             error={errors[name] === "" ? false : true}
             helperText={errors[name]}
@@ -50,6 +51,11 @@ const useStyles = makeStyles(theme => ({
     label: {
         fontSize: ".8rem",
         color: theme.palette.secondary.dark
+    },
+    padd0: {
+        '& .MuiOutlinedInput-multiline': {
+            padding: 0
+        }
     }
 }))
 

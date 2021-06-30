@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core'
 import _ from 'lodash';
-import { Switch, Route, useRouteMatch, useHistory } from 'react-router-dom'
+import { Switch, Route, useRouteMatch, useHistory, Redirect } from 'react-router-dom'
 
 import Navigation from '../Navigation/Navigation';
 import SideNavigation from '../SideNavigation/SideNavigation';
@@ -12,6 +12,7 @@ import Overview from './Overview/Overview';
 import Categories from './Categories/Categories';
 import Empty from '../Globals/Empty/Empty'
 import Topics from './Topics/Topics';
+import Topic from './Topics/Topic'
 
 const Forum = () => {
 
@@ -23,13 +24,17 @@ const Forum = () => {
 
     useEffect(() => {
         if(!_.isEmpty(profile)){
+            console.log(1)
             return
         }else if(localStorage.getItem('profile') !== null){
+            console.log(2)
             dispatch(sign_in_LS(JSON.parse(localStorage.getItem('profile'))));
         }else{
+            console.log(3)
             history.push('/auth');
         }
-    }, [dispatch])
+
+    }, [dispatch, profile])
 
     return (
         <div>
@@ -41,17 +46,17 @@ const Forum = () => {
                 <Grid item md={9} xs={12}>
                     {/* <Empty message="No Topics fro this category" /> */}
                     <Switch>
-                        <Route exact path={path}>
-                            { profile.result?.accountType === 1 && <Overview /> }
+                        <Route exact path={path} >
+                            { (profile.result?.accountType === 1 && profile.result !== undefined) ? <Overview /> : <Redirect to={`${path}/topics`} />}
                         </Route>
 
                         <Route path={`${path}/categories`}>
                             { profile.result?.accountType === 1 && <Categories /> }
                         </Route>
 
-                        <Route path={`${path}/:topic`}>
-                            { profile.result?.accountType === 1 && <Topics /> }
-                        </Route>
+                        <Route exact path={`${path}/:category`} component={Topics} />
+
+                        <Route exact path={`${path}/:category/:topicId`} component={Topic} />
                     </Switch>
                 </Grid>
             </Grid>

@@ -17,7 +17,7 @@ const UserMenu = ({ setShowAside, showAside }) => {
             </Grid>
             <Grid item xs={3} container direction="row" justify="flex-end" alignItems="center" onClick={() => setShowAside(!showAside)}>
                 <Typography variant="body1" className={classes.body1}>{profile.result?.username}</Typography>
-                <Avatar />
+                <Avatar>{ profile.result?.username.charAt(0) }</Avatar>
             </Grid>
         </Grid>
     )
