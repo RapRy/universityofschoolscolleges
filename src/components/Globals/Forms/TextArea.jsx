@@ -2,20 +2,20 @@ import React from 'react'
 import { TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-const TextArea = ({ type, label, name, handleInputChange, errors }) => {
+const TextArea = ({ type, label, name, handleInputChange, errors, rows, margin }) => {
     const classes = useStyles()
 
     return (
         <TextField
             multiline
             className={classes.padd0}
-            rows={6}
+            rows={rows}
             rowsMax={10}
             error={errors[name] === "" ? false : true}
             helperText={errors[name]}
             label={ errors[name] === "" ? label : "Error"} 
             variant="outlined" 
-            fullWidth margin="normal" 
+            fullWidth margin={margin ? "normal" : "none"}
             type={type} name={name} 
             InputProps={{
                 classes: {
@@ -26,7 +26,7 @@ const TextArea = ({ type, label, name, handleInputChange, errors }) => {
             }}
             InputLabelProps={{
                 classes: {
-                    root: classes.label
+                    root: classes.label,
                 }
             }}
             onChange={handleInputChange}
@@ -36,7 +36,7 @@ const TextArea = ({ type, label, name, handleInputChange, errors }) => {
 
 const useStyles = makeStyles(theme => ({
     rootRadius: {
-        borderRadius: 0
+        borderRadius: 0,
     },
     notchedOutline: {
         borderColor: "transparent"
@@ -46,7 +46,8 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 700,
         color: theme.palette.secondary.dark,
         background: theme.palette.secondary.contrastText,
-        borderRadius: "0px"
+        borderRadius: "0px",
+        padding: theme.spacing(1)
     },
     label: {
         fontSize: ".8rem",

@@ -16,6 +16,9 @@ const useStyles = makeStyles(theme => ({
     btn: {
         borderRadius: "0px",
         marginLeft: "10px",
+        '&:first-child': {
+            marginLeft: "0px"
+        },
         fontSize: ".85rem",
         fontWeight: 300,
         color: theme.palette.secondary.contrastText,

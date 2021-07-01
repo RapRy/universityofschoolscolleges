@@ -24,13 +24,10 @@ const Forum = () => {
 
     useEffect(() => {
         if(!_.isEmpty(profile)){
-            console.log(1)
             return
         }else if(localStorage.getItem('profile') !== null){
-            console.log(2)
             dispatch(sign_in_LS(JSON.parse(localStorage.getItem('profile'))));
         }else{
-            console.log(3)
             history.push('/auth');
         }
 

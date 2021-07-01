@@ -21,3 +21,6 @@ export const addCategory = (formData) => API.post('/categories/add', formData)
 
 export const publishTopic = (formData) => API.post('/topics/publish', formData);
 export const getTopics = (id) => API.get(`/topics/${id}`)
+export const getTopic = (id) => API.get(`/topics/details/${id}`)
+
+export const addReply = (formData) => API.post('/replies/add', formData);

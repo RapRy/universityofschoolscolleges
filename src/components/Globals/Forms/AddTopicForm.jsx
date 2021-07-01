@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Grid, Select, MenuItem, FormControl, InputLabel, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import PublishIcon from '@material-ui/icons/Publish';
 import { useSnackbar } from 'notistack'
 
 import Input from './Input'
 import TextArea from './TextArea'
+import { publish_topic } from '../../../redux/topicsReducer';
 import * as api from '../../../api'
 
 const initialErrors = { title: "", ref: { category: "" }, description: "" };
@@ -16,6 +17,7 @@ const AddTopicForm = () => {
     const classes = useStyles()
 
     const { categories, selectedCat } = useSelector(state => state.categories)
+    const dispatch = useDispatch()
 
     const [errors, setErrors] = useState(initialErrors)
     const [formData, setFormData] = useState(initialState)
@@ -63,6 +65,8 @@ const AddTopicForm = () => {
                 setErrors({ ...errors, ['title']: data.message })
                 return
             }
+
+            if(selectedCat._id === data.result.ref.category) dispatch(publish_topic(data.result))
 
             enqueueSnackbar(`${formData.title} publish at ${select}`, { variant: "success" })
 
@@ -123,7 +127,7 @@ const AddTopicForm = () => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <TextArea type="text" name="description" label="set description" handleInputChange={handleInputChange} errors={errors} />
+                        <TextArea type="text" name="description" label="set description" handleInputChange={handleInputChange} errors={errors} rows={6} margin={true} />
                     </Grid>
                     <Grid item>
                         <Button type="submit" className={classes.buttonSubmit} startIcon={<PublishIcon />}>PUBLISH</Button>
