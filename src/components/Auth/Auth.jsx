@@ -3,6 +3,7 @@ import { Button, Container, Grid, Typography, Box, Backdrop, CircularProgress } 
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { useSnackbar } from 'notistack'
 
 import Input from '../Globals/Forms/Input';
 import { sign_up, sign_in } from '../../redux/authReducer';
@@ -20,6 +21,8 @@ const Auth = () => {
     const [errors, setErrors] = useState(initialErrors);
 
     const classes = useStyles({ switchForm });
+
+    const { enqueueSnackbar } = useSnackbar()
 
     const handleInputChange = (e) => {
         if(e.target.name === "schoolId"){
@@ -61,6 +64,7 @@ const Auth = () => {
                 setErrors({ ...errors, ['confirmPassword']: "Password didn't match." })
             }else{
                 dispatch(sign_up(formData))
+                enqueueSnackbar(`Sign up successful`, { variant: "success" })
             }
         }else{
             if(formData.email === ""){

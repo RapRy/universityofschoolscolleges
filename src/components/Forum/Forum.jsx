@@ -15,6 +15,7 @@ import Topics from './Topics/Topics';
 import Topic from './Topics/Topic'
 
 const Forum = () => {
+    const profileLS = JSON.parse(localStorage.getItem('profile'))
 
     const history = useHistory();
 
@@ -26,7 +27,7 @@ const Forum = () => {
         if(!_.isEmpty(profile)){
             return
         }else if(localStorage.getItem('profile') !== null){
-            dispatch(sign_in_LS(JSON.parse(localStorage.getItem('profile'))));
+            dispatch(sign_in_LS(profileLS));
         }else{
             history.push('/auth');
         }
@@ -44,7 +45,7 @@ const Forum = () => {
                     {/* <Empty message="No Topics fro this category" /> */}
                     <Switch>
                         <Route exact path={path} >
-                            { (profile.result?.accountType === 1 && profile.result !== undefined) ? <Overview /> : <Redirect to={`${path}/topics`} />}
+                            { ((profile?.result?.accountType === 1 && profile?.result !== null) || (profileLS?.result?.accountType === 1 && profileLS?.result !== null)) ? <Overview /> : <Redirect to={`${path}/topics`} />}
                         </Route>
 
                         <Route path={`${path}/categories`}>

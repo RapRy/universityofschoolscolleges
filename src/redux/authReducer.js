@@ -55,7 +55,6 @@ export const authSlice = createSlice({
             state.status = "loading"
         },
         [sign_up.fulfilled]: (state, action) => {
-            console.log(action)
             state.profile = { ...action.payload }
             state.status = "idle"
         },

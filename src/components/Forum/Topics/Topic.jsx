@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { useRouteMatch } from 'react-router-dom'
-import { Container, Grid, Avatar, Typography, Divider } from '@material-ui/core'
+import { useRouteMatch, useHistory } from 'react-router-dom'
+import { Container, Grid, Avatar, Typography, Divider, LinearProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import EditIcon from '@material-ui/icons/Edit';
@@ -9,14 +9,19 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { get_topic_details } from '../../../redux/topicsReducer'
 import IconBtn from '../../Globals/IconBtn'
 import AddReply from '../../Globals/Forms/AddReply'
+import Reply from './Reply'
+import * as api from '../../../api'
 
 const Topic = () => {
+    const profileLS = JSON.parse(localStorage.getItem('profile')).result
     const classes = useStyles()
 
     const { params, url } = useRouteMatch()
+    const history = useHistory()
 
     const dispatch = useDispatch()
-    const { selectedTopic } = useSelector(state => state.topics)
+    const { selectedTopic, status } = useSelector(state => state.topics)
+    const { profile } = useSelector(state => state.auth)
 
     const dateString = () => {
         const months =['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -35,51 +40,75 @@ const Topic = () => {
     }
 
     useEffect(() => {
-        dispatch(get_topic_details(params.topicId))     
+        if(profile.result === null || profileLS === null) history.push('/forum')
+
+        dispatch(get_topic_details(params.topicId))    
+
+        try {
+            const data = { topicId: params.topicId, viewer: profile.result?._id || profileLS._id }
+            api.addTopicViews(data)
+        } catch (error) {
+            console.log(error)
+        } 
     }, [url])
     
     return (
         <Container>
-            <Container className={classes.container}>
-                <Grid container direction="row" spacing={1}>
-                    <Grid item md={2}>
-                        <Avatar className={classes.avatar}>{ selectedTopic.creator?.username?.charAt(0) }</Avatar>
-                        <div className={classes.statContainer}>
-                            <Typography variant="h2" className={classes.numType}>{ selectedTopic.topic?.meta?.replies?.length }</Typography>
-                            <Typography variant="body1" className={classes.stringType}>{selectedTopic.topic?.meta?.replies?.length > 1 ? "Replies" : "Reply"}</Typography>
-                        </div>
-                        <div className={classes.statContainer}>
-                            <Typography variant="h2" className={classes.numType}>{ selectedTopic.topic?.meta?.views?.length }</Typography>
-                            <Typography variant="body1" className={classes.stringType}>{selectedTopic.topic?.meta?.views?.length > 1 ? "Views" : "View"}</Typography>
-                        </div>
-                    </Grid>
+            { status === "loading" && <LinearProgress style={{ margin: "30px 0" }} /> }
 
-                    <Grid item md={10}>
-                        <div className={classes.titleContainer}>
-                            <Typography variant="h3" className={classes.title}>{ selectedTopic.topic?.title }</Typography>
-                            <Typography variant="body1" className={classes.updatesDetails}>Asked by { <span className={classes.span}>{ selectedTopic.creator?.username}</span>} on {dateString()} in { <span className={classes.span}>{ selectedTopic.category?.name }</span> }</Typography>
-                        </div>
-                        <div className={classes.ctaContainer}>
-                            <IconBtn icon={<EditIcon />} text="edit" handleClick={handleEdit} />
-                            <IconBtn icon={<DeleteIcon />} text="delete" handleClick={handleDelete} />
-                        </div>
+            { status === "idle" && 
+                <Container className={classes.container}>
+                    <Grid container direction="row" spacing={1}>
+                        <Grid item md={2}>
+                            <Avatar className={classes.avatar}>{ selectedTopic.creator?.username?.charAt(0) }</Avatar>
+                            <div className={classes.statContainer}>
+                                <Typography variant="h2" className={classes.numType}>{ selectedTopic.replies?.length }</Typography>
+                                <Typography variant="body1" className={classes.stringType}>{selectedTopic.replies?.length > 1 ? "Replies" : "Reply"}</Typography>
+                            </div>
+                            <div className={classes.statContainer}>
+                                <Typography variant="h2" className={classes.numType}>{ selectedTopic.topic?.meta?.views?.length }</Typography>
+                                <Typography variant="body1" className={classes.stringType}>{selectedTopic.topic?.meta?.views?.length > 1 ? "Views" : "View"}</Typography>
+                            </div>
+                        </Grid>
 
-                        <Divider className={classes.divider} />
+                        <Grid item md={10}>
+                            <div className={classes.titleContainer}>
+                                <Typography variant="h3" className={classes.title}>{ selectedTopic.topic?.title }</Typography>
+                                <Typography variant="body1" className={classes.updatesDetails}>Asked by { <span className={classes.span}>{ selectedTopic.creator?.username}</span>} on {dateString()} in { <span className={classes.span}>{ selectedTopic.category?.name }</span> }</Typography>
+                            </div>
 
-                        <div className={classes.descContainer}>
-                            <Typography variant="body1" className={classes.description}>{ selectedTopic.topic?.description }</Typography>
-                        </div>
+                            {
+                                (profileLS._id === selectedTopic.topic?.ref?.creator || profile.result?._id === selectedTopic.topic?.ref?.creator) &&
+                                    <div className={classes.ctaContainer}>
+                                        <IconBtn icon={<EditIcon />} text="edit" handleClick={handleEdit} />
+                                        <IconBtn icon={<DeleteIcon />} text="delete" handleClick={handleDelete} />
+                                    </div>
+                            }
 
-                        <div>
-                            <Typography variant="h5" className={classes.repliesCount}>{ selectedTopic.topic?.meta?.replies?.length > 1 ? `${selectedTopic.topic?.meta?.replies?.length} Replies` : `${selectedTopic.topic?.meta?.replies?.length} Reply`} </Typography>
+                            <Divider className={classes.divider} />
 
-                            <Divider />
+                            <div className={classes.descContainer}>
+                                <Typography variant="body1" className={classes.description}>{ selectedTopic.topic?.description }</Typography>
+                            </div>
 
-                            <AddReply categoryId={selectedTopic.topic?.ref?.category} topicId={selectedTopic.topic?._id} />
-                        </div>
-                    </Grid>
-                </Grid> 
-            </Container>
+                            <div>
+                                <Typography variant="h5" className={classes.repliesCount}>{ selectedTopic.replies?.length > 1 ? `${selectedTopic.replies?.length} Replies` : `${selectedTopic.replies?.length} Reply`} </Typography>
+
+                                <Divider />
+
+                                <AddReply categoryId={selectedTopic.topic?.ref?.category} topicId={selectedTopic.topic?._id} />
+
+                                <div>
+                                    {
+                                        selectedTopic.replies &&
+                                            selectedTopic.replies.map(reply => <Reply reply={reply} key={reply._id} />)
+                                    }
+                                </div>
+                            </div>
+                        </Grid>
+                    </Grid> 
+                </Container>
+            }
         </Container>
     )
 }

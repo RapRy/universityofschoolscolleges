@@ -1,44 +1,64 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Container, List, ListItem, ListItemText, SvgIcon, ListItemIcon } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import { Link } from 'react-router-dom'
-import TodayIcon from '@material-ui/icons/Today'
-import CommentIcon from '@material-ui/icons/Comment'
-
+import { Link, useRouteMatch } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
 import PanelHeader from '../Globals/PanelHeader'
 
-const topics = {
-    latest: [
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "added on June 27, 2021", icon: TodayIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "added on June 27, 2021", icon: TodayIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "added on June 27, 2021", icon: TodayIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "added on June 27, 2021", icon: TodayIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "added on June 27, 2021", icon: TodayIcon }
-    ],
-    hot: [
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "300 replies", icon: CommentIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "300 replies", icon: CommentIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "300 replies", icon: CommentIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "300 replies", icon: CommentIcon },
-        { primary: "Lorem ipsum dolor sit amet dui et.", secondary: "300 replies", icon: CommentIcon }
-    ]
-}
 
-const TopicsPanelSm = ({ header, request }) => {
+const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon }) => {
     const classes = useStyles()
+
+    const dispatch = useDispatch()
+    const topics = useSelector(state => state.topics)
+
+    const match = useRouteMatch('/forum/:category/:topicId')
+
+    useEffect(() => {
+        const fetchTopics = async () => {
+            const { data, status } = await API(match ? match.params.topicId : "");
+
+            if(status === 200){
+                dispatch(reduxDispatch(data))
+            }
+        }
+        
+        fetchTopics()
+    }, [dispatch])
+
+    const dateString = (date) => {
+        const createdDate = new Date(date)
+
+        const months =['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+        return `added on ${months[createdDate.getMonth()]} ${createdDate.getDate()}, ${createdDate.getFullYear()}`
+    }
+
+    const secondText = (header, latest, replies, related) => {
+        switch(header){
+            case "latest topics":
+                return dateString(latest)
+            case "hot topics":
+                return `${replies.length} Replies`
+            case "related topics":
+                return dateString(related)
+            default: 
+                return null
+        }
+    }
 
     return (
         <Container style={{ padding: "0" }}>
             <PanelHeader title={header} />
             <List>
                 {
-                    topics[request].map((top, i) => (
-                        <ListItem key={i}>
+                    topics[selectorName].map((top) => (
+                        <ListItem key={top._id}>
                             <Link to={`forum`} style={{ textDecoration: "none", overflowX: "hidden" }}>
-                                <ListItemText primary={top.primary} classes={{ primary: classes.topicName }} />
-                                <ListItemIcon classes={{ root: classes.listIcon }}><SvgIcon component={top.icon} classes={{ root: classes.svg }} /></ListItemIcon>
-                                <ListItemText primary={top.secondary} classes={{ root: classes.secondaryItem, primary: classes.secondaryTextItem }} />
+                                <ListItemText primary={top.title} classes={{ primary: classes.topicName }} />
+                                <ListItemIcon classes={{ root: classes.listIcon }}>{icon}</ListItemIcon>
+                                <ListItemText primary={secondText(header, top.createdAt, top.meta.replies, top.createdAt)} classes={{ root: classes.secondaryItem, primary: classes.secondaryTextItem }} />
                             </Link>
                         </ListItem>
                     ))
@@ -59,12 +79,6 @@ const useStyles = makeStyles(theme => ({
     },
     listIcon: {
         display: "inline"
-    },
-    svg: {
-        color: theme.palette.secondary.main,
-        fontSize: '1rem',
-        verticalAlign: "middle",
-
     },
     secondaryItem: {
         display: "inline-block"

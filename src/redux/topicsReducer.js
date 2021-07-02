@@ -44,6 +44,20 @@ export const topicsSlice = createSlice({
             creator: {},
             category: {},
             replies: []
+        },
+        latestTopics: [],
+        hotTopics: [],
+        relatedTopics: []
+    },
+    reducers: {
+        get_latest_topics: (state, action) => {
+            state.latestTopics = action.payload
+        },
+        get_hot_topics: (state, action) => {
+            state.hotTopics = action.payload
+        },
+        get_related_topics: (state, action) => {
+            state.relatedTopics = action.payload
         }
     },
     extraReducers: {
@@ -61,12 +75,7 @@ export const topicsSlice = createSlice({
             state.status = "loading"
         },
         [get_topic_details.fulfilled]: (state, action) => {
-            state.selectedTopic = { 
-                ...state.selectedTopic,
-                ['topic']: action.payload.topic,
-                ['creator']: action.payload.creator,
-                ['category']: action.payload.category
-            }
+            state.selectedTopic = action.payload
             state.status = "idle"
         },
         [get_topic_details.rejected]: (state) => {
@@ -94,5 +103,7 @@ export const topicsSlice = createSlice({
         }
     }
 })
+
+export const { get_latest_topics, get_hot_topics, get_related_topics } = topicsSlice.actions
 
 export default topicsSlice.reducer

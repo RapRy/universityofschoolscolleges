@@ -21,7 +21,9 @@ const TopicWithThumbnail = ({ topic }) => {
                     api.getCategory(topic.ref.category)
                 ])
 
-                if(result[0].status === 200 && result[1].status === 200) setAdditionalData({ user: result[0].data, category: result[1].data.category })
+                if(result[0].status === 200 && result[1].status === 200){
+                    setAdditionalData({ user: result[0].data, category: result[1].data.category })
+                }
                 
             } catch (error) {
                 console.log(error)
@@ -58,7 +60,7 @@ const TopicWithThumbnail = ({ topic }) => {
                         <Typography variant="body1" className={classes.stats}><AccountCircleIcon className={classes.icon} /> {additionalData.user?.username}</Typography>
                     </Box>
                     <Typography variant="body1" className={classes.updatesDetails}>
-                        { Date.parse(topic.createdAt) < Date.parse(topic.updatedAt) ? `updated on ${dateString()}` : `created on ${dateString()}` } in { <span className={classes.span}>{ additionalData.category?.name }</span> } { Date.parse(topic.createdAt) < Date.parse(topic.updatedAt) ? `Last reply by ${<span className={classes.span}>user(need to update)</span>}` : "" }
+                        { Date.parse(topic.createdAt) < Date.parse(topic.updatedAt) ? `updated on ${dateString()}` : `created on ${dateString()}` } in { <span className={classes.span}>{ additionalData.category?.name }</span> }
                     </Typography>
                 </Grid>
             </Grid>

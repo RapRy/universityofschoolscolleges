@@ -11,11 +11,13 @@ export const statsSlice = createSlice({
     },
     reducers: {
         update_count: (state, action) => {
-            const { activeUsersCount, categoriesCount, registeredUsersCount } = action.payload
+            const { activeUsersCount, categoriesCount, registeredUsersCount, topicsCount, repliesCount } = action.payload
 
             state.activeUsersCount = activeUsersCount
             state.categoriesCount = categoriesCount
             state.registeredUsersCount = registeredUsersCount
+            state.topicsCount = topicsCount
+            state.repliesCount = repliesCount
         }
     }
 })
