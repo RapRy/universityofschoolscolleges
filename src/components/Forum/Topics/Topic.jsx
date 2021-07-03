@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { Container, Grid, Avatar, Typography, Divider, LinearProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
@@ -11,6 +11,7 @@ import IconBtn from '../../Globals/IconBtn'
 import AddReply from '../../Globals/Forms/AddReply'
 import Reply from './Reply'
 import * as api from '../../../api'
+import AddTopicForm from '../../Globals/Forms/AddTopicForm'
 
 const Topic = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile')).result
@@ -18,6 +19,8 @@ const Topic = () => {
 
     const { params, url } = useRouteMatch()
     const history = useHistory()
+
+    const [edit, setEdit] = useState(false)
 
     const dispatch = useDispatch()
     const { selectedTopic, status } = useSelector(state => state.topics)
@@ -35,9 +38,7 @@ const Topic = () => {
         console.log('delete')
     }
 
-    const handleEdit = () => {
-        console.log('edit')
-    }
+    const handleEdit = () => setEdit(true)
 
     useEffect(() => {
         if(profile.result === null || profileLS === null) history.push('/forum')
@@ -83,6 +84,10 @@ const Topic = () => {
                                         <IconBtn icon={<EditIcon />} text="edit" handleClick={handleEdit} />
                                         <IconBtn icon={<DeleteIcon />} text="delete" handleClick={handleDelete} />
                                     </div>
+                            }
+
+                            {
+                                edit && <AddTopicForm action="edit" />
                             }
 
                             <Divider className={classes.divider} />

@@ -34,6 +34,13 @@ export const update_selected_topic_replies = createAsyncThunk(
     }
 )
 
+export const update_topic = createAsyncThunk(
+    'topics/update_topic',
+    async (data) => {
+        return data
+    }
+)
+
 export const topicsSlice = createSlice({
     name: "topics",
     initialState: {
@@ -99,6 +106,16 @@ export const topicsSlice = createSlice({
             state.status = "idle"
         },
         [publish_topic.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [update_topic.pending]: (state) => {
+            state.status = "loading"
+        },
+        [update_topic.fulfilled]: (state, action) => {
+            console.log(action.payload)
+            state.status = "idle"
+        },
+        [update_topic.rejected]: (state) => {
             state.status = "failed"
         }
     }

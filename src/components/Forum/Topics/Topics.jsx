@@ -60,7 +60,7 @@ const Topics = () => {
             }
 
             {
-                showForm === true && <AddTopicForm />
+                showForm === true && <AddTopicForm action="add" />
             }
 
             <div>

@@ -27,6 +27,7 @@ export const getTopicCount = () => API.get('/topics/count');
 export const getLatestTopics = () => API.get('/topics/latest')
 export const getHotTopics = () => API.get('/topics/hot')
 export const getRelatedTopics = (id) => API.get(`/topics/related/${id}`)
+export const updateTopic = (formData) => API.put('/topics/update', formData)
 
 export const addReply = (formData) => API.post('/replies/add', formData);
 export const repliesCount = () => API.get('/replies/count')

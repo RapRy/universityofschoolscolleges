@@ -2,11 +2,12 @@ import React from 'react'
 import { TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-const Input = ({ type, label, name, handleInputChange, errors }) => {
+const Input = ({ type, label, name, handleInputChange, errors, value }) => {
     const classes = useStyles()
 
     return (
         <TextField 
+            value={value}
             error={errors[name] === "" ? false : true}
             helperText={errors[name]}
             label={ errors[name] === "" ? label : "Error"} 

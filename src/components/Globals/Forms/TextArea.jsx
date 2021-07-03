@@ -2,11 +2,12 @@ import React from 'react'
 import { TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 
-const TextArea = ({ type, label, name, handleInputChange, errors, rows, margin }) => {
+const TextArea = ({ type, label, name, handleInputChange, errors, rows, margin, value }) => {
     const classes = useStyles()
 
     return (
         <TextField
+            value={value}
             multiline
             className={classes.padd0}
             rows={rows}

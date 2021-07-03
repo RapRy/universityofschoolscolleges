@@ -22,6 +22,10 @@ const Reply = ({ reply }) => {
         } catch (error) {
             console.log(error)
         }
+
+        return () => {
+            setUser({})
+        }
     }, [reply._id])
 
     return (

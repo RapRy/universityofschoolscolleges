@@ -7,16 +7,17 @@ import { useSnackbar } from 'notistack'
 
 import Input from './Input'
 import TextArea from './TextArea'
-import { publish_topic } from '../../../redux/topicsReducer';
+import { publish_topic, update_topic } from '../../../redux/topicsReducer';
 import * as api from '../../../api'
 
 const initialErrors = { title: "", ref: { category: "" }, description: "" };
 const initialState = { title: "", ref: { category: "", creator: JSON.parse(localStorage.getItem('profile'))?.result._id }, description: "" };
 
-const AddTopicForm = () => {
+const AddTopicForm = ({ action }) => {
     const classes = useStyles()
 
     const { categories, selectedCat } = useSelector(state => state.categories)
+    const { selectedTopic } = useSelector(state => state.topics)
     const dispatch = useDispatch()
 
     const [errors, setErrors] = useState(initialErrors)
@@ -58,6 +59,29 @@ const AddTopicForm = () => {
             return
         }
 
+        if(action === "edit"){
+            console.log(action)
+            const { data, status } = await api.updateTopic(formData)
+
+            if(status === 200){
+                if(data.status === 0){
+                    setErrors({ ...errors, ['title']: data.message })
+                    return
+                }
+
+                if(selectedCat._id === data.result.ref.category) dispatch(update_topic(data.result))
+
+                enqueueSnackbar(`update successful`, { variant: "success" })
+
+                const cat = categories.filter(({ name }) => name === select)
+                const ref = { ...initialState.ref, ['category']: cat[0]._id }
+
+                setFormData({ ...initialState, ['ref']: ref })
+            }
+
+            return
+        }
+
         const { data, status } = await api.publishTopic(formData)
 
         if(status === 200){
@@ -81,7 +105,12 @@ const AddTopicForm = () => {
     useEffect(() => {
         setSelect(selectedCat.name)
         const ref = { ...formData.ref, ['category']: selectedCat._id || null }
-        setFormData({ ...formData, ['ref']: ref })
+        
+        if(action === "edit"){
+            setFormData({ ...formData, ['ref']: ref, ['title']: selectedTopic.topic.title, ['description']: selectedTopic.topic.description, topicId: selectedTopic.topic._id })
+        }else{
+            setFormData({ ...formData, ['ref']: ref })
+        }
 
     }, [selectedCat])
 
@@ -92,7 +121,7 @@ const AddTopicForm = () => {
                     <Grid item>
                         <Grid container direction="row" justify="space-around" alignItems='center' spacing={2}>
                             <Grid item md={9}>
-                                <Input type="text" name="title" label="set title" handleInputChange={handleInputChange} errors={errors} />
+                                <Input type="text" name="title" label="set title" handleInputChange={handleInputChange} errors={errors} value={formData.title} />
                             </Grid>
                             <Grid item md={3}>
                                 <FormControl classes={{ root: classes.formControl }} error={ errors.ref.category !== "" ? true : false }>
@@ -127,7 +156,7 @@ const AddTopicForm = () => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <TextArea type="text" name="description" label="set description" handleInputChange={handleInputChange} errors={errors} rows={6} margin={true} />
+                        <TextArea type="text" name="description" label="set description" handleInputChange={handleInputChange} errors={errors} rows={6} margin={true} value={formData.description} />
                     </Grid>
                     <Grid item>
                         <Button type="submit" className={classes.buttonSubmit} startIcon={<PublishIcon />}>PUBLISH</Button>
