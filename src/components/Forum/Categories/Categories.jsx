@@ -15,25 +15,20 @@ const Categories = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-
-        try {
-            dispatch(update_categories())
-        } catch (error) {
-            console.log(error)
-        }
+        dispatch(update_categories())
     }, [dispatch])
 
     return (
         <Container>
             <Typography className={classes.typoH2} variant="h2">Categories</Typography>
-           <AddCategoryForm />
+            <AddCategoryForm />
 
-           { status === "loading" && <LinearProgress style={{ margin: "30px 0" }} /> }
+           { (status === "loading" && categories.length === 0) && <LinearProgress style={{ margin: "30px 0" }} /> }
 
             { (status === 'idle' && categories.length === 0) && <Empty message="No created categories" /> }
            {
                categories.map((cat) => (
-                   <Category key={cat._id} cat={cat} />
+                   cat.active == 1 && <Category key={cat._id} cat={cat} />
                ))
            }
         </Container>

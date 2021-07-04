@@ -18,6 +18,7 @@ export const getCategories = () => API.get('/categories');
 export const getCategory = (id) => API.get(`/categories/${id}`)
 export const getCategoriesCount = () => API.get('/categories/categoriesCount');
 export const addCategory = (formData) => API.post('/categories/add', formData)
+export const updateActiveStatus = (id) => API.put(`/categories/updateStatus/${id}`)
 
 export const publishTopic = (formData) => API.post('/topics/publish', formData);
 export const addTopicViews = (data) => API.post('/topics/views', data)
@@ -27,6 +28,8 @@ export const getTopicCount = () => API.get('/topics/count');
 export const getLatestTopics = () => API.get('/topics/latest')
 export const getHotTopics = () => API.get('/topics/hot')
 export const getRelatedTopics = (id) => API.get(`/topics/related/${id}`)
+export const getLatestTopicsByCategory = (id) => API.get(`/topics/latest/${id}`)
+export const getHotTopicsByCategory = (id) => API.get(`/topics/hot/${id}`)
 export const updateTopic = (formData) => API.put('/topics/update', formData)
 
 export const addReply = (formData) => API.post('/replies/add', formData);
