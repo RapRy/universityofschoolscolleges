@@ -13,7 +13,8 @@ const Category = ({ cat }) => {
     const [showForm, setShowForm] = useState(false)
     const [topics, setTopics] = useState({
         latestTopics: [],
-        hotTopics: []
+        hotTopics: [],
+        category: {}
     })
 
     useEffect(() => {
@@ -26,8 +27,9 @@ const Category = ({ cat }) => {
 
                 if(result[0].status === 200 && result[1].status === 200){
                     setTopics({
-                        latestTopics: result[0].data,
-                        hotTopics: result[1].data
+                        latestTopics: result[0].data.topics,
+                        hotTopics: result[1].data.hotTopics,
+                        category: result[0].data.category || result[1].data.category
                     })
                 }
             } catch (error) {
@@ -52,20 +54,20 @@ const Category = ({ cat }) => {
             <Grid container direction="row" spacing={3} className={classes.gridContainer}>
                 {
                     topics.latestTopics.length > 0 &&
-                        <Grid item md={6}>
+                        <Grid item md={6} sm={12}>
                             <Typography variant="h6" className={classes.typoH6}>Latest Topics</Typography>
                             {
-                                topics.latestTopics.map(top => <TopicThumb top={top} key={top._id} />)
+                                topics.latestTopics.map(top => <TopicThumb top={top} key={top._id} category={topics.category} />)
                             }
                         </Grid>
                 }
 
                 {
                     topics.hotTopics.length > 0 &&
-                        <Grid item md={6}>
+                        <Grid item md={6} sm={12}>
                             <Typography variant="h6" className={classes.typoH6}>Hot Topics</Typography>
                             {
-                                topics.hotTopics.map(top => <TopicThumb top={top} key={top._id} />)
+                                topics.hotTopics.map(top => <TopicThumb top={top} key={top._id} category={topics.category} />)
                             }
                         </Grid>
                 }

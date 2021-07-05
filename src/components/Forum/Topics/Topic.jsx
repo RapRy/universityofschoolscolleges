@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { useSnackbar } from 'notistack'
 
 import { get_topic_details } from '../../../redux/topicsReducer'
 import IconBtn from '../../Globals/IconBtn'
@@ -12,6 +13,8 @@ import AddReply from '../../Globals/Forms/AddReply'
 import Reply from './Reply'
 import * as api from '../../../api'
 import AddTopicForm from '../../Globals/Forms/AddTopicForm'
+import DeleteDialog from '../../Globals/DeleteDialog'
+import { update_active_status } from '../../../redux/topicsReducer'
 
 const Topic = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile')).result
@@ -21,10 +24,13 @@ const Topic = () => {
     const history = useHistory()
 
     const [edit, setEdit] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
 
     const dispatch = useDispatch()
     const { selectedTopic, status } = useSelector(state => state.topics)
     const { profile } = useSelector(state => state.auth)
+
+    const { enqueueSnackbar } = useSnackbar()
 
     const dateString = () => {
         const months =['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -34,8 +40,15 @@ const Topic = () => {
 
     }
 
-    const handleDelete = () => {
-        console.log('delete')
+    const handleDelete = () => setOpenDelete(true)
+
+    const handleCloseDialog = () => setOpenDelete(false)
+
+    const handleConfirmDelete = () => {
+        dispatch(update_active_status(selectedTopic.topic._id))
+        enqueueSnackbar(`${selectedTopic.topic.title} deleted`, { variant: "success" })
+        setOpenDelete(false)
+        history.push(`/forum/${selectedTopic.topic.ref.category}`)
     }
 
     const handleEdit = () => setEdit(true)
@@ -56,6 +69,8 @@ const Topic = () => {
     return (
         <Container>
             { status === "loading" && <LinearProgress style={{ margin: "30px 0" }} /> }
+
+            { openDelete && <DeleteDialog status={openDelete} message={`Click confirm to delete ${selectedTopic.topic.title}`} handleDelete={handleConfirmDelete} handleCancel={handleCloseDialog} /> }
 
             { status === "idle" && 
                 <Container className={classes.container}>

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { Container, Grid, Avatar, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useSelector, useDispatch } from 'react-redux'
-import { useSnackbar } from 'notistack'
 import CommentIcon from '@material-ui/icons/Comment';
 
 import TextArea from './TextArea'

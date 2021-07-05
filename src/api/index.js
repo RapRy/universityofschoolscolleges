@@ -25,12 +25,13 @@ export const addTopicViews = (data) => API.post('/topics/views', data)
 export const getTopics = (id) => API.get(`/topics/${id}`)
 export const getTopic = (id) => API.get(`/topics/details/${id}`)
 export const getTopicCount = () => API.get('/topics/count');
-export const getLatestTopics = () => API.get('/topics/latest')
-export const getHotTopics = () => API.get('/topics/hot')
+export const getLatestTopics = (limit) => API.get(`/topics/latest/limit/${limit}`)
+export const getHotTopics = (limit) => API.get(`/topics/hot/limit/${limit}`)
 export const getRelatedTopics = (id) => API.get(`/topics/related/${id}`)
 export const getLatestTopicsByCategory = (id) => API.get(`/topics/latest/${id}`)
 export const getHotTopicsByCategory = (id) => API.get(`/topics/hot/${id}`)
 export const updateTopic = (formData) => API.put('/topics/update', formData)
+export const updateTopicActiveStatus = (id) => API.put(`/topics/updateStatus/${id}`)
 
 export const addReply = (formData) => API.post('/replies/add', formData);
 export const repliesCount = () => API.get('/replies/count')

@@ -3,12 +3,12 @@ import { Container, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { Link } from 'react-router-dom'
 
-const TopicThumb = ({ top }) => {
+const TopicThumb = ({ top, category }) => {
     const classes = useStyles()
 
     return (
         <Container className={classes.container}>
-            <Link to="#" style={{ textDecoration: "none", overflowX: "hidden" }}>
+            <Link to={`/forum/${category.name?.replace(" ", "-")}/${top._id}`} style={{ textDecoration: "none", overflowX: "hidden" }}>
                 <Typography variant="h6" className={classes.title}>{ top?.title }</Typography>
             </Link>
             <Typography variant="body1" className={classes.description}>{ top?.description }</Typography>

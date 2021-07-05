@@ -41,6 +41,49 @@ export const update_topic = createAsyncThunk(
     }
 )
 
+export const update_active_status = createAsyncThunk(
+    'topics/update_active_status',
+    async (id, { getState }) => {
+        const { data, status } = await api.updateTopicActiveStatus(id)
+
+        if(status === 200){
+            const { topics, selectedTopic } = getState().topics
+
+            const updatedTopics = topics.map(top => top._id === id ? { ...top, ['active']: 0 } : top)
+            const updatedSelected = { ...selectedTopic.topic, ['active']: 0 }
+
+            return { updatedTopics, updatedSelected }
+        }
+    }
+)
+
+export const get_latest_topics_view_all = createAsyncThunk(
+    'topics/get_latest_topics_view_all',
+    async (limit) => {
+        const { data, status } = await api.getLatestTopics(limit)
+
+        if(status === 200) return data
+    }
+)
+
+export const get_hot_topics_view_all = createAsyncThunk(
+    'topics/get_latest_topics_view_all',
+    async (limit) => {
+        const { data, status } = await api.getHotTopics(limit)
+
+        if(status === 200) return data
+    }
+)
+
+export const get_related_topics_view_all = createAsyncThunk(
+    'topics/get_related_topics_view_all',
+    async (id) => {
+        const { data, status } = await api.getRelatedTopics(id)
+
+        if(status === 200) return data
+    }
+)
+
 export const topicsSlice = createSlice({
     name: "topics",
     initialState: {
@@ -116,6 +159,47 @@ export const topicsSlice = createSlice({
             state.status = "idle"
         },
         [update_topic.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [update_active_status.pending]: (state) => {
+            state.status = 'loading'
+        },
+        [update_active_status.fulfilled]: (state, action) => {
+            state.topics = action.payload.updatedTopics
+            state.selectedTopic.topic = action.payload.updatedSelected
+            state.status = "idle"
+        },
+        [update_active_status.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [get_latest_topics_view_all.pending]: (state) => {
+            state.status = 'loading'
+        },
+        [get_latest_topics_view_all.fulfilled]: (state, action) => {
+            state.topics = action.payload
+            state.status = "idle"
+        },
+        [get_latest_topics_view_all.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [get_hot_topics_view_all.pending]: (state) => {
+            state.status = 'loading'
+        },
+        [get_hot_topics_view_all.fulfilled]: (state, action) => {
+            state.topics = action.payload
+            state.status = "idle"
+        },
+        [get_hot_topics_view_all.rejected]: (state) => {
+            state.status = "failed"
+        },
+        [get_related_topics_view_all.pending]: (state) => {
+            state.status = 'loading'
+        },
+        [get_related_topics_view_all.fulfilled]: (state, action) => {
+            state.topics = action.payload
+            state.status = "idle"
+        },
+        [get_related_topics_view_all.rejected]: (state) => {
             state.status = "failed"
         }
     }

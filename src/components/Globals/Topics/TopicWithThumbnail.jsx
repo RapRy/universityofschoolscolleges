@@ -31,6 +31,10 @@ const TopicWithThumbnail = ({ topic }) => {
         }
 
         fetchAdditionals()
+
+        return () => {
+            setAdditionalData({})
+        }
     }, [topic])
 
     const dateString = () => {

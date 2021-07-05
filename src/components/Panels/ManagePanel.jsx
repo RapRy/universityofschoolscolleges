@@ -20,7 +20,7 @@ const ManagePanel = ({ manage }) => {
                         <>
                             <Divider style={{ marginTop: "15px" }} />
                             {
-                                categories.map(cat => <PanelButton opt={cat} key={cat._id} />)
+                                categories.map(cat => cat.active === 1 && <PanelButton opt={cat} key={cat._id} />)
                             }
                         </>
                 }

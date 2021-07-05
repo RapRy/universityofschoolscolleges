@@ -39,16 +39,16 @@ const CategoryHeader = ({ cat, setShowForm, showForm }) => {
     return (
         <Grid container direction={ max600 === true ? "column" : "row" } alignItems="center" justify="space-between" spacing={ max600 === true ? 3 : 1 } style={{ paddingBottom: "20px" }}>
             { open && <DeleteDialog status={open} message={`Click confirm to delete ${cat.name}`} handleDelete={handleConfirmDelete} handleCancel={handleCloseDialog} /> }
-            <Grid item md={"auto"} sm={12} xs={12}>
+            <Grid item md={"auto"} sm={'auto'} xs={12}>
                 <Typography variant="h4" className={classes.typoH4}>{ cat.name }</Typography>
             </Grid>
-            <Grid item md={2} sm={4} xs={12}>
+            <Grid item md={2} sm={2} xs={12}>
                 <span className={classes.statsGrid}>
                     <Typography variant="h5" className={classes.typoH5}>{cat.meta.topics.length}</Typography>
                     <Typography variant="body1" className={classes.body1}>{ cat.meta.topics.length === 1 ? "Topic" : "Topics" }</Typography>
                 </span>
             </Grid>
-            <Grid item md={8} sm={8} xs={12}>
+            <Grid item md={8} sm={12} xs={12}>
                 <Grid container direction="row" justify={ max600 === true ? "center" : "flex-end" }>
                     <IconBtn icon={<PostAddIcon />} text="Add Topic" handleClick={handleAddTopic} />
                     <IconBtn icon={<DeleteIcon />} text="Delete" handleClick={handleDelete} />

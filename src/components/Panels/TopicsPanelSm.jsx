@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { Container, List, ListItem, ListItemText, SvgIcon, ListItemIcon } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import { Link, useRouteMatch } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Container, List, ListItem } from '@material-ui/core'
+import { useRouteMatch } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import PanelHeader from '../Globals/PanelHeader'
-
+import TopicInSideNav from '../Globals/Topics/TopicInSideNav'
 
 const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon }) => {
-    const classes = useStyles()
 
     const dispatch = useDispatch()
     const topics = useSelector(state => state.topics)
@@ -17,49 +16,30 @@ const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon }) => {
 
     useEffect(() => {
         const fetchTopics = async () => {
-            const { data, status } = await API(match ? match.params.topicId : "");
+            try {
+                const { data, status } = await API(match ? match.params.topicId : 6);
 
-            if(status === 200){
-                dispatch(reduxDispatch(data))
+                if(status === 200){
+                    dispatch(reduxDispatch(data))
+                }   
+            } catch (error) {
+                console.log(error)
             }
         }
         
         fetchTopics()
     }, [dispatch])
 
-    const dateString = (date) => {
-        const createdDate = new Date(date)
-
-        const months =['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-        return `added on ${months[createdDate.getMonth()]} ${createdDate.getDate()}, ${createdDate.getFullYear()}`
-    }
-
-    const secondText = (header, latest, replies, related) => {
-        switch(header){
-            case "latest topics":
-                return dateString(latest)
-            case "hot topics":
-                return `${replies.length} Replies`
-            case "related topics":
-                return dateString(related)
-            default: 
-                return null
-        }
-    }
-
     return (
         <Container style={{ padding: "0" }}>
-            <PanelHeader title={header} />
+            <Link to={`/forum/${header.replace(" ", "-")}`} style={{ textDecoration: "none" }}>
+                <PanelHeader title={header} />
+            </Link>
             <List>
                 {
                     topics[selectorName].map((top) => (
                         <ListItem key={top._id}>
-                            <Link to={`forum`} style={{ textDecoration: "none", overflowX: "hidden" }}>
-                                <ListItemText primary={top.title} classes={{ primary: classes.topicName }} />
-                                <ListItemIcon classes={{ root: classes.listIcon }}>{icon}</ListItemIcon>
-                                <ListItemText primary={secondText(header, top.createdAt, top.meta.replies, top.createdAt)} classes={{ root: classes.secondaryItem, primary: classes.secondaryTextItem }} />
-                            </Link>
+                            <TopicInSideNav top={top} icon={icon} header={header} />
                         </ListItem>
                     ))
                 }
@@ -67,27 +47,5 @@ const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon }) => {
         </Container>
     )
 }
-
-const useStyles = makeStyles(theme => ({
-    topicName: {
-        color: theme.palette.secondary.dark,
-        fontSize: ".9rem",
-        fontWeight: 700,
-        whiteSpace: "nowrap",
-        overflowX: 'hidden',
-        textOverflow: "ellipsis"
-    },
-    listIcon: {
-        display: "inline"
-    },
-    secondaryItem: {
-        display: "inline-block"
-    },
-    secondaryTextItem: {
-        fontSize: ".8rem",
-        color: theme.palette.secondary.main,
-        marginLeft: "5px"
-    }
-}))
 
 export default TopicsPanelSm
