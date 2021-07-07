@@ -13,6 +13,8 @@ import Categories from './Categories/Categories';
 import Empty from '../Globals/Empty/Empty'
 import Topics from './Topics/Topics';
 import Topic from './Topics/Topic'
+import ActiveUsersList from './Users/ActiveUsersList';
+import RegisteredUsersList from './Users/RegisteredUsersList';
 
 const Forum = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile'))
@@ -52,9 +54,13 @@ const Forum = () => {
                             { profile.result?.accountType === 1 && <Categories /> }
                         </Route>
 
+                        <Route exact path={`${path}/active-users`} component={ActiveUsersList} />
+                        <Route exact path={`${path}/registered-users`} component={RegisteredUsersList} />
+
                         <Route exact path={`${path}/:category`} component={Topics} />
 
                         <Route exact path={`${path}/:category/:topicId`} component={Topic} />
+
                     </Switch>
                 </Grid>
             </Grid>

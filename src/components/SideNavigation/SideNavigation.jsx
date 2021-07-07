@@ -13,9 +13,9 @@ import { get_latest_topics, get_hot_topics, get_related_topics } from '../../red
 
 const manageArr = [
     {header: "manage users", options: [
-        {_id: "active", name:"active users"},
-        {_id: "registered", name:"registered users"},
-        {_id: "blacklisted", name:"blacklisted users"}
+        {_id: "active-users", name:"active users"},
+        {_id: "registered-users", name:"registered users"},
+        {_id: "blacklisted-users", name:"blacklisted users"}
     ]},
     {header: "manage forum", options: [
         {_id: "categories", name:"categories"},

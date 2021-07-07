@@ -11,6 +11,9 @@ API.interceptors.request.use((req) => {
 export const getUser = (id) => API.get(`/users/${id}`)
 export const getActiveUsersCount = () => API.get('/users/activeCount');
 export const getRegisteredCount = () => API.get('/users/registeredCount')
+export const getNewUsers = (limit) => API.get(`/users/newUsers/${limit}`)
+export const getActiveUsers = (limit) => API.get(`/users/activeUsers/${limit}`)
+export const getRegisteredUsers = () => API.get('/users/registeredUsers')
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const signIn = (formData) => API.post('/users/signin', formData);
 
