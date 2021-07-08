@@ -84,6 +84,15 @@ export const get_related_topics_view_all = createAsyncThunk(
     }
 )
 
+export const get_topics_by_user = createAsyncThunk(
+    'topics/get_topics_by_user',
+    async (id) => {
+        const { data, status } = await api.getTopicsByUser(id)
+
+        if(status === 200) return data
+    }
+)
+
 export const topicsSlice = createSlice({
     name: "topics",
     initialState: {
@@ -201,7 +210,13 @@ export const topicsSlice = createSlice({
         },
         [get_related_topics_view_all.rejected]: (state) => {
             state.status = "failed"
-        }
+        },
+        [get_topics_by_user.pending]: (state) => { state.status = "loading" },
+        [get_topics_by_user.fulfilled]: (state, action) => {
+            state.topics = action.payload
+            state.status = "idle"
+        },
+        [get_topics_by_user.rejected]: (state) => { state.status = "failed" }
     }
 })
 

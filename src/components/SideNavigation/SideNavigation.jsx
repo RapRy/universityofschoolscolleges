@@ -10,6 +10,7 @@ import { ManagePanel, ForumStatsPanel, CategoriesPanel, TopicsPanelSm } from '..
 import PanelButton from '../Globals/PanelButton'
 import * as api from '../../api'
 import { get_latest_topics, get_hot_topics, get_related_topics } from '../../redux/topicsReducer' 
+import UserProfile from '../Forum/Users/UserProfile'
 
 const manageArr = [
     {header: "manage users", options: [
@@ -27,11 +28,20 @@ const SideNavigation = () => {
     const { profile } = useSelector(state => state.auth);
 
     const match = useRouteMatch('/forum/:category/:topicId')
+    const matchProfile = useRouteMatch('/forum/profile/:userId')
 
     const classes = useStyles() 
 
     const max960 = useMediaQuery(theme => theme.breakpoints.down('sm'))
     const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
+
+    if(matchProfile !== null){
+        return(
+            <Container>
+                <UserProfile />
+            </Container>
+        )
+    }
 
     if(profile.result?.accountType === 1){
         return(

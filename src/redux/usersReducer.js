@@ -12,9 +12,27 @@ export const active_users_list = createAsyncThunk(
 )
 
 export const registered_users_list = createAsyncThunk(
-    'users/registered_suers_list',
+    'users/registered_users_list',
     async () => {
         const { data, status } = await api.getRegisteredUsers()
+
+        if(status === 200) return data
+    }
+)
+
+export const new_users_list = createAsyncThunk(
+    'users/new_users_list',
+    async (limit) => {
+        const { data, status } = await api.getNewUsers(limit)
+
+        if(status === 200) return data
+    }
+)
+
+export const blacklisted_list = createAsyncThunk(
+    'users/blacklisted_list',
+    async () => {
+        const { data, status } = await api.getBlacklistedUsers()
 
         if(status === 200) return data
     }
@@ -49,7 +67,19 @@ export const usersSlice = createSlice({
             state.registeredUsers = action.payload
             state.status = "idle"
         },
-        [registered_users_list.rejected]: (state) => { state.status = "failed" }
+        [registered_users_list.rejected]: (state) => { state.status = "failed" },
+        [new_users_list.pending]: (state) => { state.status = "loading" },
+        [new_users_list.fulfilled]: (state, action) => {
+            state.newUsers = action.payload
+            state.status = "idle"
+        },
+        [new_users_list.rejected]: (state) => { state.status = "failed" },
+        [blacklisted_list.pending]: (state) => { state.status = "loading" },
+        [blacklisted_list.fulfilled]: (state, action) => {
+            state.blacklistedUsers = action.payload
+            state.status = "idle"
+        },
+        [blacklisted_list.rejected]: (state) => { state.status = 'failed' }
     }
 })
 

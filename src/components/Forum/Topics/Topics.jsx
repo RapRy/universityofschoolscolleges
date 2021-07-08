@@ -72,19 +72,6 @@ const Topics = () => {
                 break
         }
 
-        // if(category === "latest-topics"){
-        //     dispatch(get_latest_topics_view_all(20))
-        //     setDisplayCat(category.replace("-", " "))
-        //     dispatch(set_selected("topics"))
-        // }else if(category === "topics"){
-        //     dispatch(get_topics(category))
-        //     dispatch(set_selected(category))
-        //     setDisplayCat('all')
-        // }else{
-        //     dispatch(set_selected(category))
-        //     dispatch(get_topics(category))
-        // }
-
         if(profile.result?.accountType === 1 || userFromLocal.result?.accountType === 1) setShowForm(true)
     }, [match.url])
 

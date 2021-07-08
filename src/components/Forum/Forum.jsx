@@ -10,11 +10,14 @@ import { sign_in_LS } from '../../redux/authReducer';
 
 import Overview from './Overview/Overview';
 import Categories from './Categories/Categories';
-import Empty from '../Globals/Empty/Empty'
 import Topics from './Topics/Topics';
 import Topic from './Topics/Topic'
 import ActiveUsersList from './Users/ActiveUsersList';
 import RegisteredUsersList from './Users/RegisteredUsersList';
+import NewUsersList from './Users/NewUsersList';
+import BlacklistedUsersList from './Users/BlacklistedUsersList';
+import UserPosts from './Users/UserPosts';
+import EditProfile from './Users/EditProfile';
 
 const Forum = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile'))
@@ -56,6 +59,12 @@ const Forum = () => {
 
                         <Route exact path={`${path}/active-users`} component={ActiveUsersList} />
                         <Route exact path={`${path}/registered-users`} component={RegisteredUsersList} />
+                        <Route exact path={`${path}/new-users`} component={NewUsersList} />
+                        <Route exact path={`${path}/blacklisted-users`} component={BlacklistedUsersList} />
+
+                        <Route exact path={`${path}/profile/edit/:userId`} component={EditProfile} />
+
+                        <Route exact path={`${path}/profile/:userId`} component={UserPosts} />
 
                         <Route exact path={`${path}/:category`} component={Topics} />
 

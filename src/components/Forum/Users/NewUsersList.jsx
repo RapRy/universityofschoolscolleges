@@ -5,17 +5,21 @@ import { useSelector } from 'react-redux'
 
 import UsersList from './UsersList'
 
-const ActiveUsersList = () => {
+const NewUsersList = () => {
     const classes = useStyles()
-    const { status, activeUsers } = useSelector(state => state.users)
+    const { status, newUsers } = useSelector(state => state.users)
 
     return (
-        <Container>
-            <Typography className={classes.typoH2} variant="h2">Active Users</Typography>
-            { (status === "loading" && activeUsers.length === 0) && <LinearProgress style={{ margin: "30px 0" }} /> }
+        <div>
+            <Container>
+                <Typography className={classes.typoH2} variant="h2">New Users</Typography>
 
-            <UsersList selectorName="activeUsers" emptyMessage="No Active Users" />
-        </Container>
+                { (status === "loading" && newUsers.length === 0) && <LinearProgress style={{ margin: "30px 0" }} /> }
+
+                <UsersList selectorName="newUsers" emptyMessage="No New Users" />
+            
+            </Container>
+        </div>
     )
 }
 
@@ -29,4 +33,4 @@ const useStyles = makeStyles(theme => ({
     }
 }))
 
-export default ActiveUsersList
+export default NewUsersList

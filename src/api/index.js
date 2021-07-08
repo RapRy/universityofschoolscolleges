@@ -9,13 +9,20 @@ API.interceptors.request.use((req) => {
 })
 
 export const getUser = (id) => API.get(`/users/${id}`)
+export const getTopicsByUser = (id) => API.get(`/users/${id}/topics`)
 export const getActiveUsersCount = () => API.get('/users/activeCount');
 export const getRegisteredCount = () => API.get('/users/registeredCount')
 export const getNewUsers = (limit) => API.get(`/users/newUsers/${limit}`)
 export const getActiveUsers = (limit) => API.get(`/users/activeUsers/${limit}`)
 export const getRegisteredUsers = () => API.get('/users/registeredUsers')
+export const getBlacklistedUsers = () => API.get('/users/blacklistedUsers');
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const signIn = (formData) => API.post('/users/signin', formData);
+export const blockUser = (id) => API.put(`/users/blockuser/${id}`)
+export const unblockUser = (id) => API.put(`/users/unblockuser/${id}`)
+export const activateUser = (id) => API.put(`/users/activate/${id}`)
+export const deactivateUser = (id) => API.put(`/users/deactivate/${id}`)
+export const updateUserDetails = (formData) => API.put('/users/updateDetails', formData)
 
 export const getCategories = () => API.get('/categories');
 export const getCategory = (id) => API.get(`/categories/${id}`)
@@ -38,3 +45,4 @@ export const updateTopicActiveStatus = (id) => API.put(`/topics/updateStatus/${i
 
 export const addReply = (formData) => API.post('/replies/add', formData);
 export const repliesCount = () => API.get('/replies/count')
+export const getReplies = (id) => API.get(`/replies/${id}`)

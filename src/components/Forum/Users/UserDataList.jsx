@@ -5,13 +5,18 @@ import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import PersonIcon from '@material-ui/icons/Person';
 import BlockIcon from '@material-ui/icons/Block';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
+import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
+import { useSnackbar } from 'notistack';
 
-const UserDataList = ({ user, selectorName }) => {
+import * as api from '../../../api'
+
+const UserDataList = ({ user, selectorName, setRefresher }) => {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
+
+    const { enqueueSnackbar } = useSnackbar()
 
     const dateString = () => {
         const months =['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -25,6 +30,58 @@ const UserDataList = ({ user, selectorName }) => {
                 return `${months[updatedAt.getMonth()]} ${updatedAt.getDate()}, ${updatedAt.getFullYear()}`
             default:
                 return `${months[createdAt.getMonth()]} ${createdAt.getDate()}, ${createdAt.getFullYear()}`
+        }
+    }
+
+    const blockUser = async () => {
+        try {
+            const { status } = await api.blockUser(user._id)
+
+            if(status === 200) {
+                enqueueSnackbar(`${ user.username } blocked`, { variant: "success" })
+                setRefresher(user._id)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const unblockUser = async () => {
+        try {
+            const { status } = await api.unblockUser(user._id)
+
+            if(status === 200) {
+                enqueueSnackbar(`${ user.username } unblocked`, { variant: "success" })
+                setRefresher(user._id)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const activateUser = async () => {
+        try {
+            const { status } = await api.activateUser(user._id)
+
+            if(status === 200){
+                enqueueSnackbar(`${ user.username } is now active`, { variant: "success" })
+                setRefresher(user._id)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deactivateUser = async () => {
+        try {
+            const { status } = await api.deactivateUser(user._id)
+
+            if(status === 200){
+                enqueueSnackbar(`${ user.username } is now inactive`, { variant: "success" })
+                setRefresher(user._id)
+            }
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -48,10 +105,10 @@ const UserDataList = ({ user, selectorName }) => {
                 <TableCell classes={{ root: classes.tableCellMainData }} align="left">{ dateString() }</TableCell>
                 <TableCell align="left">
                     { (selectorName === "activeUsers" || selectorName === "blacklistedUsers") && <IconButton><PersonIcon /></IconButton> }
-                    { selectorName === "activeUsers" && <IconButton><BlockIcon /></IconButton> }
-                    { selectorName === "registeredUsers" && <IconButton><PersonAddIcon /></IconButton> }
-                    { selectorName === "blacklistedUsers" && <IconButton><HowToRegIcon /></IconButton> }
-                    <IconButton><DeleteForeverIcon /></IconButton>
+                    { selectorName === "activeUsers" && <IconButton onClick={blockUser}><BlockIcon /></IconButton> }
+                    { (selectorName === "registeredUsers" && user.active === 0) && <IconButton onClick={activateUser}><PersonAddIcon /></IconButton> }
+                    { selectorName === "blacklistedUsers" && <IconButton onClick={unblockUser}><HowToRegIcon /></IconButton> }
+                    <IconButton onClick={deactivateUser}><DeleteIcon /></IconButton>
                 </TableCell>
             </TableRow>
             

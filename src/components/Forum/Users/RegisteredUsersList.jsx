@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/styles'
 import { useSelector } from 'react-redux'
 
 import UsersList from './UsersList'
-import Empty from '../../Globals/Empty/Empty'
 
 const RegisteredUsersList = () => {
     const classes = useStyles()
@@ -12,12 +11,12 @@ const RegisteredUsersList = () => {
 
     return (
         <Container>
+            <Typography className={classes.typoH2} variant="h2">Registered Users</Typography>
+
             { (status === "loading" && registeredUsers.length === 0) && <LinearProgress style={{ margin: "30px 0" }} /> }
 
-            { (status === "idle" && registeredUsers.length === 0) && <Empty message="No Registered Users" /> }
+            <UsersList selectorName="registeredUsers" emptyMessage="No Registered Users" />
 
-            <Typography className={classes.typoH2} variant="h2">Registered Users</Typography>
-            <UsersList selectorName="registeredUsers" />
         </Container>
     )
 }

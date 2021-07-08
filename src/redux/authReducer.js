@@ -38,6 +38,14 @@ export const logout = createAsyncThunk(
     }
 )
 
+export const update_profile = createAsyncThunk(
+    'auth/update_profile',
+    async (data) => {
+        localStorage.setItem('profile', JSON.stringify({ ...data }));
+        return data;
+    }
+)
+
 export const authSlice = createSlice({
     name: "auth",
     initialState: {
@@ -83,7 +91,13 @@ export const authSlice = createSlice({
         },
         [logout.rejected]: (state) => {
             state.status = "failed"
-        }
+        },
+        [update_profile.pending]: (state) => { state.status = "loading" },
+        [update_profile.fulfilled]: (state, action) => {
+            state.profile = { ...action.payload }
+            state.status = "idle"
+        },
+        [update_profile.rejected]: (state) => { state.status = "failed" }
     }
 })
 
