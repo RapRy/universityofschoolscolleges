@@ -6,8 +6,8 @@ import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DescriptionIcon from '@material-ui/icons/Description';
-import { Link } from 'react-router-dom';
-import { useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 import * as api from '../../../api'
 
@@ -17,6 +17,9 @@ const UserProfile = () => {
 
     const matchEdit = useRouteMatch('/forum/profile/edit/:userId')
     const matchProfile = useRouteMatch('/forum/profile/:userId')
+
+    const { profile } = useSelector(state => state.auth)
+    const profileLs = JSON.parse(localStorage.getItem('profile')).result
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -49,19 +52,25 @@ const UserProfile = () => {
                     <Typography>{ user.post?.replies.length > 1 ? "Replies" : "Reply" }</Typography>
                 </Box>
             </Box>
-            <Divider />
             {
-                matchEdit !== null ?
-                    <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
-                        <Button startIcon={<DescriptionIcon />}>Posts</Button>
-                    </Link>
-                :
-                    <Link to={`/forum/profile/edit/${user._id}`} style={{ textDecoration: "none" }}>
-                        <Button startIcon={<EditIcon />}>Edit Profile</Button>
-                    </Link>
-                    
+                (user._id === profileLs?._id || user._id === profile.result?._id) &&
+                    <>
+                        <Divider />
+                        {
+                            matchEdit !== null ?
+                                <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
+                                    <Button startIcon={<DescriptionIcon />}>Posts</Button>
+                                </Link>
+                            :
+                                <Link to={`/forum/profile/edit/${user._id}`} style={{ textDecoration: "none" }}>
+                                    <Button startIcon={<EditIcon />}>Edit Profile</Button>
+                                </Link>
+                                
+                        }
+                        <Button startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
+                    </>
+
             }
-            <Button startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
         </Container>
     )
 }

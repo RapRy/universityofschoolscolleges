@@ -60,7 +60,9 @@ const TopicWithoutThumbnail = ({ topic, selectorName }) => {
             <Box marginBottom="5px">
                 <Typography variant="body1" className={classes.stats}><InsertCommentIcon className={classes.icon} /> {topic.meta.replies.length > 1 ? `${topic.meta.replies.length} Replies` : `${topic.meta.replies.length} Reply`}</Typography>
                 <Typography variant="body1" className={classes.stats}><VisibilityIcon className={classes.icon} /> {topic.meta.views.length > 1 ? `${topic.meta.views.length} Views` : `${topic.meta.views.length} View`}</Typography>
-                <Typography variant="body1" className={classes.stats}><AccountCircleIcon className={classes.icon} /> {additionalData.user?.username}</Typography>
+                <Link to={`/forum/profile/${additionalData.user?._id}`} style={{ textDecoration: "none" }}>
+                    <Typography variant="body1" className={classes.stats}><AccountCircleIcon className={classes.icon} /> {additionalData.user?.username}</Typography>
+                </Link>
             </Box>
             <Typography variant="body1" className={classes.updatesDetails}>
                 { dateString() } in { <span className={classes.span}>{ additionalData.category?.name }</span> }

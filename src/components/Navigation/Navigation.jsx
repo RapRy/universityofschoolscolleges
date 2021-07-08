@@ -27,7 +27,7 @@ const Navigation = ({ type }) => {
                     </Grid>
                     <Grid item xs={6}>
                     <Drawer anchor="right" open={showAside} onClose={() => setShowAside(prevState => !prevState)}>
-                        <ProfileMenu max960={max960} />
+                        <ProfileMenu max960={max960} setShowAside={setShowAside} />
                     </Drawer>
                         {
                             max960 === true ?
