@@ -8,6 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom';
 
 import * as api from '../../../api'
 import IconBtn from '../../Globals/IconBtn';
@@ -42,6 +43,10 @@ const Post = ({ post }) => {
         }
 
         fetchAdditionals()
+
+        return () => {
+            setAdditionalData({})
+        }
     }, [post])
 
     const dateString = () => {
@@ -55,10 +60,12 @@ const Post = ({ post }) => {
     return (
         <Container className={classes.container}>
             <div>
-                <Typography variant="h3" className={classes.title}>{ post.title }</Typography>
+                <Link to={`/forum/${additionalData.category?.name.replace(" ", "-")}/${post._id}`} style={{ textDecoration: 'none' }}>
+                    <Typography variant="h3" className={classes.title}>{ post.title }</Typography>
+                </Link>
                 <Typography variant="body1" className={classes.stats}><InsertCommentIcon className={classes.icon} /> {post.meta.replies.length > 1 ? `${post.meta.replies.length} Replies` : `${post.meta.replies.length} Reply`}</Typography>
                 <Typography variant="body1" className={classes.stats}><VisibilityIcon className={classes.icon} /> {post.meta.views.length > 1 ? `${post.meta.views.length} Views` : `${post.meta.views.length} View`}</Typography>
-                <Typography variant="body1" className={classes.updatesDetails}>posted on {dateString()} in { <span className={classes.span}>{ additionalData.category?.name }</span> }</Typography>
+                <Typography variant="body1" className={classes.updatesDetails}>posted on {dateString()} in { <Link to={`/forum/${additionalData.category?._id}`} style={{ textDecoration: "none" }}><span className={classes.span}>{ additionalData.category?.name }</span></Link> }</Typography>
             </div>
             {
                 (profileLS._id === post.ref?.creator || profile.result?._id === post.ref?.creator) &&

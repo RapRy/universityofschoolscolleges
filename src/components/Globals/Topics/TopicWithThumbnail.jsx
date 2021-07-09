@@ -66,7 +66,7 @@ const TopicWithThumbnail = ({ topic }) => {
                         </Link>
                     </Box>
                     <Typography variant="body1" className={classes.updatesDetails}>
-                        { Date.parse(topic.createdAt) < Date.parse(topic.updatedAt) ? `updated on ${dateString()}` : `created on ${dateString()}` } in { <span className={classes.span}>{ additionalData.category?.name }</span> }
+                        { Date.parse(topic.createdAt) < Date.parse(topic.updatedAt) ? `updated on ${dateString()}` : `created on ${dateString()}` } in { <Link to={`/forum/${additionalData.category?._id}`} style={{ textDecoration: "none" }}><span className={classes.span}>{ additionalData.category?.name }</span></Link> }
                     </Typography>
                 </Grid>
             </Grid>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Container, Avatar, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import Moment from 'react-moment'
+import { Link } from 'react-router-dom'
 
 import * as api from '../../../api'
 
@@ -32,11 +33,15 @@ const Reply = ({ reply }) => {
         <Container className={classes.container}>
             <Grid container direction="row" spacing={2}>
                 <Grid item>
-                    <Avatar>{ user.username?.charAt(0) }</Avatar>
+                    <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
+                        <Avatar>{ user.username?.charAt(0) }</Avatar>
+                    </Link>
                 </Grid>
                 <Grid item>
                     <div>
-                        <Typography variant="h5" className={classes.username}>{ user.username }</Typography>
+                        <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
+                            <Typography variant="h5" className={classes.username}>{ user.username }</Typography>
+                        </Link>
                         <Typography variant="body1" className={classes.timestamp}>
                             <Moment fromNow>{ reply.createdAt }</Moment>
                         </Typography>

@@ -42,6 +42,7 @@ export const getLatestTopicsByCategory = (id) => API.get(`/topics/latest/${id}`)
 export const getHotTopicsByCategory = (id) => API.get(`/topics/hot/${id}`)
 export const updateTopic = (formData) => API.put('/topics/update', formData)
 export const updateTopicActiveStatus = (id) => API.put(`/topics/updateStatus/${id}`)
+export const searchTopics = (keyword) => API.get(`/topics/search/${keyword}`)
 
 export const addReply = (formData) => API.post('/replies/add', formData);
 export const repliesCount = () => API.get('/replies/count')

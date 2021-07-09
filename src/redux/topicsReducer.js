@@ -93,6 +93,15 @@ export const get_topics_by_user = createAsyncThunk(
     }
 )
 
+export const search_topics = createAsyncThunk(
+    'topics/search_topics',
+    async (keyword) => {
+        const { data, status } = await api.searchTopics(keyword)
+
+        if(status === 200) return data
+    }
+)
+
 export const topicsSlice = createSlice({
     name: "topics",
     initialState: {
@@ -216,7 +225,13 @@ export const topicsSlice = createSlice({
             state.topics = action.payload
             state.status = "idle"
         },
-        [get_topics_by_user.rejected]: (state) => { state.status = "failed" }
+        [get_topics_by_user.rejected]: (state) => { state.status = "failed" },
+        [search_topics.pending]: (state) => { state.status = "loading" },
+        [search_topics.fulfilled]: (state, action) => {
+            state.topics = action.payload
+            state.status = "idle"
+        },
+        [search_topics.rejected]: (state) => { state.status = "failed" }
     }
 })
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useRouteMatch, useHistory } from 'react-router-dom'
+import { useRouteMatch, useHistory, Link } from 'react-router-dom'
 import { Container, Grid, Avatar, Typography, Divider, LinearProgress } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
@@ -76,7 +76,9 @@ const Topic = () => {
                 <Container className={classes.container}>
                     <Grid container direction="row" spacing={1}>
                         <Grid item md={2}>
-                            <Avatar className={classes.avatar}>{ selectedTopic.creator?.username?.charAt(0) }</Avatar>
+                            <Link to={`/forum/profile/${selectedTopic.creator?._id}`} style={{ textDecoration: "none" }}>
+                                <Avatar className={classes.avatar}>{ selectedTopic.creator?.username?.charAt(0) }</Avatar>
+                            </Link>
                             <div className={classes.statContainer}>
                                 <Typography variant="h2" className={classes.numType}>{ selectedTopic.replies?.length }</Typography>
                                 <Typography variant="body1" className={classes.stringType}>{selectedTopic.replies?.length > 1 ? "Replies" : "Reply"}</Typography>
@@ -90,7 +92,7 @@ const Topic = () => {
                         <Grid item md={10}>
                             <div className={classes.titleContainer}>
                                 <Typography variant="h3" className={classes.title}>{ selectedTopic.topic?.title }</Typography>
-                                <Typography variant="body1" className={classes.updatesDetails}>Asked by { <span className={classes.span}>{ selectedTopic.creator?.username}</span>} on {dateString()} in { <span className={classes.span}>{ selectedTopic.category?.name }</span> }</Typography>
+                                <Typography variant="body1" className={classes.updatesDetails}>Asked by { <Link to={`/forum/profile/${selectedTopic.creator?._id}`} style={{ textDecoration: "none" }}><span className={classes.span}>{ selectedTopic.creator?.username}</span></Link>} on {dateString()} in { <Link to={`/forum/${selectedTopic.category?._id}`} style={{ textDecoration: "none" }} ><span className={classes.span}>{ selectedTopic.category?.name }</span></Link> }</Typography>
                             </div>
 
                             {

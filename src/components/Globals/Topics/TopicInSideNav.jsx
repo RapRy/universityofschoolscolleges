@@ -43,6 +43,10 @@ const TopicInSideNav = ({ top, icon, header }) => {
         }
 
         fetchCategory()
+
+        return () => {
+            setCategory({})
+        }
     }, [top])
 
     return (

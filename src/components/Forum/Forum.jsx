@@ -18,6 +18,7 @@ import NewUsersList from './Users/NewUsersList';
 import BlacklistedUsersList from './Users/BlacklistedUsersList';
 import UserPosts from './Users/UserPosts';
 import EditProfile from './Users/EditProfile';
+import SearchResult from './Search/SearchResult';
 
 const Forum = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile'))
@@ -57,6 +58,7 @@ const Forum = () => {
                             { profile.result?.accountType === 1 && <Categories /> }
                         </Route>
 
+                        <Route exact path={`${path}/search/:keyword`} component={SearchResult} />
                         <Route exact path={`${path}/active-users`} component={ActiveUsersList} />
                         <Route exact path={`${path}/registered-users`} component={RegisteredUsersList} />
                         <Route exact path={`${path}/new-users`} component={NewUsersList} />
