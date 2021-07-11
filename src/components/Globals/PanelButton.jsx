@@ -16,9 +16,9 @@ const PanelButton = ({ opt }) => {
 
 const useStyles = makeStyles(theme => ({
     btn: {
-        background: theme.palette.primary.dark,
-        borderRadius: "0",
-        marginTop: "15px",
+        background: theme.palette.secondary.main,
+        borderRadius: theme.shape.borderRadius,
+        marginTop: theme.spacing(2),
         textTransform: "unset",
         "&:hover":{
             background: theme.palette.secondary.dark

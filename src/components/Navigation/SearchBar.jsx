@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid, TextField, IconButton } from '@material-ui/core'
+import { InputBase } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useHistory } from 'react-router-dom'
 import SearchIcon from '@material-ui/icons/Search'
@@ -29,57 +29,51 @@ const SearchBar = () => {
 
     return (
         <form onSubmit={submitForm}>
-            <Grid container direction="row" justify="flex-end">
-                <Grid item xs={10}>
-                    <TextField 
-                        type="text" 
-                        name="search" 
-                        placeholder="Search..."
-                        fullWidth
-                        onChange={handleInputChange}
-                        InputProps={{
-                            classes:{
-                                root: classes.rootRadius,
-                                input: classes.input,
-                            }
-                        }}
-                    />
-                </Grid>
-                <Grid item xs={2}>
-                    <IconButton type="submit" className={classes.iconBtn}>
-                        <SearchIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
+            <div className={classes.search}>
+                <div className={classes.searchIcon}>
+                    <SearchIcon />
+                </div>
+                <InputBase 
+                    type="text" 
+                    name="search" 
+                    placeholder="Search..."
+                    fullWidth
+                    onChange={handleInputChange}
+                    classes={{
+                        input: classes.input
+                    }}
+                />
+            </div>
         </form>
     )
 }
 
 const useStyles = makeStyles((theme) => ({
-    rootRadius: {
-        borderRadius: 0
+    search: {
+        position: "relative",
+        borderRadius: theme.shape.borderRadius
     },
-    notchedOutline: {
-        borderColor: "transparent"
+    searchIcon: {
+        padding: theme.spacing(0, 2),
+        height: '100%',
+        position: 'absolute',
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: theme.palette.secondary.main,
+        zIndex: 2
     },
     input: {
         fontSize: ".8rem",
         fontWeight: 500,
+        width: "100%",
         color: theme.palette.secondary.dark,
         background: theme.palette.secondary.contrastText,
-        borderRadius: "0px",
-        padding: "10px 15px"
+        padding: theme.spacing(1, 1, 1, 0),
+        paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+        borderRadius: theme.shape.borderRadius
     },
-    iconBtn: {
-        background: theme.palette.primary.light,
-        borderRadius: "0",
-        marginLeft: "10px",
-        height: "35px",
-        color: theme.palette.primary.contrastText,
-        '&:hover': {
-            background: theme.palette.primary.light
-        }
-    }
 }))
 
 export default SearchBar

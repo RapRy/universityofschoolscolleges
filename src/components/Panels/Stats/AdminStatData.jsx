@@ -17,13 +17,13 @@ const AdminStatData = ({ numData, stringData }) => {
 
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
-        padding: "5px 25px",
+        padding: theme.spacing(1, 3),
         [theme.breakpoints.down('xs')]:{
-            padding: "15px 0px"
+            padding: theme.spacing(2, 0)
         }
     },
     numType: {
-        fontWeight: 900,
+        fontWeight: theme.typography.fontWeightBlack,
         fontSize: "2.6rem",
         color: theme.palette.primary.dark,
         textAlign: "center",

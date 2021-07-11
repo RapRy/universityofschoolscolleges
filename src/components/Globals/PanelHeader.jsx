@@ -15,15 +15,15 @@ const PanelHeader = ({ title }) => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        padding: "5px 0",
-        marginTop: "30px"
+        padding: theme.spacing(1, 0),
+        marginTop: theme.spacing(4)
     },
     typoH6: {
         color: theme.palette.secondary.dark,
         fontSize: ".9rem",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         textTransform: "uppercase",
-        marginBottom: "5px"
+        marginBottom: theme.spacing(1)
     }
 }))
 

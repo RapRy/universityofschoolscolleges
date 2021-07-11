@@ -12,17 +12,23 @@ const App = () => {
     const theme = createMuiTheme({
       palette: {
         primary: {
-          main: "#A02725",
-          dark: "#2A3EB1",
-          light: "#EE5450",
-          contrastText: "#FAFCFF"
+          main: "#003566",
+          dark: "#001D3D",
+          light: "#868686",
+          contrastText: "#F6F6F6"
         },
         secondary: {
-          main: "#868686",
-          dark: "#434343",
+          main: "#C44536",
+          dark: "#464646",
           light: "#E3E3E3",
           contrastText: "#FFFFFF"
         }
+      },
+      typography: {
+        fontWeightBlack: 900
+      },
+      shape: {
+        borderRadius: 5
       },
       overrides: {
       }

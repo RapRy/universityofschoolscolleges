@@ -70,7 +70,7 @@ const SideNavigation = () => {
 
 const useStyles = makeStyles(theme => ({
     svg: {
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.light,
         fontSize: '.95rem',
         verticalAlign: "middle",
 

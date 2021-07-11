@@ -17,23 +17,23 @@ const UserStatData = ({ numData, stringData }) => {
 
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
-        padding: "15px 0px"
+        padding: theme.spacing(2, 0)
     },
     numType: {
-        fontWeight: 900,
+        fontWeight: theme.typography.fontWeightBlack,
         fontSize: "2rem",
-        color: theme.palette.primary.dark,
+        color: theme.palette.primary.main,
         display: "inline-block" 
     },
     stringType: {
-        fontWeight: 500,
+        fontWeight: theme.typography.fontWeightBold,
         fontSize: ".9rem",
         color: theme.palette.secondary.dark,
         textTransform: "uppercase",
         display: "inline-block",
         position: "relative",
-        bottom: "6px",
-        left: "10px"
+        bottom: theme.spacing(1) - 2,
+        left: theme.spacing(1) + 2
     }
 }))
 

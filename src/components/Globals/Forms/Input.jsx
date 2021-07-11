@@ -33,17 +33,17 @@ const Input = ({ type, label, name, handleInputChange, errors, value }) => {
 
 const useStyles = makeStyles(theme => ({
     rootRadius: {
-        borderRadius: 0
+        borderRadius: theme.shape.borderRadius
     },
     notchedOutline: {
         borderColor: "transparent"
     },
     input: {
         fontSize: ".8rem",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         color: theme.palette.secondary.dark,
         background: theme.palette.secondary.contrastText,
-        borderRadius: "0px"
+        borderRadius: theme.shape.borderRadius
     },
     label: {
         fontSize: ".8rem",

@@ -31,13 +31,13 @@ const Reply = ({ reply }) => {
 
     return (
         <Container className={classes.container}>
-            <Grid container direction="row" spacing={2}>
-                <Grid item>
+            <Grid container direction="row" spacing={1}>
+                <Grid item md={1}>
                     <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
                         <Avatar>{ user.username?.charAt(0) }</Avatar>
                     </Link>
                 </Grid>
-                <Grid item>
+                <Grid item md={11}>
                     <div>
                         <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
                             <Typography variant="h5" className={classes.username}>{ user.username }</Typography>
@@ -57,17 +57,18 @@ const useStyles = makeStyles(theme => ({
     container: {
         background: theme.palette.secondary.contrastText,
         padding: theme.spacing(2),
-        marginBottom: theme.spacing(2)
+        marginTop: theme.spacing(2),
+        borderRadius: theme.shape.borderRadius
     },
     username: {
         display: "inline-block",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         fontSize: ".85rem",
         marginRight: theme.spacing(1),
         color: theme.palette.secondary.dark
     },
     timestamp: {
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.light,
         display: "inline-block",
         fontSize: ".75rem"
     },
@@ -75,7 +76,8 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.secondary.dark,
         marginTop: theme.spacing(1),
         marginLeft: theme.spacing(1),
-        fontSize: ".9rem"
+        fontSize: ".9rem",
+        wordWrap: "break-word"
     }
 }))
 

@@ -169,44 +169,46 @@ const AddTopicForm = ({ action }) => {
 
 const useStyles = makeStyles(theme => ({
     containerRoot: {
-        background: theme.palette.secondary.light,
-        marginTop: "30px"
+        background: theme.palette.primary.contrastText,
+        marginTop: theme.spacing(2),
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[7]
     },
     buttonSubmit: {
-        borderRadius: "0px",
-        margin: "16px auto",
+        borderRadius: theme.shape.borderRadius,
+        margin: `${theme.spacing(2)}px auto`,
         fontSize: ".9rem",
-        fontWeight: 300,
+        fontWeight: theme.typography.fontWeightLight,
         color: theme.palette.secondary.contrastText,
-        padding: "10px 20px",
-        background: theme.palette.primary.dark,
+        padding: theme.spacing(1, 3),
+        background: theme.palette.secondary.main,
         '&:hover': {
-            background: theme.palette.primary.dark
+            background: theme.palette.secondary.dark
         },
         [theme.breakpoints.down('xs')]: {
-            margin: "6px auto 0"
+            margin: `${theme.spacing(1)}px auto 0`
         }
     },
     formControl: {
-        marginTop: "10px",
+        marginTop: theme.spacing(1),
         width: "100%"
     },
     label: {
         fontSize: ".8rem",
         color: theme.palette.secondary.dark,
-        marginLeft: "10px",
+        marginLeft: theme.spacing(1),
         zIndex: 2
     },
     select: {
         background: theme.palette.secondary.contrastText,
-        borderRadius: "0px",
+        borderRadius: theme.shape.borderRadius,
     },
     input: {
         fontSize: ".8rem",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         color: theme.palette.secondary.dark,
         background: theme.palette.secondary.contrastText,
-        borderRadius: "0px"
+        borderRadius: theme.shape.borderRadius
     }
 }))
 

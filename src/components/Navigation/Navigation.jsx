@@ -57,7 +57,7 @@ const Navigation = ({ type }) => {
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        background: theme.palette.primary.color1
+        background: theme.palette.primary.main
     },
     container: {
         padding:"15px 10px"
@@ -65,12 +65,12 @@ const useStyles = makeStyles((theme) => ({
     headerH5: {
         fontWeight: 700,
         fontSize: "1.3rem",
-        color: theme.palette.primary.contrastText
+        color: theme.palette.secondary.contrastText
     },
     headerH6: {
         fontWeight: 500,
         fontSize: "1rem",
-        color: theme.palette.primary.contrastText
+        color: theme.palette.secondary.contrastText
     }
 }))
 

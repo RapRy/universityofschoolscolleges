@@ -64,8 +64,8 @@ const ForumStatsPanel = () => {
                         <UserStatData numData={categoriesCount} stringData="Categories"  />
                         <Divider />
                         <UserStatData numData={topicsCount} stringData="Topics"  />
-                        <Divider />
-                        <UserStatData numData={repliesCount} stringData="Replies"  />
+                        {/* <Divider />
+                        <UserStatData numData={repliesCount} stringData="Replies"  /> */}
                     </Grid>
             }
         </Container>
@@ -74,9 +74,10 @@ const ForumStatsPanel = () => {
 
 const useStyles = makeStyles(theme => ({
     grid: {
-        background: theme.palette.secondary.light,
-        marginTop: "15px",
-        padding: "10px 20px"
+        background: theme.palette.primary.contrastText,
+        marginTop: theme.spacing(2),
+        padding: theme.spacing(1, 2),
+        borderRadius: theme.shape.borderRadius
     }
 }))
 

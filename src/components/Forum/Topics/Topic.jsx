@@ -118,14 +118,14 @@ const Topic = () => {
 
                                 <Divider />
 
-                                <AddReply categoryId={selectedTopic.topic?.ref?.category} topicId={selectedTopic.topic?._id} />
-
                                 <div>
                                     {
                                         selectedTopic.replies &&
                                             selectedTopic.replies.map(reply => <Reply reply={reply} key={reply._id} />)
                                     }
                                 </div>
+
+                                <AddReply categoryId={selectedTopic.topic?.ref?.category} topicId={selectedTopic.topic?._id} />
                             </div>
                         </Grid>
                     </Grid> 
@@ -138,7 +138,10 @@ const Topic = () => {
 const useStyles = makeStyles(theme => ({
     container: {
         background: theme.palette.primary.contrastText,
-        marginTop: theme.spacing(6)
+        marginTop: theme.spacing(6),
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[7],
+        padding: theme.spacing(3)
     },
     avatar: {
         width: theme.spacing(10),
@@ -150,14 +153,13 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2)
     },
     numType: {
-        fontWeight: 900,
+        fontWeight: theme.typography.fontWeightBlack,
         fontSize: "2rem",
-        color: theme.palette.primary.dark,
+        color: theme.palette.primary.main,
         textAlign: "center",
-        marginBottom: "5px",
+        marginBottom: theme.spacing(1),
         [theme.breakpoints.down('sm')]: {
-            fontSize: "1.6rem",
-            marginBottom: "5px",
+            fontSize: "1.6rem"
         },
         [theme.breakpoints.down('xs')]:{
             display: "inline-block",
@@ -165,7 +167,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     stringType: {
-        fontWeight: 500,
+        fontWeight: theme.typography.fontWeightMedium,
         color: theme.palette.secondary.dark,
         textTransform: "uppercase",
         textAlign: "center",
@@ -177,8 +179,8 @@ const useStyles = makeStyles(theme => ({
             display: "inline-block",
             fontSize: ".9rem",
             position: "relative",
-            bottom: "6px",
-            left: "10px"
+            bottom: theme.spacing(1),
+            left: theme.spacing(1) + 2
         }
     },
     titleContainer: {
@@ -187,16 +189,16 @@ const useStyles = makeStyles(theme => ({
     title: {
         fontSize: "1.1rem",
         color: theme.palette.secondary.dark,
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         marginBottom: theme.spacing(1)
     },
     updatesDetails: {
         fontSize: ".85rem",
-        color: theme.palette.secondary.main
+        color: theme.palette.primary.light
     },
     span: {
         color: theme.palette.secondary.dark,
-        fontWeight: 700
+        fontWeight: theme.typography.fontWeightBold
     },
     ctaContainer: {
         marginTop: theme.spacing(3)
@@ -209,12 +211,13 @@ const useStyles = makeStyles(theme => ({
     },
     description: {
         fontSize: ".8rem",
-        color: theme.palette.secondary.main,
-        lineHeight: "1.5rem"
+        color: theme.palette.secondary.dark,
+        lineHeight: "1.5rem",
+        wordWrap: "break-word"
     },
     repliesCount: {
         fontSize: ".85rem",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         marginBottom: theme.spacing(1),
         color: theme.palette.secondary.dark
     }

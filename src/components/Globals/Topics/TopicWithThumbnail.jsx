@@ -77,8 +77,10 @@ const TopicWithThumbnail = ({ topic }) => {
 const useStyles = makeStyles(theme => ({
     container: {
         background: theme.palette.primary.contrastText,
-        padding: "30px",
-        marginTop: "20px"
+        padding: theme.spacing(4),
+        marginTop: theme.spacing(3),
+        boxShadow: theme.shadows[7],
+        borderRadius: theme.shape.borderRadius
     },
     avatar: {
         width: theme.spacing(10),
@@ -86,16 +88,16 @@ const useStyles = makeStyles(theme => ({
         fontSize: "3rem"
     },
     title: {
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         fontSize: "1rem",
         color: theme.palette.secondary.dark,
-        marginBottom: "5px"
+        marginBottom: theme.spacing(1)
     },
     stats: {
         display: "inline-block",
         fontSize: ".85rem",
-        fontWeight: 500,
-        marginRight: "10px",
+        fontWeight: theme.typography.fontWeightMedium,
+        marginRight: theme.spacing(2),
         color: theme.palette.secondary.dark
     },
     icon: {
@@ -105,11 +107,11 @@ const useStyles = makeStyles(theme => ({
     },
     updatesDetails: {
         fontSize: ".85rem",
-        color: theme.palette.secondary.main
+        color: theme.palette.primary.light
     },
     span: {
         color: theme.palette.secondary.dark,
-        fontWeight: 700
+        fontWeight: theme.typography.fontWeightBold
     }
 }))
 

@@ -14,18 +14,15 @@ const IconBtn = ({ icon, text, handleClick }) => {
 
 const useStyles = makeStyles(theme => ({
     btn: {
-        borderRadius: "0px",
-        marginLeft: "10px",
-        '&:first-child': {
-            marginLeft: "0px"
-        },
+        borderRadius: theme.shape.borderRadius,
+        marginLeft: theme.spacing(1),
         fontSize: ".85rem",
-        fontWeight: 300,
+        fontWeight: theme.typography.fontWeightLight,
         color: theme.palette.secondary.contrastText,
-        padding: "5px 15px",
-        background: theme.palette.primary.main,
+        padding: theme.spacing(1, 3),
+        background: theme.palette.secondary.main,
         '&:hover': {
-            background: theme.palette.primary.main
+            background: theme.palette.secondary.dark
         }
     }
 }))

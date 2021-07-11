@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
     topicName: {
         color: theme.palette.secondary.dark,
         fontSize: ".9rem",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         whiteSpace: "nowrap",
         overflowX: 'hidden',
         textOverflow: "ellipsis"
@@ -75,8 +75,8 @@ const useStyles = makeStyles(theme => ({
     },
     secondaryTextItem: {
         fontSize: ".8rem",
-        color: theme.palette.secondary.main,
-        marginLeft: "5px"
+        color: theme.palette.primary.light,
+        marginLeft: theme.spacing(1)
     }
 }))
 

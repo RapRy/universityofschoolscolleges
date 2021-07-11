@@ -113,18 +113,18 @@ const Topics = () => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        marginTop: "40px"
+        marginTop: theme.spacing(4)
     },
     typoH2: {
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         fontSize: "1.2rem",
         textTransform: "uppercase",
         color: theme.palette.secondary.dark
     },
     headerH6: {
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         fontSize: "1rem",
-        marginLeft: "5px",
+        marginLeft: theme.spacing(1),
         textTransform: "uppercase",
         color: theme.palette.secondary.dark
     }

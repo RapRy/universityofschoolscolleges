@@ -1,12 +1,13 @@
 import React, { useState } from 'react'
-import { Container, Grid, Avatar, Button } from '@material-ui/core'
+import { Container, Grid, Avatar, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useSelector, useDispatch } from 'react-redux'
-import CommentIcon from '@material-ui/icons/Comment';
+import SendIcon from '@material-ui/icons/Send';
 
 import TextArea from './TextArea'
 import * as api from '../../../api'
 import { update_selected_topic_replies } from '../../../redux/topicsReducer'
+import IconBtn from '../IconBtn';
 
 const profileLs = JSON.parse(localStorage.getItem('profile'))?.result;
 
@@ -48,10 +49,18 @@ const AddReply = ({ categoryId, topicId }) => {
                 <Grid item md={1}>
                     <Avatar>{ profile.result?.username.charAt(0) || profileLs.username.charAt(0) }</Avatar>
                 </Grid>
-                <Grid item md={11}>
+                <Grid item md={11} style={{ marginTop: "3px" }}>
                     <form onSubmit={handleFormSubmit}>
-                        <TextArea type="text" name="reply" label="" handleInputChange={handleInputChange} errors={errors} rows={2} margin={false} />
-                        <Button type="submit" className={classes.buttonSubmit} startIcon={<CommentIcon />}>PUBLISH</Button>
+                        <Grid container direction="row" spacing={1}>
+                            <Grid item md={11}>
+                                <TextArea type="text" name="reply" label="" handleInputChange={handleInputChange} errors={errors} rows={1} margin={false} />
+                            </Grid>
+                            <Grid item md={1}>
+                                <IconButton type="submit" className={classes.iconBtn}>
+                                    <SendIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                     </form>
                 </Grid>
             </Grid>
@@ -62,23 +71,13 @@ const AddReply = ({ categoryId, topicId }) => {
 const useStyles = makeStyles(theme => ({
     containerRoot: {
         background: theme.palette.secondary.light,
-        margin: `${theme.spacing(3)}px 0`,
-        padding: theme.spacing(2)
+        margin: `${theme.spacing(3)}px 0 0`,
+        padding: theme.spacing(2),
+        borderRadius: theme.shape.borderRadius
     },
-    buttonSubmit: {
-        borderRadius: "0px",
-        margin: "10px auto 0",
-        fontSize: ".9rem",
-        fontWeight: 300,
-        color: theme.palette.secondary.contrastText,
-        padding: "7px 15px",
-        background: theme.palette.primary.main,
-        '&:hover': {
-            background: theme.palette.primary.main
-        },
-        [theme.breakpoints.down('xs')]: {
-            margin: "6px auto 0"
-        }
+    iconBtn: {
+        padding: theme.spacing(1) - 4,
+        color: theme.palette.secondary.main
     }
 }))
 
