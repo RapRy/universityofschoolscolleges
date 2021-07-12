@@ -17,13 +17,13 @@ const Empty = ({ message }) => {
 const useStyles = makeStyles(theme => ({
     icon: {
        fontSize: "6rem",
-       color: theme.palette.secondary.main
+       color: theme.palette.primary.light
     },
     message: {
-        fontWeight: 500,
+        fontWeight: theme.typography.fontWeightBold,
         fontSize: "1.2rem",
-        color: theme.palette.secondary.main,
-        marginTop: "10px"
+        color: theme.palette.primary.light,
+        marginTop: theme.spacing(1)
     }
 }))
 

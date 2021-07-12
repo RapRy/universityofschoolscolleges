@@ -103,61 +103,22 @@ const Post = ({ post }) => {
 const useStyles = makeStyles(theme => ({
     container: {
         background: theme.palette.primary.contrastText,
-        marginTop: theme.spacing(2),
-        padding: theme.spacing(3)
-    },
-    avatar: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
-        fontSize: "3rem",
-        margin: `${theme.spacing(2)}px auto 0px`
-    },
-    statContainer: {
-        marginTop: theme.spacing(2)
-    },
-    numType: {
-        fontWeight: 900,
-        fontSize: "2rem",
-        color: theme.palette.primary.dark,
-        textAlign: "center",
-        marginBottom: "5px",
-        [theme.breakpoints.down('sm')]: {
-            fontSize: "1.6rem",
-            marginBottom: "5px",
-        },
-        [theme.breakpoints.down('xs')]:{
-            display: "inline-block",
-            fontSize: "2rem"
-        }
-    },
-    stringType: {
-        fontWeight: 500,
-        color: theme.palette.secondary.dark,
-        textTransform: "uppercase",
-        textAlign: "center",
-        fontSize: ".9rem",
-        [theme.breakpoints.down('sm')]: {
-            fontSize: ".8rem",
-        },
-        [theme.breakpoints.down('xs')]:{
-            display: "inline-block",
-            fontSize: ".9rem",
-            position: "relative",
-            bottom: "6px",
-            left: "10px"
-        }
+        marginTop: theme.spacing(3),
+        padding: theme.spacing(3),
+        boxShadow: theme.shadows[7],
+        borderRadius: theme.shape.borderRadius
     },
     title: {
         fontSize: "1.1rem",
         color: theme.palette.secondary.dark,
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         marginBottom: theme.spacing(1)
     },
     stats: {
         display: "inline-block",
         fontSize: ".85rem",
         fontWeight: 500,
-        marginRight: "10px",
+        marginRight: theme.spacing(1),
         color: theme.palette.secondary.dark
     },
     icon: {
@@ -167,11 +128,12 @@ const useStyles = makeStyles(theme => ({
     },
     updatesDetails: {
         fontSize: ".85rem",
-        color: theme.palette.secondary.main
+        color: theme.palette.primary.light,
+        marginTop: theme.spacing(1)
     },
     span: {
         color: theme.palette.secondary.dark,
-        fontWeight: 700
+        fontWeight: theme.typography.fontWeightBold
     },
     ctaContainer: {
         marginTop: theme.spacing(3)
@@ -184,8 +146,9 @@ const useStyles = makeStyles(theme => ({
     },
     description: {
         fontSize: ".8rem",
-        color: theme.palette.secondary.main,
-        lineHeight: "1.5rem"
+        color: theme.palette.primary.light,
+        lineHeight: "1.5rem",
+        wordWrap: "break-word"
     },
     repliesCount: {
         fontSize: ".85rem",

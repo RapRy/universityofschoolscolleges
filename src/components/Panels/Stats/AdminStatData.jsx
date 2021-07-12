@@ -25,12 +25,11 @@ const useStyles = makeStyles((theme) => ({
     numType: {
         fontWeight: theme.typography.fontWeightBlack,
         fontSize: "2.6rem",
-        color: theme.palette.primary.dark,
+        color: theme.palette.primary.main,
         textAlign: "center",
-        marginBottom: "10px",
+        marginBottom: theme.spacing(1),
         [theme.breakpoints.down('sm')]: {
             fontSize: "1.8rem",
-            marginBottom: "5px",
         },
         [theme.breakpoints.down('xs')]:{
             display: "inline-block",
@@ -38,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     stringType: {
-        fontWeight: 500,
+        fontWeight: theme.typography.fontWeightMedium,
         color: theme.palette.secondary.dark,
         textTransform: "uppercase",
         textAlign: "center",
@@ -49,8 +48,8 @@ const useStyles = makeStyles((theme) => ({
             display: "inline-block",
             fontSize: ".9rem",
             position: "relative",
-            bottom: "6px",
-            left: "10px"
+            bottom: theme.spacing(1) - 2,
+            left: theme.spacing(1) + 2
         }
     }
 }))

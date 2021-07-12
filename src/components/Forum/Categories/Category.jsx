@@ -78,9 +78,11 @@ const Category = ({ cat }) => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        background: theme.palette.secondary.light,
-        marginTop: "30px",
-        padding: "20px"
+        background: theme.palette.primary.contrastText,
+        marginTop: theme.spacing(4),
+        padding: theme.spacing(3),
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[7]
     },
     gridContainer: {
         marginTop: theme.spacing(2)
@@ -88,7 +90,7 @@ const useStyles = makeStyles(theme => ({
     typoH6: {
         color: theme.palette.secondary.dark,
         fontSize: ".9rem",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         marginBottom: theme.spacing(1)
     }
 }))

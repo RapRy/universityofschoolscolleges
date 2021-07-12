@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { Container, Grid, Button } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
-import VisibilityIcon from '@material-ui/icons/Visibility';
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/styles';
 import { useRouteMatch } from 'react-router-dom';
@@ -47,7 +46,7 @@ const TopicsPanelLg = ({ header, API, reduxDispatch, selectorName }) => {
                     }
                 </Grid>
                 <Link to={`${url}/${header.replace(" ", "-")}`} style={{ textDecoration: "none" }}>
-                    <Button type="submit" className={classes.buttonSubmit} startIcon={<VisibilityIcon />}>VIEW ALL</Button>
+                    <Button variant="text" type="submit" className={classes.buttonSubmit}>more</Button>
                 </Link>
             </Container>
         </Container>
@@ -61,7 +60,9 @@ const useStyles = makeStyles(theme => ({
     subContainer:{
         padding: theme.spacing(1),
         background: theme.palette.primary.contrastText,
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(1),
+        boxShadow: theme.shadows[7],
+        borderRadius: theme.shape.borderRadius
     },
     buttonSubmit: {
         borderRadius: "0px",
@@ -69,15 +70,10 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3),
         marginBottom: theme.spacing(2),
         fontSize: ".9rem",
-        fontWeight: 300,
-        color: theme.palette.secondary.contrastText,
-        padding: "7px 15px",
-        background: theme.palette.primary.main,
-        '&:hover': {
-            background: theme.palette.primary.main
-        },
+        fontWeight: theme.typography.fontWeightRegular,
+        color: theme.palette.secondary.main,
         [theme.breakpoints.down('xs')]: {
-            margin: "6px auto 0"
+            margin: `${theme.spacing(1)}px auto 0`
         }
     }
 }))

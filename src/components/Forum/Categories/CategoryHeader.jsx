@@ -60,19 +60,20 @@ const CategoryHeader = ({ cat, setShowForm, showForm }) => {
 
 const useStyles = makeStyles(theme => ({
     typoH4: {
-        color: theme.palette.primary.dark,
+        color: theme.palette.secondary.dark,
         fontSize: '.95rem',
-        fontWeight: 700
+        fontWeight: theme.typography.fontWeightBold
     },
     statsGrid: {
-        padding:"10px 15px",
-        background: theme.palette.secondary.contrastText
+        padding: theme.spacing(1, 2),
+        background: theme.palette.secondary.contrastText,
+        borderRadius: theme.shape.borderRadius
     },
     typoH5: {
         color: theme.palette.primary.dark,
         fontSize: '1.2rem',
-        fontWeight: 900,
-        marginRight: "5px",
+        fontWeight: theme.typography.fontWeightBlack,
+        marginRight: theme.spacing(1),
         display: "inline-block"
     },
     body1: {

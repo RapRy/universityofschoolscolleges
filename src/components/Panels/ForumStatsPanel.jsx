@@ -9,13 +9,14 @@ import * as api from '../../api'
 import { update_count } from '../../redux/statsReducer'
 
 const ForumStatsPanel = () => {
-    const classes = useStyles()
     const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
 
     const { profile } = useSelector(state => state.auth)
     const { categories } = useSelector(state => state.categories)
     const { topics, selectedTopic } = useSelector(state => state.topics)
     const { activeUsersCount, categoriesCount, registeredUsersCount, topicsCount, repliesCount } = useSelector(state => state.stats)
+
+    const classes = useStyles()
 
     const dispatch = useDispatch()
 
@@ -46,7 +47,7 @@ const ForumStatsPanel = () => {
             <PanelHeader title="forum statistics" />
             {
                 profile.result?.accountType === 1 ?
-                    <Grid container justify="space-evenly" direction={max600 === true ? "column" : "row"} className={classes.grid}>
+                    <Grid container justify="space-evenly" direction={max600 === true ? "column" : "row"} className={`${classes.grid} ${classes.shadow}`}>
                         <AdminStatData numData={activeUsersCount} stringData="Active Members" />
                         <Divider orientation={max600 === true ? "horizontal" : "vertical"} flexItem={!max600} />
                         <AdminStatData numData={registeredUsersCount} stringData="Registered Members" />
@@ -77,7 +78,10 @@ const useStyles = makeStyles(theme => ({
         background: theme.palette.primary.contrastText,
         marginTop: theme.spacing(2),
         padding: theme.spacing(1, 2),
-        borderRadius: theme.shape.borderRadius
+        borderRadius: theme.shape.borderRadius,
+    },
+    shadow: {
+        boxShadow: theme.shadows[7]
     }
 }))
 

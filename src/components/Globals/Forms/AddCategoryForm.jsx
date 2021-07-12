@@ -71,18 +71,20 @@ const AddCategoryForm = () => {
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        background: theme.palette.secondary.light,
-        marginTop: "30px",
-        paddingBottom: "8px",
+        background: theme.palette.primary.contrastText,
+        marginTop: theme.spacing(4),
+        paddingBottom: theme.spacing(1),
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[7],
         [theme.breakpoints.down('xs')]: {
-            paddingBottom: "15px"
+            paddingBottom: theme.spacing(2)
         }
     },
     buttonSubmit: {
-        borderRadius: "0px",
-        margin: "16px auto 0",
+        borderRadius: theme.shape.borderRadius,
+        margin: `${theme.spacing(2)}px auto 0`,
         fontSize: ".9rem",
-        fontWeight: 300,
+        fontWeight: theme.typography.fontWeightLight,
         color: theme.palette.secondary.contrastText,
         padding: "13px 15px",
         background: theme.palette.primary.dark,
@@ -90,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
             background: theme.palette.primary.dark
         },
         [theme.breakpoints.down('xs')]: {
-            margin: "6px auto 0"
+            margin: `${theme.spacing(1)} auto 0`
         }
     }
 }))

@@ -15,7 +15,7 @@ const IconBtn = ({ icon, text, handleClick }) => {
 const useStyles = makeStyles(theme => ({
     btn: {
         borderRadius: theme.shape.borderRadius,
-        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
         fontSize: ".85rem",
         fontWeight: theme.typography.fontWeightLight,
         color: theme.palette.secondary.contrastText,

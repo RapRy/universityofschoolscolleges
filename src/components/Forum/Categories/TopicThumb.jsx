@@ -21,7 +21,9 @@ const useStyles = makeStyles(theme => ({
         padding: theme.spacing(2),
         background: theme.palette.secondary.contrastText,
         overflowX: 'hidden',
-        marginTop: theme.spacing(1)
+        marginTop: theme.spacing(2),
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[3]
     },
     title: {
         color: theme.palette.secondary.dark,
@@ -32,7 +34,7 @@ const useStyles = makeStyles(theme => ({
         overflowX: 'hidden'
     },
     description: {
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.light,
         fontSize: ".8rem",
         whiteSpace: 'nowrap',
         textOverflow: 'ellipsis',

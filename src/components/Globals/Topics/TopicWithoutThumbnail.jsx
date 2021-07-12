@@ -81,10 +81,10 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2)
     },
     title: {
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         fontSize: "1rem",
         color: theme.palette.secondary.dark,
-        marginBottom: "5px",
+        marginBottom: theme.spacing(1),
         overflow: "hidden",
         whiteSpace: "nowrap",
         textOverflow: "ellipsis"
@@ -92,8 +92,8 @@ const useStyles = makeStyles(theme => ({
     stats: {
         display: "inline-block",
         fontSize: ".85rem",
-        fontWeight: 500,
-        marginRight: "10px",
+        fontWeight: theme.typography.fontWeightMedium,
+        marginRight: theme.spacing(2),
         color: theme.palette.secondary.dark
     },
     icon: {
@@ -103,11 +103,11 @@ const useStyles = makeStyles(theme => ({
     },
     updatesDetails: {
         fontSize: ".85rem",
-        color: theme.palette.secondary.main
+        color: theme.palette.primary.light
     },
     span: {
         color: theme.palette.secondary.dark,
-        fontWeight: 700
+        fontWeight: theme.typography.fontWeightBold
     }
 }))
 

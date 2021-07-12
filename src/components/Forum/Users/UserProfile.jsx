@@ -37,37 +37,37 @@ const UserProfile = () => {
     }, [matchProfile?.params?.userId, matchEdit?.params?.userId])
 
     return (
-        <Container>
-            <Box textAlign="center">
+        <Container className={classes.container}>
+            <Box>
                 <Avatar className={classes.avatar}>{ user.username?.charAt(0) }</Avatar>
-                <Typography>{ user.name?.firstName || "First Name" } { user.name?.lastName || "Last Name" }</Typography>
-                <Typography><AccountCircleIcon /> { user.username }</Typography>
-                <Typography><EmailIcon /> { user.email }</Typography>
-                <Box>
-                    <Typography>{ user.post?.topics.length }</Typography>
-                    <Typography>{ user.post?.topics.length > 1 ? "Topics" : "Topic" }</Typography>
+                <Typography className={classes.typoName}>{ user.name?.firstName || "First Name" } { user.name?.lastName || "Last Name" }</Typography>
+                <Typography className={`${classes.typoWithIcon} ${classes.marginTop2}`}><AccountCircleIcon className={classes.typoIcon} /> { user.username }</Typography>
+                <Typography className={`${classes.typoWithIcon} ${classes.marginTop1}`}><EmailIcon className={classes.typoIcon} /> { user.email }</Typography>
+                <Box className={classes.marginTop2}>
+                    <Typography className={classes.statNum}>{ user.post?.topics.length }</Typography>
+                    <Typography className={classes.statSting}>{ user.post?.topics.length > 1 ? "Topics" : "Topic" }</Typography>
                 </Box>
-                <Box>
-                    <Typography>{ user.post?.replies.length }</Typography>
-                    <Typography>{ user.post?.replies.length > 1 ? "Replies" : "Reply" }</Typography>
+                <Box className={classes.marginTop1}>
+                    <Typography className={classes.statNum}>{ user.post?.replies.length }</Typography>
+                    <Typography className={classes.statSting}>{ user.post?.replies.length > 1 ? "Replies" : "Reply" }</Typography>
                 </Box>
             </Box>
             {
                 (user._id === profileLs?._id || user._id === profile.result?._id) &&
                     <>
-                        <Divider />
+                        <Divider className={classes.divider} />
                         {
                             matchEdit !== null ?
                                 <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
-                                    <Button startIcon={<DescriptionIcon />}>Posts</Button>
+                                    <Button className={classes.button} variant="text" startIcon={<DescriptionIcon />}>Posts</Button>
                                 </Link>
                             :
                                 <Link to={`/forum/profile/edit/${user._id}`} style={{ textDecoration: "none" }}>
-                                    <Button startIcon={<EditIcon />}>Edit Profile</Button>
+                                    <Button className={classes.button} variant="text" startIcon={<EditIcon />}>Edit Profile</Button>
                                 </Link>
                                 
                         }
-                        <Button startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
+                        <Button className={`${classes.button} ${classes.marginTop1}`} variant="text" startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
                     </>
 
             }
@@ -76,11 +76,58 @@ const UserProfile = () => {
 }
 
 const useStyles = makeStyles(theme => ({
+    container: {
+        marginTop: theme.spacing(5)
+    },
     avatar: {
         width: theme.spacing(24),
         height: theme.spacing(24),
         fontSize: theme.spacing(18),
-        margin: '0 auto'
+    },
+    marginTop2: {
+        marginTop: theme.spacing(2)
+    },
+    marginTop1: {
+        marginTop: theme.spacing(1)
+    },
+    typoName: {
+        fontWeight: theme.typography.fontWeightBold,
+        fontSize: "1rem",
+        marginTop: theme.spacing(2),
+        color: theme.palette.secondary.dark
+    },
+    typoWithIcon: {
+        color: theme.palette.secondary.dark,
+        fontWeight: theme.typography.fontWeightMedium,
+        fontSize: ".8rem",
+
+    },
+    typoIcon: {
+        verticalAlign: "middle",
+        fontSize: "1.1rem"
+    },
+    statNum: {
+        fontSize: "1.5rem",
+        color: theme.palette.primary.main,
+        fontWeight: theme.typography.fontWeightBlack,
+        display: "inline-block",
+        marginRight: theme.spacing(1)
+    },
+    statSting: {
+        fontSize: ".9rem",
+        color: theme.palette.secondary.dark,
+        fontWeight: theme.typography.fontWeightBold,
+        display: "inline-block"
+    },
+    divider: {
+        margin: theme.spacing(3, 0)
+    },
+    button: {
+        color: theme.palette.secondary.main,
+        fontSize: ".85rem",
+        fontWeight: theme.typography.fontWeightBold,
+        textAlign: "left",
+        display: "block"
     }
 }))
 

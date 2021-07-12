@@ -40,10 +40,6 @@ const  UsersList = ({ selectorName, emptyMessage }) => {
             <Table aria-label="collapsible table">
                 <TableHead>
                     <TableRow>
-                        { 
-                            (selectorName === "activeUsers" || selectorName === "blacklistedUsers") && 
-                                <TableCell classes={{ root: classes.cell }} />
-                        }
                         <TableCell classes={{ root: classes.cell }} />
                         <TableCell classes={{ root: classes.cell }} align="left">ID</TableCell>
                         <TableCell classes={{ root: classes.cell }} align="left">Username</TableCell>
@@ -64,15 +60,17 @@ const  UsersList = ({ selectorName, emptyMessage }) => {
 
 const useStyles = makeStyles(theme => ({
     tableContainer: {
-        background: theme.palette.secondary.light,
+        background: theme.palette.primary.contrastText,
         marginTop: theme.spacing(3),
-        padding: theme.spacing(3)
+        padding: theme.spacing(3),
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[7]
     },
     cell: {
-        borderBottom: `1px solid ${theme.palette.secondary.main}`,
-        color: theme.palette.secondary.main,
+        borderBottom: `1px solid ${theme.palette.primary.light}`,
+        color: theme.palette.primary.light,
         fontSize: '.8rem',
-        fontWeight: 500
+        fontWeight: theme.typography.fontWeightMedium
     }
 }))
 

@@ -4,6 +4,7 @@ import { Backdrop, CircularProgress, ThemeProvider, createMuiTheme } from '@mate
 
 import './index.css';
 
+import Footer from './components/Footer/Footer'
 const Auth = lazy(() => import('./components/Auth/Auth'));
 const Forum = lazy(() => import('./components/Forum/Forum'));
 const Home = lazy(() => import('./components/Home/Home'));
@@ -44,6 +45,8 @@ const App = () => {
                 <Route path="/forum" component={Forum} />
               </Switch>
           </Suspense>
+
+          <Footer />
         </BrowserRouter>
       </ThemeProvider>
     )

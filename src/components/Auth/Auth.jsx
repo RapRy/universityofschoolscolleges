@@ -121,49 +121,54 @@ const Auth = () => {
 
 const useStyles = makeStyles((theme) => ({
     mainContainer: {
-        background: theme.palette.secondary.light
+        background: `url(${process.env.PUBLIC_URL}/assets/auth_bg.jpg)`,
+        backgroundSize: "cover",
+        minHeight: '100vh'
     },
     formContainer: {
         background: theme.palette.primary.contrastText,
+        boxShadow: theme.shadows[7],
+        borderRadius: theme.shape.borderRadius,
         padding: 0,
-        margin: "30px"
+        margin: theme.spacing(4),
+        overflow: 'hidden'
     },
     welcome: {
-        background: props => props.switchForm ? theme.palette.primary.light : theme.palette.primary.main,
-        padding: "20px",
+        background: props => props.switchForm ? `url(${process.env.PUBLIC_URL}/assets/bg_orange.jpg)` : `url(${process.env.PUBLIC_URL}/assets/bg_blue.jpg)`,
+        padding: theme.spacing(3),
         textAlign: 'center',
         position: 'relative',
         [theme.breakpoints.down('sm')]: {
-            padding: "20px 20px 60px"
+            padding: `${theme.spacing(4)}px ${theme.spacing(4)}px ${theme.spacing(8)}px`
         }
     },
     h5: {
         fontSize: "1.1rem",
-        fontWeight: 900,
+        fontWeight: theme.typography.fontWeightBold,
         color: theme.palette.secondary.contrastText,
         position: "absolute",
-        top: "20px",
-        left: "20px"
+        top: theme.spacing(2),
+        left: theme.spacing(2)
     },
     h2: {
         fontSize: "2.2rem",
-        fontWeight: 700,
+        fontWeight: theme.typography.fontWeightBold,
         color: theme.palette.secondary.contrastText,
-        padding: "0px 80px 20px",
+        padding: `0px ${theme.spacing(10)}px ${theme.spacing(3)}px`,
         [theme.breakpoints.down("sm")]: {
-            padding: "60px 80px 20px"
+            padding: `${theme.spacing(8)}px ${theme.spacing(10)}px ${theme.spacing(3)}px`
         }
     },
     paraghrap: {
         fontSize: ".8rem",
-        padding: "0px 20px 30px",
-        lineHeight: "1.6"
+        padding: `0px ${theme.spacing(2)}px ${theme.spacing(4)}px`,
+        lineHeight: "1.6",
     },
     pColorWhite: {
         color: theme.palette.secondary.contrastText,
     },
     pColorBlack: {
-        color: theme.palette.secondary.main,
+        color: theme.palette.primary.light,
     },
     paraghrapError: {
         color: "#FF0000",
@@ -172,12 +177,12 @@ const useStyles = makeStyles((theme) => ({
         fontWeight: 700
     },
     button: {
-        borderRadius: "0px",
+        borderRadius: theme.shape.borderRadius,
         margin: "0 auto",
         fontSize: ".95rem",
-        fontWeight: 300,
+        fontWeight: theme.typography.fontWeightLight,
         color: theme.palette.secondary.contrastText,
-        padding: "7px 40px",
+        padding: theme.spacing(1, 5),
         border: `1px solid ${theme.palette.secondary.contrastText}`,
         '&:hover': {
             border: props => props.switchForm ? `1px solid ${theme.palette.primary.main}` : `1px solid ${theme.palette.primary.light}`,
@@ -185,13 +190,13 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     button2: {
-        borderRadius: "0px",
+        borderRadius: theme.shape.borderRadius,
         margin: "0 auto",
         fontSize: ".95rem",
-        fontWeight: 300,
+        fontWeight: theme.typography.fontWeightLight,
         color: "#f2f2f2",
-        padding: "7px 40px",
-        background: theme.palette.primary.dark
+        padding: theme.spacing(1, 5),
+        background: props => props.switchForm ? theme.palette.secondary.main : theme.palette.primary.main
     },
     h4: {
         fontSize: "1.5rem",

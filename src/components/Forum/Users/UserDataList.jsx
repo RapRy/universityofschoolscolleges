@@ -1,19 +1,17 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { TableRow, TableCell, TableHead, TableBody, IconButton, Collapse, Box, Typography, Table, Avatar } from '@material-ui/core';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { TableRow, TableCell, IconButton, Avatar } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
 import BlockIcon from '@material-ui/icons/Block';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import HowToRegIcon from '@material-ui/icons/HowToReg';
 import { useSnackbar } from 'notistack';
+import { Link } from 'react-router-dom';
 
 import * as api from '../../../api'
 
 const UserDataList = ({ user, selectorName, setRefresher }) => {
-    const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
 
     const { enqueueSnackbar } = useSnackbar()
@@ -88,57 +86,25 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
     return (
         <>
             <TableRow className={classes.tableRowMain }>
-                {
-                    (selectorName === "activeUsers" || selectorName === "blacklistedUsers") && 
-                        <TableCell>
-                            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
-                                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                            </IconButton>
-                        </TableCell>
-                }
                 <TableCell>
                     <Avatar>{ user.username.charAt(0) }</Avatar>
                 </TableCell>
                 <TableCell classes={{ root: classes.tableCellMainData }} align="left">{ user.schoolId }</TableCell>
-                <TableCell classes={{ root: classes.tableCellMainData }} align="left">{user.username}</TableCell>
+                <TableCell classes={{ root: classes.tableCellMainData }} align="left">
+                    <Link to={`/forum/profile/${user._id}`} className={classes.nameLink}>
+                        {user.username}
+                    </Link>
+                </TableCell>
                 <TableCell classes={{ root: classes.tableCellMainData }} align="left">{ user.email }</TableCell>
                 <TableCell classes={{ root: classes.tableCellMainData }} align="left">{ dateString() }</TableCell>
                 <TableCell align="left">
-                    { (selectorName === "activeUsers" || selectorName === "blacklistedUsers") && <IconButton><PersonIcon /></IconButton> }
-                    { selectorName === "activeUsers" && <IconButton onClick={blockUser}><BlockIcon /></IconButton> }
-                    { (selectorName === "registeredUsers" && user.active === 0) && <IconButton onClick={activateUser}><PersonAddIcon /></IconButton> }
-                    { selectorName === "blacklistedUsers" && <IconButton onClick={unblockUser}><HowToRegIcon /></IconButton> }
-                    <IconButton onClick={deactivateUser}><DeleteIcon /></IconButton>
+                    { (selectorName === "activeUsers" || selectorName === "blacklistedUsers") && <IconButton classes={{ root: `${classes.buttonBlue} ${classes.marginRight}` }}><PersonIcon className={classes.globalBtn} /></IconButton> }
+                    { selectorName === "activeUsers" && <IconButton onClick={blockUser} classes={{ root: `${classes.buttonOrange} ${classes.marginRight}` }} ><BlockIcon className={classes.globalBtn} /></IconButton> }
+                    { (selectorName === "registeredUsers" && user.active === 0) && <IconButton onClick={activateUser} classes={{ root: `${classes.buttonBlue} ${classes.marginRight}` }} ><PersonAddIcon className={classes.globalBtn} /></IconButton> }
+                    { selectorName === "blacklistedUsers" && <IconButton onClick={unblockUser} classes={{ root: `${classes.buttonBlue} ${classes.marginRight}` }} ><HowToRegIcon className={classes.globalBtn} /></IconButton> }
+                    <IconButton onClick={deactivateUser} classes={{ root: classes.buttonOrange }} ><DeleteIcon className={classes.globalBtn} /></IconButton>
                 </TableCell>
             </TableRow>
-            
-            {
-                (selectorName === "activeUsers" || selectorName === "blacklistedUsers") &&
-                    <TableRow>
-                        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={(selectorName === "activeUsers" || selectorName === "blacklistedUsers") ? 7 : 6}>
-                            <Collapse in={open} timeout="auto" unmountOnExit>
-                                <Box margin={1}>
-                                    <Typography variant="h6" gutterBottom component="div">
-                                        History
-                                    </Typography>
-                                    <Table size="small" aria-label="purchases">
-                                        <TableHead>
-                                        <TableRow>
-                                            <TableCell>Date</TableCell>
-                                            <TableCell>Customer</TableCell>
-                                            <TableCell align="right">Amount</TableCell>
-                                            <TableCell align="right">Total price ($)</TableCell>
-                                        </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                        {"data goes here"}
-                                        </TableBody>
-                                    </Table>
-                                </Box>
-                            </Collapse>
-                        </TableCell>
-                    </TableRow>
-            }
         </>
     );
 }
@@ -146,15 +112,32 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
 const useRowStyles = makeStyles(theme => ({
     tableRowMain: {
         background: theme.palette.secondary.contrastText,
-        padding: theme.spacing(3),
-        '& > *': {
-            borderBottom: 'unset',
-        },
+        padding: theme.spacing(3)
     },
     tableCellMainData: {
         fontSize: ".8rem",
         color: theme.palette.secondary.dark,
-        fontWeight: 700
+        fontWeight: theme.typography.fontWeightBold
+    },
+    nameLink: {
+        textDecoration: "none",
+        color: theme.palette.secondary.dark
+    },
+    globalBtn: {
+        color: theme.palette.secondary.contrastText
+    },
+    buttonBlue: {
+        background: theme.palette.primary.main,
+        padding: "5px",
+        borderRadius: theme.shape.borderRadius
+    },
+    buttonOrange: {
+        background: theme.palette.secondary.main,
+        padding: "5px",
+        borderRadius: theme.shape.borderRadius
+    },
+    marginRight: {
+        marginRight: "5px"
     }
 }))
 

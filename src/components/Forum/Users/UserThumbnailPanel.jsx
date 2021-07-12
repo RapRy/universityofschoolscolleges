@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     data: {
         display: "block",
         fontSize: ".9rem",
-        fontWeight: 500,
+        fontWeight: theme.typography.fontWeightMedium,
         marginBottom: theme.spacing(1),
         color: theme.palette.secondary.dark
     },
@@ -62,7 +62,7 @@ const useStyles = makeStyles(theme => ({
     },
     date: {
         fontSize: ".85rem",
-        color: theme.palette.secondary.main
+        color: theme.palette.primary.light
     }
 }))
 

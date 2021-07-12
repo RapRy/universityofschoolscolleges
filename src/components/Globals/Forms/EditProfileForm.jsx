@@ -101,21 +101,23 @@ const EditProfileForm = () => {
 const useStyles = makeStyles(theme => ({
     containerRoot: {
         background: theme.palette.secondary.light,
-        marginTop: "30px"
+        marginTop: theme.spacing(4),
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[7]
     },
     buttonSubmit: {
-        borderRadius: "0px",
-        margin: "16px auto",
+        borderRadius: theme.shape.borderRadius,
+        margin: `${theme.spacing(2)}px auto`,
         fontSize: ".9rem",
-        fontWeight: 300,
+        fontWeight: theme.typography.fontWeightLight,
         color: theme.palette.secondary.contrastText,
-        padding: "10px 20px",
-        background: theme.palette.primary.dark,
+        padding: theme.spacing(1, 3),
+        background: theme.palette.secondary.main,
         '&:hover': {
-            background: theme.palette.primary.dark
+            background: theme.palette.secondary.dark
         },
         [theme.breakpoints.down('xs')]: {
-            margin: "6px auto 0"
+            margin: `${theme.spacing(1)}px auto 0`
         }
     },
 }))
