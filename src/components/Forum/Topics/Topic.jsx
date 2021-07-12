@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useRouteMatch, useHistory, Link } from 'react-router-dom'
-import { Container, Grid, Avatar, Typography, Divider, LinearProgress } from '@material-ui/core'
+import { Container, Grid, Avatar, Typography, Divider, LinearProgress, Collapse } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { useSnackbar } from 'notistack'
 
 import { get_topic_details } from '../../../redux/topicsReducer'
@@ -25,6 +27,7 @@ const Topic = () => {
 
     const [edit, setEdit] = useState(false)
     const [openDelete, setOpenDelete] = useState(false)
+    const [showReplies, setShowReplies] = useState(false)
 
     const dispatch = useDispatch()
     const { selectedTopic, status } = useSelector(state => state.topics)
@@ -39,6 +42,8 @@ const Topic = () => {
         return `${months[createdAt.getMonth()]} ${createdAt.getDate()}, ${createdAt.getFullYear()}`
 
     }
+
+    const expandReplies = () => setShowReplies(prevState => !prevState)
 
     const handleDelete = () => setOpenDelete(true)
 
@@ -114,15 +119,17 @@ const Topic = () => {
                             </div>
 
                             <div>
-                                <Typography variant="h5" className={classes.repliesCount}>{ selectedTopic.replies?.length > 1 ? `${selectedTopic.replies?.length} Replies` : `${selectedTopic.replies?.length} Reply`} </Typography>
+                                <Typography onClick={expandReplies} variant="h5" className={classes.repliesCount}>{ selectedTopic.replies?.length > 1 ? `${selectedTopic.replies?.length} Replies` : `${selectedTopic.replies?.length} Reply`} { showReplies ? <ExpandLessIcon className={classes.arrow} /> : <ExpandMoreIcon className={classes.arrow} /> }</Typography>
 
                                 <Divider />
 
                                 <div>
-                                    {
-                                        selectedTopic.replies &&
-                                            selectedTopic.replies.map(reply => <Reply reply={reply} key={reply._id} />)
-                                    }
+                                    <Collapse in={showReplies}>
+                                        {
+                                            selectedTopic.replies &&
+                                                selectedTopic.replies.map(reply => <Reply reply={reply} key={reply._id} />)
+                                        }
+                                    </Collapse>
                                 </div>
 
                                 <AddReply categoryId={selectedTopic.topic?.ref?.category} topicId={selectedTopic.topic?._id} />
@@ -219,7 +226,12 @@ const useStyles = makeStyles(theme => ({
         fontSize: ".85rem",
         fontWeight: theme.typography.fontWeightBold,
         marginBottom: theme.spacing(1),
-        color: theme.palette.secondary.dark
+        color: theme.palette.secondary.dark,
+        cursor: "pointer"
+    },
+    arrow: {
+        verticalAlign: "middle",
+        float: "right"
     }
 }))
 

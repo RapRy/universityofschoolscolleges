@@ -82,7 +82,7 @@ const Post = ({ post }) => {
             </div>
 
             <div>
-                <Typography onClick={expandReplies} variant="h5" className={classes.repliesCount}>{ post.meta?.replies?.length > 1 ? `${post.meta?.replies?.length} Replies` : `${post.meta?.replies?.length} Reply`} { showReplies ? <ExpandLessIcon /> : <ExpandMoreIcon /> }</Typography>
+                <Typography onClick={expandReplies} variant="h5" className={classes.repliesCount}>{ post.meta?.replies?.length > 1 ? `${post.meta?.replies?.length} Replies` : `${post.meta?.replies?.length} Reply`} { showReplies ? <ExpandLessIcon className={classes.arrow} /> : <ExpandMoreIcon className={classes.arrow} /> }</Typography>
 
                 <Divider />
 
@@ -154,7 +154,12 @@ const useStyles = makeStyles(theme => ({
         fontSize: ".85rem",
         fontWeight: 700,
         marginBottom: theme.spacing(1),
-        color: theme.palette.secondary.dark
+        color: theme.palette.secondary.dark,
+        cursor: "pointer"
+    },
+    arrow: {
+        verticalAlign: "middle",
+        float: "right"
     }
 }))
 

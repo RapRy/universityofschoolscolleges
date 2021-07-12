@@ -45,7 +45,7 @@ const UserProfile = () => {
                 <Typography className={`${classes.typoWithIcon} ${classes.marginTop1}`}><EmailIcon className={classes.typoIcon} /> { user.email }</Typography>
                 <Box className={classes.marginTop2}>
                     <Typography className={classes.statNum}>{ user.post?.topics.length }</Typography>
-                    <Typography className={classes.statSting}>{ user.post?.topics.length > 1 ? "Topics" : "Topic" }</Typography>
+                    <Typography className={classes.statSting}>{ user.post?.topics.length > 1 ? "Posts" : "Post" }</Typography>
                 </Box>
                 <Box className={classes.marginTop1}>
                     <Typography className={classes.statNum}>{ user.post?.replies.length }</Typography>

@@ -3,6 +3,7 @@ import { Container, Avatar, Divider, Typography, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
+import { Link } from 'react-router-dom'
 
 const UserThumbnailPanel = ({ user, type }) => {
     const classes = useStyles()
@@ -24,10 +25,14 @@ const UserThumbnailPanel = ({ user, type }) => {
             <Container className={classes.mainContainer}>
                 <Grid container direction="row" alignItems="center">
                     <Grid item lg={2} md={3} sm={2} xs={3}>
-                        <Avatar className={classes.avatar}>{ user.username.charAt(0) }</Avatar>
+                        <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
+                            <Avatar className={classes.avatar}>{ user.username.charAt(0) }</Avatar>
+                        </Link>
                     </Grid>
                     <Grid item lg={9} md={8} sm={9} xs={8}>
-                        <Typography className={classes.data}><AccountBoxIcon className={classes.icon} /> { user.username }</Typography>
+                        <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
+                            <Typography className={classes.data}><AccountBoxIcon className={classes.icon} /> { user.username }</Typography>
+                        </Link>
                         <Typography className={classes.data}><EmailIcon className={classes.icon} /> { user.email }</Typography>
                         <Typography className={classes.date}>{ dateString() }</Typography>
                     </Grid>
