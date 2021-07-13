@@ -1,23 +1,21 @@
 import React, { useEffect } from 'react'
 import { Container, List, ListItem } from '@material-ui/core'
-import { useRouteMatch } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import PanelHeader from '../Globals/PanelHeader'
 import TopicInSideNav from '../Globals/Topics/TopicInSideNav'
 
-const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon }) => {
+const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon, limitOrId }) => {
 
     const dispatch = useDispatch()
     const topics = useSelector(state => state.topics)
 
-    const match = useRouteMatch('/forum/:category/:topicId')
 
     useEffect(() => {
         const fetchTopics = async () => {
             try {
-                const { data, status } = await API(match ? match.params.topicId : 6);
+                const { data, status } = await API(limitOrId);
 
                 if(status === 200){
                     dispatch(reduxDispatch(data))

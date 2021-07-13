@@ -28,6 +28,7 @@ const BottomPanels = ({ gridSize }) => {
                                 icon={<TodayIcon 
                                     classes={{ root: classes.svg }} 
                                 />} 
+                                limitOrId={match?.params?.topicId}
                             /> 
                         </Grid>
                 }
@@ -38,6 +39,7 @@ const BottomPanels = ({ gridSize }) => {
                                 icon={<TodayIcon 
                                     classes={{ root: classes.svg }} 
                                 />} 
+                                limitOrId={8}
                             /> 
                         </Grid>
                 }
@@ -48,6 +50,7 @@ const BottomPanels = ({ gridSize }) => {
                                 icon={<CommentIcon 
                                     classes={{ root: classes.svg }} 
                                 />} 
+                                limitOrId={8}
                             /> 
                         </Grid>
                 }

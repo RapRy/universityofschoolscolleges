@@ -1,8 +1,9 @@
 import React, { lazy, Suspense, useEffect } from 'react'
-import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Backdrop, CircularProgress, ThemeProvider, createMuiTheme } from '@material-ui/core';
 
 import './index.css';
+import Footer from './components/Footer/Footer';
 const Auth = lazy(() => import('./components/Auth/Auth'));
 const Forum = lazy(() => import('./components/Forum/Forum'));
 const Home = lazy(() => import('./components/Home/Home'));
@@ -34,9 +35,14 @@ const App = () => {
       }
     })
 
+    const matchAuth = useRouteMatch('/auth')
+
+    useEffect(() => {
+      console.log(matchAuth)
+    }, [])
+
     return (
-      <ThemeProvider theme={theme}>
-        <BrowserRouter>
+      <ThemeProvider theme={theme}> 
           <Suspense fallback={<Backdrop open={true} style={{zIndex:5}}><CircularProgress /></Backdrop>}>
               <Switch>
                 <Route exact path="/" component={Home} />
@@ -44,7 +50,8 @@ const App = () => {
                 <Route path="/forum" component={Forum} />
               </Switch>
           </Suspense>
-        </BrowserRouter>
+
+          { matchAuth === null && <Footer /> }
       </ThemeProvider>
     )
 }

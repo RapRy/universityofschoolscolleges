@@ -75,6 +75,7 @@ const SideNavigation = () => {
                                     icon={<TodayIcon 
                                         classes={{ root: classes.svg }} 
                                     />} 
+                                    limitOrId={match?.params?.topicId}
                                 /> 
                             </Grid>
                 }
@@ -86,6 +87,7 @@ const SideNavigation = () => {
                                     icon={<TodayIcon 
                                         classes={{ root: classes.svg }} 
                                     />} 
+                                    limitOrId={8}
                                 /> 
                             </Grid>
                 }
@@ -97,6 +99,7 @@ const SideNavigation = () => {
                                     icon={<CommentIcon 
                                         classes={{ root: classes.svg }} 
                                     />} 
+                                    limitOrId={8}
                                 /> 
                             </Grid>
                 }

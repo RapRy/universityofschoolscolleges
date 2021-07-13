@@ -22,7 +22,6 @@ import UserPosts from './Users/UserPosts';
 import EditProfile from './Users/EditProfile';
 import SearchResult from './Search/SearchResult';
 import BottomPanels from './BottomPanels';
-import Footer from '../Footer/Footer';
 
 const Forum = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile'))
@@ -40,6 +39,7 @@ const Forum = () => {
     const classes = useStyles()
 
     useEffect(() => {
+
         if(!_.isEmpty(profile)){
             return
         }else if(localStorage.getItem('profile') !== null){
@@ -91,9 +91,8 @@ const Forum = () => {
 
                         </Switch>
 
-                        { max960 && <BottomPanels gridSize={matchTopicId !== null ? 4 : 6} /> }
+                        { (max960 && profile?.result?.accountType === 0 && matchTopicId?.params?.category !== "profile") && <BottomPanels gridSize={matchTopicId !== null ? 4 : 6} /> }
 
-                        <Footer />
                     </Grid>
                 </Grid>
             </Container>

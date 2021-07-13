@@ -6,6 +6,7 @@ import EmailIcon from '@material-ui/icons/Email';
 import EditIcon from '@material-ui/icons/Edit';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DescriptionIcon from '@material-ui/icons/Description';
+import ForumIcon from '@material-ui/icons/Forum';
 import { Link, useRouteMatch } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
@@ -62,6 +63,10 @@ const UserProfile = () => {
                 (user._id === profileLs?._id || user._id === profile.result?._id) &&
                     <>
                         <Divider className={classes.divider} />
+                        <Link to="/forum" style={{ textDecoration: "none", marginRight: "16px" }}>
+                            <Button className={classes.button} variant="text" startIcon={<ForumIcon />}>Back to Forum</Button>
+                        </Link>
+
                         {
                             matchEdit !== null ?
                                 <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none", marginRight: "16px" }}>
@@ -73,7 +78,8 @@ const UserProfile = () => {
                                 </Link>
                                 
                         }
-                        <Button className={`${classes.button} ${ !max600 && classes.marginTop1}`} variant="text" startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
+                        <Divider className={classes.divider} />
+                        <Button className={`${classes.btnDeact} ${ !max600 && classes.marginTop1}`} variant="contained" startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
                     </>
 
             }
@@ -132,6 +138,13 @@ const useStyles = makeStyles(theme => ({
     button: {
         color: theme.palette.secondary.main,
         fontSize: ".85rem",
+        fontWeight: theme.typography.fontWeightBold,
+        textAlign: "left",
+    },
+    btnDeact: {
+        color: theme.palette.secondary.contrastText,
+        fontSize: ".85rem",
+        background: theme.palette.primary.dark,
         fontWeight: theme.typography.fontWeightBold,
         textAlign: "left",
     }
