@@ -15,10 +15,10 @@ const Overview = () => {
             <Typography className={classes.typoH2} variant="h2">Overview</Typography>
             <ForumStatsPanel />
             <Grid container direction="row" spacing={5}>
-                <Grid item md={6} sm={12} xs={12}>
+                <Grid item sm={6} xs={12}>
                     <UsersPanelLg header="new users" API={api.getNewUsers} reduxDispatch={new_users_panel} selectorName="newUsers" />
                 </Grid>
-                <Grid item md={6} sm={12} xs={12}>
+                <Grid item sm={6} xs={12}>
                     <UsersPanelLg header="active users" API={api.getActiveUsers} reduxDispatch={active_users_panel} selectorName="activeUsers" />
                 </Grid>
             </Grid>

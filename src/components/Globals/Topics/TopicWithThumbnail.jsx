@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Grid, Avatar, Typography, Box } from '@material-ui/core'
+import { Container, Grid, Avatar, Typography, Box, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { Link } from 'react-router-dom'
 import InsertCommentIcon from '@material-ui/icons/InsertComment';
@@ -9,7 +9,8 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import * as api from '../../../api'
 
 const TopicWithThumbnail = ({ topic }) => {
-    const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
+    const classes = useStyles({ max600 })
 
     const [additionalData, setAdditionalData] = useState({})
 
@@ -50,11 +51,11 @@ const TopicWithThumbnail = ({ topic }) => {
 
     return (
         <Container className={classes.container}>
-            <Grid container direction="row" spacing={2} alignItems="center">
-                <Grid item>
+            <Grid container direction="row" spacing={2} alignItems="flex-start">
+                <Grid item xs={'auto'}>
                     <Avatar className={classes.avatar}>{ additionalData.user?.username.charAt(0) }</Avatar>
                 </Grid>
-                <Grid item>
+                <Grid item xs={9}>
                     <Link to={`/forum/${additionalData.category?.name.replace(" ", "-")}/${topic._id}`} style={{ textDecoration: "none" }}>
                         <Typography variant="h4" className={classes.title}>{topic.title}</Typography>
                     </Link>
@@ -77,15 +78,15 @@ const TopicWithThumbnail = ({ topic }) => {
 const useStyles = makeStyles(theme => ({
     container: {
         background: theme.palette.primary.contrastText,
-        padding: theme.spacing(4),
+        padding: props => props.max600 ? theme.spacing(2) : theme.spacing(4),
         marginTop: theme.spacing(3),
         boxShadow: theme.shadows[7],
         borderRadius: theme.shape.borderRadius
     },
     avatar: {
-        width: theme.spacing(10),
-        height: theme.spacing(10),
-        fontSize: "3rem"
+        width: props => props.max600 ? theme.spacing(6) : theme.spacing(10),
+        height: props => props.max600 ? theme.spacing(6) : theme.spacing(10),
+        fontSize: props => props.max600 ? "1.5rem" : "3rem"
     },
     title: {
         fontWeight: theme.typography.fontWeightBold,

@@ -41,7 +41,7 @@ const SearchResult = () => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        marginTop: "40px"
+        marginTop: theme.spacing(4)
     },
     typoH2: {
         fontWeight: 700,

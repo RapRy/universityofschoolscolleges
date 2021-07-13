@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Grid } from '@material-ui/core'
+import { Grid, Container, useMediaQuery, Box } from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles';
 import _ from 'lodash';
 import { Switch, Route, useRouteMatch, useHistory, Redirect } from 'react-router-dom'
 
 import Navigation from '../Navigation/Navigation';
+import SearchBar from '../Navigation/SearchBar';
 import SideNavigation from '../SideNavigation/SideNavigation';
 import { sign_in_LS } from '../../redux/authReducer';
 
@@ -19,6 +21,8 @@ import BlacklistedUsersList from './Users/BlacklistedUsersList';
 import UserPosts from './Users/UserPosts';
 import EditProfile from './Users/EditProfile';
 import SearchResult from './Search/SearchResult';
+import BottomPanels from './BottomPanels';
+import Footer from '../Footer/Footer';
 
 const Forum = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile'))
@@ -28,6 +32,12 @@ const Forum = () => {
     const { profile } = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const { path } = useRouteMatch()
+    const matchTopicId = useRouteMatch('/forum/:category/:topicId')
+
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'));
+    const max960 = useMediaQuery(theme => theme.breakpoints.down('sm'))
+
+    const classes = useStyles()
 
     useEffect(() => {
         if(!_.isEmpty(profile)){
@@ -43,40 +53,64 @@ const Forum = () => {
     return (
         <div>
             <Navigation type="forum" />
-            <Grid container>
-                <Grid item md={3} xs={12}>
-                    <SideNavigation />
+            {
+                max600 && 
+                    <Box className={classes.container}>
+                        <SearchBar />
+                    </Box>
+            }
+            <Container style={{ padding: 0 }}>
+                <Grid container>
+                    <Grid item md={3} xs={12}>
+                        <SideNavigation />
+                    </Grid>
+                    <Grid item md={9} xs={12}>
+                        {/* <Empty message="No Topics fro this category" /> */}
+                        <Switch>
+                            <Route exact path={path} >
+                                { ((profile?.result?.accountType === 1 && profile?.result !== null) || (profileLS?.result?.accountType === 1 && profileLS?.result !== null)) ? <Overview /> : <Redirect to={`${path}/topics`} />}
+                            </Route>
+
+                            <Route path={`${path}/categories`}>
+                                { profile.result?.accountType === 1 && <Categories /> }
+                            </Route>
+
+                            <Route exact path={`${path}/search/:keyword`} component={SearchResult} />
+                            <Route exact path={`${path}/active-users`} component={ActiveUsersList} />
+                            <Route exact path={`${path}/registered-users`} component={RegisteredUsersList} />
+                            <Route exact path={`${path}/new-users`} component={NewUsersList} />
+                            <Route exact path={`${path}/blacklisted-users`} component={BlacklistedUsersList} />
+
+                            <Route exact path={`${path}/profile/edit/:userId`} component={EditProfile} />
+
+                            <Route exact path={`${path}/profile/:userId`} component={UserPosts} />
+
+                            <Route exact path={`${path}/:category`} component={Topics} />
+
+                            <Route exact path={`${path}/:category/:topicId`} component={Topic} />
+
+                        </Switch>
+
+                        { max960 && <BottomPanels gridSize={matchTopicId !== null ? 4 : 6} /> }
+
+                        <Footer />
+                    </Grid>
                 </Grid>
-                <Grid item md={9} xs={12}>
-                    {/* <Empty message="No Topics fro this category" /> */}
-                    <Switch>
-                        <Route exact path={path} >
-                            { ((profile?.result?.accountType === 1 && profile?.result !== null) || (profileLS?.result?.accountType === 1 && profileLS?.result !== null)) ? <Overview /> : <Redirect to={`${path}/topics`} />}
-                        </Route>
-
-                        <Route path={`${path}/categories`}>
-                            { profile.result?.accountType === 1 && <Categories /> }
-                        </Route>
-
-                        <Route exact path={`${path}/search/:keyword`} component={SearchResult} />
-                        <Route exact path={`${path}/active-users`} component={ActiveUsersList} />
-                        <Route exact path={`${path}/registered-users`} component={RegisteredUsersList} />
-                        <Route exact path={`${path}/new-users`} component={NewUsersList} />
-                        <Route exact path={`${path}/blacklisted-users`} component={BlacklistedUsersList} />
-
-                        <Route exact path={`${path}/profile/edit/:userId`} component={EditProfile} />
-
-                        <Route exact path={`${path}/profile/:userId`} component={UserPosts} />
-
-                        <Route exact path={`${path}/:category`} component={Topics} />
-
-                        <Route exact path={`${path}/:category/:topicId`} component={Topic} />
-
-                    </Switch>
-                </Grid>
-            </Grid>
+            </Container>
         </div>
     )
 }
+
+const useStyles = makeStyles(theme => ({
+    container: {
+        marginTop: theme.spacing(4),
+        marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        padding: theme.spacing(2),
+        background: theme.palette.primary.contrastText,
+        borderRadius: theme.shape.borderRadius,
+        boxShadow: theme.shadows[7]
+    }
+}))
 
 export default Forum

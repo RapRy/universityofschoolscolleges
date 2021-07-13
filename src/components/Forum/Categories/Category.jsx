@@ -54,7 +54,7 @@ const Category = ({ cat }) => {
             <Grid container direction="row" spacing={3} className={classes.gridContainer}>
                 {
                     topics.latestTopics.length > 0 &&
-                        <Grid item md={6} sm={12}>
+                        <Grid item md={6} xs={12}>
                             <Typography variant="h6" className={classes.typoH6}>Latest Topics</Typography>
                             {
                                 topics.latestTopics.map(top => <TopicThumb top={top} key={top._id} category={topics.category} />)
@@ -64,7 +64,7 @@ const Category = ({ cat }) => {
 
                 {
                     topics.hotTopics.length > 0 &&
-                        <Grid item md={6} sm={12}>
+                        <Grid item md={6} xs={12}>
                             <Typography variant="h6" className={classes.typoH6}>Hot Topics</Typography>
                             {
                                 topics.hotTopics.map(top => <TopicThumb top={top} key={top._id} category={topics.category} />)

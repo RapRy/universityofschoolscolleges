@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Divider, Typography, Avatar, Box } from '@material-ui/core'
+import { Button, Divider, Typography, Avatar, Box, Grid } from '@material-ui/core'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import { useSelector, useDispatch } from 'react-redux'
@@ -30,9 +30,15 @@ const ProfileMenu = ({ max960, setShowAside }) => {
             {
                 max960 &&
                     <>
-                        <Box>
-                            <Avatar />  
-                            <Typography>{profile.result?.username}</Typography>
+                        <Box marginBottom="25px" marginTop="20px">
+                            <Grid container direction="row" spacing={2} alignItems="center">
+                                <Grid item xs={'auto'}>
+                                    <Avatar>{ profile.result?.username?.charAt(0) }</Avatar>  
+                                </Grid>
+                                <Grid item>
+                                    <Typography className={classes.username}>{profile.result?.username}</Typography>
+                                </Grid>
+                            </Grid>
                         </Box>
                         <Divider className={classes.divider} />
                     </>
@@ -55,6 +61,11 @@ const useStyles = makeStyles(theme => ({
     },
     divider:{
         margin: theme.spacing(1, 0)
+    },
+    username: {
+        fontSize: ".9rem",
+        fontWeight: theme.typography.fontWeightBold,
+        color: theme.palette.secondary.dark
     }
 }))
 

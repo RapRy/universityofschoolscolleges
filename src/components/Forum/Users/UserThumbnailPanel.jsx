@@ -1,12 +1,13 @@
 import React from 'react'
-import { Container, Avatar, Divider, Typography, Grid } from '@material-ui/core'
+import { Container, Avatar, Divider, Typography, Grid, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
 import { Link } from 'react-router-dom'
 
 const UserThumbnailPanel = ({ user, type }) => {
-    const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
+    const classes = useStyles({ max600 })
 
     const dateString = () => {
         const months =['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -23,13 +24,13 @@ const UserThumbnailPanel = ({ user, type }) => {
     return (
         <>
             <Container className={classes.mainContainer}>
-                <Grid container direction="row" alignItems="center">
-                    <Grid item lg={2} md={3} sm={2} xs={3}>
+                <Grid container direction="row" spacing={2} alignItems="flex-start">
+                    <Grid item xs={'auto'}>
                         <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
                             <Avatar className={classes.avatar}>{ user.username.charAt(0) }</Avatar>
                         </Link>
                     </Grid>
-                    <Grid item lg={9} md={8} sm={9} xs={8}>
+                    <Grid item lg={9} md={8} sm={9} xs={9}>
                         <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
                             <Typography className={classes.data}><AccountBoxIcon className={classes.icon} /> { user.username }</Typography>
                         </Link>
@@ -49,8 +50,8 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(1)
     },
     avatar: {
-        width: theme.spacing(9),
-        height: theme.spacing(9),
+        width: props => props.max600 ? theme.spacing(6) : theme.spacing(9),
+        height: props => props.max600 ? theme.spacing(6) : theme.spacing(9),
         marginRight: theme.spacing(1)
     },
     data: {

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Grid, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@material-ui/core'
+import { Container, Grid, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { Link } from 'react-router-dom'
 
@@ -10,13 +10,15 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 
 const Footer = () => {
-    const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
+
+    const classes = useStyles({ max600 })
 
     return (
         <div className={classes.mainContainer}>
             <Container>
                 <Grid container direction="row" spacing={2} justify="space-between">
-                    <Grid item lg={4}>
+                    <Grid item xs={12} sm={12} lg={4}>
                         <Typography variant="h4" className={classes.h4}>University of Schools Colleges</Typography>
                         <Typography variant="body1" className={classes.pGraph}>Lorem ipsum dolor sit amet, consectetur adipiscing elit ut aliquam, purus sit amet luctus venenatis</Typography>
                         <List component="ul">
@@ -30,7 +32,7 @@ const Footer = () => {
                             </ListItem>
                         </List>
                     </Grid>
-                    <Grid item lg={4}>
+                    <Grid item xs={12} sm={6} lg={4} classes={{ item: classes.globMargTop }}>
                         <List component="ul" classes={{ root: classes.ulList }}>
                             <ListItem classes={{ root: classes.teleList }}><Link to="/forum" className={classes.textDecor}><ListItemText classes={{ primary: classes.linkList }} primary="The Forum" /></Link></ListItem>
                             <ListItem classes={{ root: classes.teleList }}><Link to="#" className={classes.textDecor}><ListItemText classes={{ primary: classes.linkList }} primary="Events" /></Link></ListItem>
@@ -44,7 +46,7 @@ const Footer = () => {
                             <ListItem classes={{ root: classes.teleList }}><Link to="#" className={classes.textDecor}><ListItemText classes={{ primary: classes.linkList }} primary="About" /></Link></ListItem>
                         </List>
                     </Grid>
-                    <Grid item lg={2}>
+                    <Grid item xs={12} sm={6} lg={2} classes={{ item: classes.globMargTop }}>
                         <Typography variant="body1" className={classes.connectTitle}>Connect with us</Typography>
                         <IconButton classes={{ root: classes.socialButtons }}>
                             <FacebookIcon className={classes.socialIcons} />
@@ -78,6 +80,9 @@ const useStyles = makeStyles(theme => ({
         fontSize: "1.2rem",
         marginBottom: theme.spacing(1)
     },
+    globMargTop: {
+        marginTop: props => props.max600 ? theme.spacing(3) : theme.spacing(0)
+    },
     pGraph: {
         color: theme.palette.secondary.contrastText,
         fontSize: ".75rem"
@@ -99,7 +104,13 @@ const useStyles = makeStyles(theme => ({
     },
     ulList: {
         display: 'inline-block',
-        padding: theme.spacing(0, 2)
+        padding: theme.spacing(0, 2),
+        '&:first-child': {
+            paddingLeft: theme.spacing(0)
+        },
+        '&:last-child': {
+            paddingRight: theme.spacing(0)
+        }
     },
     textDecor: {
         textDecoration: "none"

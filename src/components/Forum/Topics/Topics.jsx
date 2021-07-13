@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Typography, LinearProgress, Box } from '@material-ui/core'
+import { Container, Typography, LinearProgress, Box, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -16,7 +16,8 @@ import { get_topics, get_latest_topics_view_all, get_hot_topics_view_all, get_re
 import Empty from '../../Globals/Empty/Empty'
 
 const Topics = () => {
-    const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
+    const classes = useStyles({ max600 })
     const { category } = useParams()
 
     const [showForm, setShowForm] = useState(false)
@@ -88,7 +89,7 @@ const Topics = () => {
             }
 
             { showForm === false &&  
-                <Box marginTop="10px" marginLeft="-10px">
+                <Box marginTop="10px">
                     <IconBtn icon={<NoteAddIcon />} text="Add Topic" handleClick={toggleShow} /> 
                 </Box>
             }
@@ -113,7 +114,7 @@ const Topics = () => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        marginTop: theme.spacing(4)
+        marginTop: props => props.max600 ? theme.spacing(8) : theme.spacing(4)
     },
     typoH2: {
         fontWeight: theme.typography.fontWeightBold,

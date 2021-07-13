@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Avatar, Typography, Box, Divider, Button } from '@material-ui/core'
+import { Container, Avatar, Typography, Box, Divider, Button, Grid, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import EmailIcon from '@material-ui/icons/Email';
@@ -12,7 +12,9 @@ import { useSelector } from 'react-redux';
 import * as api from '../../../api'
 
 const UserProfile = () => {
-    const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
+
+    const classes = useStyles({ max600 })
     const [user, setUser] = useState({})
 
     const matchEdit = useRouteMatch('/forum/profile/edit/:userId')
@@ -38,36 +40,40 @@ const UserProfile = () => {
 
     return (
         <Container className={classes.container}>
-            <Box>
-                <Avatar className={classes.avatar}>{ user.username?.charAt(0) }</Avatar>
-                <Typography className={classes.typoName}>{ user.name?.firstName || "First Name" } { user.name?.lastName || "Last Name" }</Typography>
-                <Typography className={`${classes.typoWithIcon} ${classes.marginTop2}`}><AccountCircleIcon className={classes.typoIcon} /> { user.username }</Typography>
-                <Typography className={`${classes.typoWithIcon} ${classes.marginTop1}`}><EmailIcon className={classes.typoIcon} /> { user.email }</Typography>
-                <Box className={classes.marginTop2}>
-                    <Typography className={classes.statNum}>{ user.post?.topics.length }</Typography>
-                    <Typography className={classes.statSting}>{ user.post?.topics.length > 1 ? "Posts" : "Post" }</Typography>
-                </Box>
-                <Box className={classes.marginTop1}>
-                    <Typography className={classes.statNum}>{ user.post?.replies.length }</Typography>
-                    <Typography className={classes.statSting}>{ user.post?.replies.length > 1 ? "Replies" : "Reply" }</Typography>
-                </Box>
-            </Box>
+            <Grid container direction="row" spacing={5} alignItems="center">
+                <Grid item xs={'auto'} sm={'auto'} md={12}>
+                    <Avatar className={classes.avatar}>{ user.username?.charAt(0) }</Avatar>
+                </Grid>
+                <Grid item xs={6} sm={8} md={12}>
+                    <Typography className={classes.typoName}>{ user.name?.firstName || "First Name" } { user.name?.lastName || "Last Name" }</Typography>
+                    <Typography className={`${classes.typoWithIcon} ${classes.marginTop2}`}><AccountCircleIcon className={classes.typoIcon} /> { user.username }</Typography>
+                    <Typography className={`${classes.typoWithIcon} ${classes.marginTop1}`}><EmailIcon className={classes.typoIcon} /> { user.email }</Typography>
+                    <Box className={classes.marginTop2} display={max600 ? "inline-block" : "block"} marginRight={max600 ? "20px" : "0"}>
+                        <Typography className={classes.statNum}>{ user.post?.topics.length }</Typography>
+                        <Typography className={classes.statSting}>{ user.post?.topics.length > 1 ? "Posts" : "Post" }</Typography>
+                    </Box>
+                    <Box className={classes.marginTop1} display={max600 ? "inline-block" : "block"}>
+                        <Typography className={classes.statNum}>{ user.post?.replies.length }</Typography>
+                        <Typography className={classes.statSting}>{ user.post?.replies.length > 1 ? "Replies" : "Reply" }</Typography>
+                    </Box>
+                </Grid>
+            </Grid>
             {
                 (user._id === profileLs?._id || user._id === profile.result?._id) &&
                     <>
                         <Divider className={classes.divider} />
                         {
                             matchEdit !== null ?
-                                <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
+                                <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none", marginRight: "16px" }}>
                                     <Button className={classes.button} variant="text" startIcon={<DescriptionIcon />}>Posts</Button>
                                 </Link>
                             :
-                                <Link to={`/forum/profile/edit/${user._id}`} style={{ textDecoration: "none" }}>
+                                <Link to={`/forum/profile/edit/${user._id}`} style={{ textDecoration: "none", marginRight: "16px" }}>
                                     <Button className={classes.button} variant="text" startIcon={<EditIcon />}>Edit Profile</Button>
                                 </Link>
                                 
                         }
-                        <Button className={`${classes.button} ${classes.marginTop1}`} variant="text" startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
+                        <Button className={`${classes.button} ${ !max600 && classes.marginTop1}`} variant="text" startIcon={<ExitToAppIcon />}>Deactivate Account</Button>
                     </>
 
             }
@@ -77,11 +83,12 @@ const UserProfile = () => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        marginTop: theme.spacing(5)
+        marginTop: theme.spacing(5),
+        padding: 0
     },
     avatar: {
-        width: theme.spacing(24),
-        height: theme.spacing(24),
+        width: props => props.max600 ? theme.spacing(18) : theme.spacing(24),
+        height: props => props.max600 ? theme.spacing(18) : theme.spacing(24),
         fontSize: theme.spacing(18),
     },
     marginTop2: {
@@ -127,7 +134,6 @@ const useStyles = makeStyles(theme => ({
         fontSize: ".85rem",
         fontWeight: theme.typography.fontWeightBold,
         textAlign: "left",
-        display: "block"
     }
 }))
 

@@ -118,12 +118,12 @@ const AddTopicForm = ({ action }) => {
         <Container classes={{ root: classes.containerRoot }}>
             <form onSubmit={handleFormSubmit}>
                 <Grid container direction="column">
-                    <Grid item>
+                    <Grid item xs={12}>
                         <Grid container direction="row" justify="space-around" alignItems='center' spacing={2}>
-                            <Grid item md={9}>
+                            <Grid item xs={12} sm={8} md={9}>
                                 <Input type="text" name="title" label="set title" handleInputChange={handleInputChange} errors={errors} value={formData.title} />
                             </Grid>
-                            <Grid item md={3}>
+                            <Grid item xs={12} sm={4} md={3}>
                                 <FormControl classes={{ root: classes.formControl }} error={ errors.ref.category !== "" ? true : false }>
                                     <InputLabel id="demo-simple-select-error-label" classes={{ root: classes.label }}>
                                         { errors.ref.category !== "" ? errors.ref.category : "select category" }
@@ -155,10 +155,10 @@ const AddTopicForm = ({ action }) => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={12}>
                         <TextArea type="text" name="description" label="set description" handleInputChange={handleInputChange} errors={errors} rows={6} margin={true} value={formData.description} />
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={12}>
                         <Button type="submit" className={classes.buttonSubmit} startIcon={<PublishIcon />}>PUBLISH</Button>
                     </Grid>
                 </Grid>
@@ -171,6 +171,7 @@ const useStyles = makeStyles(theme => ({
     containerRoot: {
         background: theme.palette.primary.contrastText,
         marginTop: theme.spacing(2),
+        padding: `0 ${theme.spacing(2)}px ${theme.spacing(2)}px`,
         borderRadius: theme.shape.borderRadius,
         boxShadow: theme.shadows[7]
     },

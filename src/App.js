@@ -1,15 +1,14 @@
-import React, { lazy, Suspense } from 'react'
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import React, { lazy, Suspense, useEffect } from 'react'
+import { BrowserRouter, Switch, Route, useLocation } from 'react-router-dom';
 import { Backdrop, CircularProgress, ThemeProvider, createMuiTheme } from '@material-ui/core';
 
 import './index.css';
-
-import Footer from './components/Footer/Footer'
 const Auth = lazy(() => import('./components/Auth/Auth'));
 const Forum = lazy(() => import('./components/Forum/Forum'));
 const Home = lazy(() => import('./components/Home/Home'));
 
 const App = () => {
+
     const theme = createMuiTheme({
       palette: {
         primary: {
@@ -45,8 +44,6 @@ const App = () => {
                 <Route path="/forum" component={Forum} />
               </Switch>
           </Suspense>
-
-          <Footer />
         </BrowserRouter>
       </ThemeProvider>
     )

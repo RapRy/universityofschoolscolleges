@@ -7,24 +7,49 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux'
+import { Link, useHistory } from 'react-router-dom';
+import { useSnackbar } from 'notistack'
 
 import * as api from '../../../api'
 import IconBtn from '../../Globals/IconBtn';
 import Reply from '../Topics/Reply';
 import AddReply from '../../Globals/Forms/AddReply';
+import AddTopicForm from '../../Globals/Forms/AddTopicForm';
+import DeleteDialog from '../../Globals/DeleteDialog';
+import { update_active_status } from '../../../redux/topicsReducer';
 
 const Post = ({ post }) => {
     const profileLS = JSON.parse(localStorage.getItem('profile')).result
 
+    const { enqueueSnackbar } = useSnackbar()
+
+    const dispatch = useDispatch()
+
+    const history = useHistory()
+
     const classes = useStyles()
     const [additionalData, setAdditionalData] = useState({})
     const [showReplies, setShowReplies] = useState(false)
+    const [edit, setEdit] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
 
     const { profile } = useSelector(state => state.auth)
 
     const expandReplies = () => setShowReplies(prevState => !prevState)
+
+    const handleEdit = () => setEdit(true)
+
+    const handleDelete = () => setOpenDelete(true)
+
+    const handleCloseDialog = () => setOpenDelete(false)
+
+    const handleConfirmDelete = () => {
+        dispatch(update_active_status(post._id))
+        enqueueSnackbar(`${post.title} deleted`, { variant: "success" })
+        setOpenDelete(false)
+        history.push(`/forum/profile/${profile.result._id}`)
+    }
 
     useEffect(() => {
         const fetchAdditionals = async () => {
@@ -59,6 +84,9 @@ const Post = ({ post }) => {
 
     return (
         <Container className={classes.container}>
+
+            { openDelete && <DeleteDialog status={openDelete} message={`Click confirm to delete ${post.title}`} handleDelete={handleConfirmDelete} handleCancel={handleCloseDialog} /> }
+
             <div>
                 <Link to={`/forum/${additionalData.category?.name.replace(" ", "-")}/${post._id}`} style={{ textDecoration: 'none' }}>
                     <Typography variant="h3" className={classes.title}>{ post.title }</Typography>
@@ -70,9 +98,13 @@ const Post = ({ post }) => {
             {
                 (profileLS._id === post.ref?.creator || profile.result?._id === post.ref?.creator) &&
                     <div className={classes.ctaContainer}>
-                        <IconBtn icon={<EditIcon />} text="edit" />
-                        <IconBtn icon={<DeleteIcon />} text="delete" />
+                        <IconBtn icon={<EditIcon />} text="edit" handleClick={handleEdit} />
+                        <IconBtn icon={<DeleteIcon />} text="delete" handleClick={handleDelete} />
                     </div>
+            }
+
+            {
+                edit && <AddTopicForm action="edit" />
             }
 
             <Divider className={classes.divider} />

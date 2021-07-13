@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Avatar, Grid, Typography } from '@material-ui/core'
+import { Container, Avatar, Grid, Typography, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import Moment from 'react-moment'
 import { Link } from 'react-router-dom'
@@ -7,7 +7,8 @@ import { Link } from 'react-router-dom'
 import * as api from '../../../api'
 
 const Reply = ({ reply }) => {
-    const classes = useStyles()
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
+    const classes = useStyles({ max600 })
 
     const [user, setUser] = useState({})
 
@@ -32,9 +33,9 @@ const Reply = ({ reply }) => {
     return (
         <Container className={classes.container}>
             <Grid container direction="row" spacing={1}>
-                <Grid item md={1}>
+                <Grid item md={"auto"}>
                     <Link to={`/forum/profile/${user._id}`} style={{ textDecoration: "none" }}>
-                        <Avatar>{ user.username?.charAt(0) }</Avatar>
+                        <Avatar className={classes.avatar}>{ user.username?.charAt(0) }</Avatar>
                     </Link>
                 </Grid>
                 <Grid item md={11}>
@@ -60,6 +61,10 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(2),
         borderRadius: theme.shape.borderRadius
     },
+    avatar: {
+        width: props => props.max600 && theme.spacing(4),
+        height: props => props.max600 && theme.spacing(4)
+    },
     username: {
         display: "inline-block",
         fontWeight: theme.typography.fontWeightBold,
@@ -77,7 +82,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(1),
         marginLeft: theme.spacing(1),
         fontSize: ".9rem",
-        wordWrap: "break-word"
+        wordBreak: "break-all"
     }
 }))
 

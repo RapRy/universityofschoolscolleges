@@ -11,7 +11,7 @@ const UserMenu = ({ setShowAside, showAside }) => {
     const { profile } = useSelector(state => state.auth);
 
     return (
-        <Grid container direction="row" spacing={2} alignItems="center">
+        <Grid container direction="row" spacing={2} alignItems="center" justify="flex-end">
             <Grid item xs={10}>
                 <SearchBar />  
             </Grid>

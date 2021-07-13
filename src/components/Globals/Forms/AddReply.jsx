@@ -46,16 +46,16 @@ const AddReply = ({ categoryId, topicId }) => {
     return (
         <Container classes={{ root: classes.containerRoot }}>
             <Grid container direction="row" spacing={1}>
-                <Grid item md={1}>
+                <Grid item xs={'auto'} md={1}>
                     <Avatar>{ profile.result?.username.charAt(0) || profileLs.username.charAt(0) }</Avatar>
                 </Grid>
-                <Grid item md={11} style={{ marginTop: "3px" }}>
+                <Grid item xs={9} sm={11} style={{ marginTop: "3px" }}>
                     <form onSubmit={handleFormSubmit}>
-                        <Grid container direction="row" spacing={1}>
-                            <Grid item md={11}>
+                        <Grid container direction="row" spacing={1} justify="flex-end">
+                            <Grid item xs={11}>
                                 <TextArea type="text" name="reply" label="" handleInputChange={handleInputChange} errors={errors} rows={1} margin={false} />
                             </Grid>
-                            <Grid item md={1}>
+                            <Grid item xs={1}>
                                 <IconButton type="submit" className={classes.iconBtn}>
                                     <SendIcon />
                                 </IconButton>

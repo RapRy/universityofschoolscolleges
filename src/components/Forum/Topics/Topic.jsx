@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useRouteMatch, useHistory, Link } from 'react-router-dom'
-import { Container, Grid, Avatar, Typography, Divider, LinearProgress, Collapse } from '@material-ui/core'
+import { Container, Grid, Avatar, Typography, Divider, LinearProgress, Collapse, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useDispatch, useSelector } from 'react-redux'
 import EditIcon from '@material-ui/icons/Edit';
@@ -20,7 +20,9 @@ import { update_active_status } from '../../../redux/topicsReducer'
 
 const Topic = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile')).result
-    const classes = useStyles()
+
+    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
+    const classes = useStyles({ max600 })
 
     const { params, url } = useRouteMatch()
     const history = useHistory()
@@ -80,25 +82,55 @@ const Topic = () => {
             { status === "idle" && 
                 <Container className={classes.container}>
                     <Grid container direction="row" spacing={1}>
-                        <Grid item md={2}>
-                            <Link to={`/forum/profile/${selectedTopic.creator?._id}`} style={{ textDecoration: "none" }}>
-                                <Avatar className={classes.avatar}>{ selectedTopic.creator?.username?.charAt(0) }</Avatar>
-                            </Link>
-                            <div className={classes.statContainer}>
-                                <Typography variant="h2" className={classes.numType}>{ selectedTopic.replies?.length }</Typography>
-                                <Typography variant="body1" className={classes.stringType}>{selectedTopic.replies?.length > 1 ? "Replies" : "Reply"}</Typography>
-                            </div>
-                            <div className={classes.statContainer}>
-                                <Typography variant="h2" className={classes.numType}>{ selectedTopic.topic?.meta?.views?.length }</Typography>
-                                <Typography variant="body1" className={classes.stringType}>{selectedTopic.topic?.meta?.views?.length > 1 ? "Views" : "View"}</Typography>
-                            </div>
+                        <Grid item xs={12} sm={2} md={2}>
+                            <Grid container direction="row" spacing={1} alignItems="flex-start">
+                                {
+                                    !max600 &&
+                                        <Grid item xs={'auto'} sm={12}>
+                                            <Link to={`/forum/profile/${selectedTopic.creator?._id}`} style={{ textDecoration: "none" }}>
+                                                <Avatar className={classes.avatar}>{ selectedTopic.creator?.username?.charAt(0) }</Avatar>
+                                            </Link>
+                                        </Grid>
+                                }
+                                <Grid item xs={12}>
+                                    {
+                                        max600 ?
+                                            <div className={classes.titleContainer}>
+                                                <Typography variant="h3" className={classes.title}>{ selectedTopic.topic?.title }</Typography>
+                                                <Typography variant="body1" className={classes.updatesDetails}>Asked by { <Link to={`/forum/profile/${selectedTopic.creator?._id}`} style={{ textDecoration: "none" }}><span className={classes.span}>{ selectedTopic.creator?.username}</span></Link>} on {dateString()} in { <Link to={`/forum/${selectedTopic.category?._id}`} style={{ textDecoration: "none" }} ><span className={classes.span}>{ selectedTopic.category?.name }</span></Link> }</Typography>
+                                                <div className={classes.statContainer}>
+                                                    <Typography variant="h2" className={classes.numType}>{ selectedTopic.replies?.length }</Typography>
+                                                    <Typography variant="body1" className={classes.stringType}>{selectedTopic.replies?.length > 1 ? "Replies" : "Reply"}</Typography>
+                                                </div>
+                                                <div className={classes.statContainer}>
+                                                    <Typography variant="h2" className={classes.numType}>{ selectedTopic.topic?.meta?.views?.length }</Typography>
+                                                    <Typography variant="body1" className={classes.stringType}>{selectedTopic.topic?.meta?.views?.length > 1 ? "Views" : "View"}</Typography>
+                                                </div>
+                                            </div>
+                                        :
+                                            <>
+                                                <div className={classes.statContainer}>
+                                                    <Typography variant="h2" className={classes.numType}>{ selectedTopic.replies?.length }</Typography>
+                                                    <Typography variant="body1" className={classes.stringType}>{selectedTopic.replies?.length > 1 ? "Replies" : "Reply"}</Typography>
+                                                </div>
+                                                <div className={classes.statContainer}>
+                                                    <Typography variant="h2" className={classes.numType}>{ selectedTopic.topic?.meta?.views?.length }</Typography>
+                                                    <Typography variant="body1" className={classes.stringType}>{selectedTopic.topic?.meta?.views?.length > 1 ? "Views" : "View"}</Typography>
+                                                </div>
+                                            </>
+                                    }
+                                </Grid>
+                            </Grid>
                         </Grid>
 
-                        <Grid item md={10}>
-                            <div className={classes.titleContainer}>
-                                <Typography variant="h3" className={classes.title}>{ selectedTopic.topic?.title }</Typography>
-                                <Typography variant="body1" className={classes.updatesDetails}>Asked by { <Link to={`/forum/profile/${selectedTopic.creator?._id}`} style={{ textDecoration: "none" }}><span className={classes.span}>{ selectedTopic.creator?.username}</span></Link>} on {dateString()} in { <Link to={`/forum/${selectedTopic.category?._id}`} style={{ textDecoration: "none" }} ><span className={classes.span}>{ selectedTopic.category?.name }</span></Link> }</Typography>
-                            </div>
+                        <Grid item xs={12} sm={10} md={10}>
+                            {
+                                !max600 &&
+                                    <div className={classes.titleContainer}>
+                                        <Typography variant="h3" className={classes.title}>{ selectedTopic.topic?.title }</Typography>
+                                        <Typography variant="body1" className={classes.updatesDetails}>Asked by { <Link to={`/forum/profile/${selectedTopic.creator?._id}`} style={{ textDecoration: "none" }}><span className={classes.span}>{ selectedTopic.creator?.username}</span></Link>} on {dateString()} in { <Link to={`/forum/${selectedTopic.category?._id}`} style={{ textDecoration: "none" }} ><span className={classes.span}>{ selectedTopic.category?.name }</span></Link> }</Typography>
+                                    </div>
+                            }
 
                             {
                                 (profileLS._id === selectedTopic.topic?.ref?.creator || profile.result?._id === selectedTopic.topic?.ref?.creator) &&
@@ -157,11 +189,13 @@ const useStyles = makeStyles(theme => ({
         margin: `${theme.spacing(2)}px auto 0px`
     },
     statContainer: {
-        marginTop: theme.spacing(2)
+        marginTop: props => props.max600 ? theme.spacing(1) : theme.spacing(2),
+        display: props => props.max600 ? "inline-block" : "block",
+        marginRight: props => props.max600 ? theme.spacing(4) : 0
     },
     numType: {
         fontWeight: theme.typography.fontWeightBlack,
-        fontSize: "2rem",
+        fontSize: props => props.max600 ? "1.4rem" : "2rem",
         color: theme.palette.primary.main,
         textAlign: "center",
         marginBottom: theme.spacing(1),
@@ -184,14 +218,14 @@ const useStyles = makeStyles(theme => ({
         },
         [theme.breakpoints.down('xs')]:{
             display: "inline-block",
-            fontSize: ".9rem",
+            fontSize: ".8rem",
             position: "relative",
-            bottom: theme.spacing(1),
-            left: theme.spacing(1) + 2
+            bottom: theme.spacing(1) - 4,
+            left: theme.spacing(1)
         }
     },
     titleContainer: {
-        marginTop: theme.spacing(2)
+        marginTop: props => props.max600 ? 0 : theme.spacing(2)
     },
     title: {
         fontSize: "1.1rem",
@@ -211,7 +245,7 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3)
     },
     divider: {
-        marginTop: theme.spacing(3)
+        marginTop: props => props.max600 ? theme.spacing(1) : theme.spacing(3)
     },
     descContainer: {
         margin: `${theme.spacing(3)}px 0`
