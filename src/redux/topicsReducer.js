@@ -173,7 +173,8 @@ export const topicsSlice = createSlice({
             state.status = "loading"
         },
         [update_topic.fulfilled]: (state, action) => {
-            console.log(action.payload)
+            const newTopics = state.topics.filter(top => top._id !== action.payload._id)
+            state.topics = [ ...newTopics, action.payload ]
             state.status = "idle"
         },
         [update_topic.rejected]: (state) => {

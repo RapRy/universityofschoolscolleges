@@ -17,7 +17,8 @@ import Reply from '../Topics/Reply';
 import AddReply from '../../Globals/Forms/AddReply';
 import AddTopicForm from '../../Globals/Forms/AddTopicForm';
 import DeleteDialog from '../../Globals/DeleteDialog';
-import { update_active_status } from '../../../redux/topicsReducer';
+import { update_active_status, get_topic_details } from '../../../redux/topicsReducer';
+import { set_selected } from '../../../redux/categoriesReducer';
 
 const Post = ({ post }) => {
     const profileLS = JSON.parse(localStorage.getItem('profile')).result
@@ -38,7 +39,11 @@ const Post = ({ post }) => {
 
     const expandReplies = () => setShowReplies(prevState => !prevState)
 
-    const handleEdit = () => setEdit(true)
+    const handleEdit = async () => {
+        await dispatch(get_topic_details(post._id))
+        await dispatch(set_selected(post.ref.category))
+        await setEdit(true)
+    }
 
     const handleDelete = () => setOpenDelete(true)
 

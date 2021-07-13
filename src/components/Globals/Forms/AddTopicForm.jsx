@@ -18,6 +18,7 @@ const AddTopicForm = ({ action }) => {
 
     const { categories, selectedCat } = useSelector(state => state.categories)
     const { selectedTopic } = useSelector(state => state.topics)
+    const { profile } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
     const [errors, setErrors] = useState(initialErrors)
@@ -60,7 +61,6 @@ const AddTopicForm = ({ action }) => {
         }
 
         if(action === "edit"){
-            console.log(action)
             const { data, status } = await api.updateTopic(formData)
 
             if(status === 200){
@@ -69,12 +69,14 @@ const AddTopicForm = ({ action }) => {
                     return
                 }
 
-                if(selectedCat._id === data.result.ref.category) dispatch(update_topic(data.result))
+                // if(selectedCat._id === data.result.ref.category) dispatch(update_topic(data.result))
+
+                dispatch(update_topic(data.result))
 
                 enqueueSnackbar(`update successful`, { variant: "success" })
 
                 const cat = categories.filter(({ name }) => name === select)
-                const ref = { ...initialState.ref, ['category']: cat[0]._id }
+                const ref = { ...initialState.ref, ['category']: cat[0]._id, ['creator']: profile.result?._id || JSON.parse(localStorage.getItem('profile'))?.result?._id }
 
                 setFormData({ ...initialState, ['ref']: ref })
             }
@@ -95,7 +97,7 @@ const AddTopicForm = ({ action }) => {
             enqueueSnackbar(`${formData.title} publish at ${select}`, { variant: "success" })
 
             const cat = categories.filter(({ name }) => name === select)
-            const ref = { ...initialState.ref, ['category']: cat[0]._id }
+            const ref = { ...initialState.ref, ['category']: cat[0]._id, ['creator']: profile.result?._id || JSON.parse(localStorage.getItem('profile'))?.result?._id }
 
             setFormData({ ...initialState, ['ref']: ref })
         }
