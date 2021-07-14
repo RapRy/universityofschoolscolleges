@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import { Button, Container, Grid, Typography, Box, Backdrop, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,6 +7,7 @@ import { useSnackbar } from 'notistack'
 
 import Input from '../Globals/Forms/Input';
 import { sign_up, sign_in } from '../../redux/authReducer';
+import { formContext } from './formContext';
 
 const initialState = { username: "", email: "", schoolId: "", password: "", confirmPassword: "" };
 const initialErrors = { username: "", email: "", schoolId: "",  password: "", confirmPassword: "" };
@@ -79,7 +80,6 @@ const Auth = () => {
     }
 
     useEffect(() => {
-
         if(localStorage.getItem('profile') !== null){
             history.push('/forum')
         }
@@ -103,11 +103,13 @@ const Auth = () => {
                             <CircularProgress color="inherit" />
                         </Backdrop>
                         <form onSubmit={handleSubmit}>
-                            { switchForm && <Input type={"text"} label={"Username"} name={"username"} errors={errors} handleInputChange={handleInputChange} /> }
-                            <Input type={"email"} label={"Email"} name={"email"} errors={errors} handleInputChange={handleInputChange} />
-                            { switchForm && <Input type={"text"} label={"Student ID"} name={"schoolId"} errors={errors} handleInputChange={handleInputChange} /> }
-                            <Input type={"password"} label={"Password"} name={"password"} errors={errors} handleInputChange={handleInputChange} />
-                            { switchForm &&  <Input type={"password"} label={"Confirm Password"} name={"confirmPassword"} errors={errors} handleInputChange={handleInputChange} />}
+                            <formContext.Provider value={{ switchForm }}>
+                                { switchForm && <Input type={"text"} label={"Username"} name={"username"} errors={errors} handleInputChange={handleInputChange} value={formData.username} /> }
+                                <Input type={"email"} label={"Email"} name={"email"} errors={errors} handleInputChange={handleInputChange} value={formData.email} />
+                                { switchForm && <Input type={"text"} label={"Student ID"} name={"schoolId"} errors={errors} handleInputChange={handleInputChange} value={formData.schoolId} /> }
+                                <Input type={"password"} label={"Password"} name={"password"} errors={errors} handleInputChange={handleInputChange} value={formData.password} />
+                                { switchForm &&  <Input type={"password"} label={"Confirm Password"} name={"confirmPassword"} errors={errors} handleInputChange={handleInputChange} value={formData.confirmPassword} />}
+                            </formContext.Provider>
                             <Box textAlign="center" paddingTop="30px">
                                 <Button type="submit" className={classes.button2}>{ switchForm ? "Create" : "Login" }</Button>
                             </Box>

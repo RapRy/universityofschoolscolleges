@@ -36,7 +36,7 @@ const Topics = () => {
     const toggleShow = () => setShowForm(prevState => !prevState)
 
     useEffect(() => {
-        if(profile.result === null || userFromLocal.result === null || selectedCat.active === 0) history.push('/forum')
+        if(profile?.result === null || userFromLocal?.result === null || selectedCat?.active === 0) history.push('/')
 
         setDisplayCat("")
 
@@ -73,13 +73,13 @@ const Topics = () => {
                 break
         }
 
-        if(profile.result?.accountType === 1 || userFromLocal.result?.accountType === 1) setShowForm(true)
+        if(profile?.result?.accountType === 1 || userFromLocal?.result?.accountType === 1) setShowForm(true)
     }, [match.url])
 
     return (
         <Container className={classes.container}> 
             {
-                (profile.result?.accountType === 1 || userFromLocal.result?.accountType === 1) ?
+                (profile?.result?.accountType === 1 || userFromLocal?.result?.accountType === 1) ?
                     <Box>
                         <Typography className={classes.typoH2} variant="h2" display="inline">Topics |</Typography>
                         <Typography className={classes.headerH6} variant="h6" display="inline">{ displayCat !== "" ? displayCat : selectedCat.name }</Typography>

@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
     mainContainer: {
         background: theme.palette.primary.dark,
         marginTop: theme.spacing(10),
-        padding: theme.spacing(6, 0)
+        padding: theme.spacing(6, 0),
     },
     h4: {
         color: theme.palette.secondary.contrastText,

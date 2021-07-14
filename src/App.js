@@ -1,4 +1,4 @@
-import React, { lazy, Suspense, useEffect } from 'react'
+import React, { lazy, Suspense } from 'react'
 import { Switch, Route, useRouteMatch } from 'react-router-dom';
 import { Backdrop, CircularProgress, ThemeProvider, createMuiTheme } from '@material-ui/core';
 
@@ -36,10 +36,6 @@ const App = () => {
     })
 
     const matchAuth = useRouteMatch('/auth')
-
-    useEffect(() => {
-      console.log(matchAuth)
-    }, [])
 
     return (
       <ThemeProvider theme={theme}> 

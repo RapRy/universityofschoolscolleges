@@ -7,9 +7,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import UserMenu from './UserMenu'
 import ProfileMenu from './ProfileMenu'
 import SearchBar from './SearchBar';
+import HomeMenu from './HomeMenu';
 
 const Navigation = ({ type }) => {
-    const classes = useStyles();
+    const classes = useStyles({ type });
     const max960 = useMediaQuery('(max-width:960px)');
     const min600 = useMediaQuery('(min-width:600px)');
 
@@ -35,14 +36,21 @@ const Navigation = ({ type }) => {
                         }
                     </Grid>
                     <Grid item xs={1} sm={7} md={6}>
-                    <Drawer anchor="right" open={showAside} onClose={() => setShowAside(prevState => !prevState)}>
-                        <ProfileMenu max960={max960} setShowAside={setShowAside} />
-                    </Drawer>
+                    {
+                        type !== "" ?
+                            <Drawer anchor="right" open={showAside} onClose={() => setShowAside(prevState => !prevState)}>
+                                <ProfileMenu max960={max960} setShowAside={setShowAside} />
+                            </Drawer>
+                        :
+                            <Drawer anchor="right" open={showAside} onClose={() => setShowAside(prevState => !prevState)}>
+                                <HomeMenu aside={true} />
+                            </Drawer>
+                    }
                         {
                             max960 === true ?
                                 <Grid container direction="row" spacing={1} alignItems="center" justify="flex-end">
                                     {
-                                        min600 &&
+                                        (min600 && type !== "") &&
                                             <Grid item sm={10} md={11} >
                                                 <SearchBar />
                                             </Grid>
@@ -56,7 +64,7 @@ const Navigation = ({ type }) => {
                                     {
                                         type !== "" ?
                                             <UserMenu setShowAside={setShowAside} showAside={showAside} />
-                                        : ""
+                                        : <HomeMenu aside={false} />
                                     }
                                 </>
                         }
@@ -69,10 +77,11 @@ const Navigation = ({ type }) => {
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
-        background: theme.palette.primary.main
+        background: props => props.type !== "" ? theme.palette.primary.main : "transparent",
+        boxShadow: "none"
     },
     container: {
-        padding:"15px 10px"
+        padding: theme.spacing(2, 3)
     },
     headerH5: {
         fontWeight: 700,

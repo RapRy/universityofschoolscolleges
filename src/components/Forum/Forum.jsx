@@ -22,6 +22,7 @@ import UserPosts from './Users/UserPosts';
 import EditProfile from './Users/EditProfile';
 import SearchResult from './Search/SearchResult';
 import BottomPanels from './BottomPanels';
+import BackToTop from '../Globals/BackToTop';
 
 const Forum = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile'))
@@ -45,13 +46,14 @@ const Forum = () => {
         }else if(localStorage.getItem('profile') !== null){
             dispatch(sign_in_LS(profileLS));
         }else{
-            history.push('/auth');
+            history.push(history.action === "POP" ? '/' : '/auth');
         }
 
     }, [dispatch, profile])
 
     return (
         <div>
+            <BackToTop />
             <Navigation type="forum" />
             {
                 max600 && 
