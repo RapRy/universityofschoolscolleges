@@ -1,7 +1,7 @@
 import React from 'react'
 import { Container, Grid, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton, useMediaQuery } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
-import { Link } from 'react-router-dom'
+import { Link, useRouteMatch } from 'react-router-dom'
 
 import PhoneIcon from '@material-ui/icons/Phone';
 import FacebookIcon from '@material-ui/icons/Facebook';
@@ -12,7 +12,9 @@ import InstagramIcon from '@material-ui/icons/Instagram';
 const Footer = () => {
     const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
 
-    const classes = useStyles({ max600 })
+    const matchHome = useRouteMatch("/")
+
+    const classes = useStyles({ max600, matchHome })
 
     return (
         <div className={classes.mainContainer}>
@@ -71,7 +73,7 @@ const Footer = () => {
 const useStyles = makeStyles(theme => ({
     mainContainer: {
         background: theme.palette.primary.dark,
-        marginTop: theme.spacing(10),
+        marginTop: props => props.matchHome.isExact ? theme.spacing(0) : theme.spacing(10),
         padding: theme.spacing(6, 0),
     },
     h4: {

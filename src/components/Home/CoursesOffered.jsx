@@ -14,7 +14,7 @@ const CoursesOffered = () => {
         <Container className={classes.mainContainer}>
             <Grid container direction={ max900 ? "column-reverse" : "row" } spacing={10}>
                 <Grid item xs={12} md={6}>
-                    <MainHeader heading="courses offered" />
+                    <MainHeader heading="courses offered" cta="" />
                     <Typography variant="body1" className={classes.paragh}>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Elementum faucibus nec sed faucibus egestas etiam dapibus tortor. Proin adipiscing pharetra, mattis adipiscing eget placerat dignissim ipsum. Sed proin ac ut amet aenean nunc metus. Neque consectetur donec phasellus risus elementum sollicitudin vestibulum malesuada pellentesque.
                     </Typography>
@@ -33,7 +33,7 @@ const CoursesOffered = () => {
 
 const useStyles = makeStyles(theme => ({
     mainContainer: {
-        marginTop: theme.spacing(10)
+        marginTop: theme.spacing(15)
     },
     paragh: {
         textAlign: 'justify',

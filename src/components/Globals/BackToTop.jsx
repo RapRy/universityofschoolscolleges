@@ -18,13 +18,13 @@ const BackToTop = () => {
                 if(show === false){
                     setShow(true)
                 }
-            }else if(window.scrollY === 0){
-                if(show === true){
+            }else if(window.scrollY < 500){
                     setShow(false)
-                }
             }
 
-            return
+            return () => {
+                window.removeEventListener('scroll')
+            }
         })
     }, [])
 
@@ -39,8 +39,8 @@ const BackToTop = () => {
 const useStyles = makeStyles(theme => ({
     buttonOrange: {
         position: "fixed",
-        bottom: theme.spacing(10),
-        right: theme.spacing(10),
+        bottom: theme.spacing(5),
+        right: theme.spacing(5),
         background: theme.palette.secondary.main,
         padding: "5px",
         borderRadius: theme.shape.borderRadius,
