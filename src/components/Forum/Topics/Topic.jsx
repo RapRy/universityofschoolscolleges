@@ -189,9 +189,12 @@ const useStyles = makeStyles(theme => ({
         margin: `${theme.spacing(2)}px auto 0px`
     },
     statContainer: {
-        marginTop: props => props.max600 ? theme.spacing(1) : theme.spacing(2),
+        marginTop: theme.spacing(2),
         display: props => props.max600 ? "inline-block" : "block",
-        marginRight: props => props.max600 ? theme.spacing(4) : 0
+        marginRight: props => props.max600 ? theme.spacing(4) : 0,
+        [theme.breakpoints.down('xs')]: {
+            marginTop: theme.spacing(1),
+        }
     },
     numType: {
         fontWeight: theme.typography.fontWeightBlack,

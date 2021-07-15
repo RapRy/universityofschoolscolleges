@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Grid, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton, useMediaQuery } from '@material-ui/core'
+import { Container, Grid, Typography, List, ListItem, ListItemIcon, ListItemText, IconButton } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { Link, useRouteMatch } from 'react-router-dom'
 
@@ -10,11 +10,9 @@ import TwitterIcon from '@material-ui/icons/Twitter';
 import InstagramIcon from '@material-ui/icons/Instagram';
 
 const Footer = () => {
-    const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
-
     const matchHome = useRouteMatch("/")
 
-    const classes = useStyles({ max600, matchHome })
+    const classes = useStyles({  matchHome })
 
     return (
         <div className={classes.mainContainer}>
@@ -83,7 +81,9 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(1)
     },
     globMargTop: {
-        marginTop: props => props.max600 ? theme.spacing(3) : theme.spacing(0)
+        [theme.breakpoints.down('sm')]: {
+            marginTop: theme.spacing(3)
+        }
     },
     pGraph: {
         color: theme.palette.secondary.contrastText,

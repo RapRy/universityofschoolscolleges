@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Avatar, Grid, Typography, useMediaQuery } from '@material-ui/core'
+import { Container, Avatar, Grid, Typography } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import Moment from 'react-moment'
 import { Link } from 'react-router-dom'
@@ -7,8 +7,7 @@ import { Link } from 'react-router-dom'
 import * as api from '../../../api'
 
 const Reply = ({ reply }) => {
-    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
-    const classes = useStyles({ max600 })
+    const classes = useStyles()
 
     const [user, setUser] = useState({})
 
@@ -62,8 +61,10 @@ const useStyles = makeStyles(theme => ({
         borderRadius: theme.shape.borderRadius
     },
     avatar: {
-        width: props => props.max600 && theme.spacing(4),
-        height: props => props.max600 && theme.spacing(4)
+        [theme.breakpoints.down('xs')]: {
+            width: theme.spacing(4),
+            height: theme.spacing(4)
+        }
     },
     username: {
         display: "inline-block",
