@@ -8,8 +8,7 @@ export const sign_up = createAsyncThunk(
         let { data, status } = await api.signUp(formData);
 
         if(status === 200){
-            localStorage.setItem('profile', JSON.stringify({ ...data }));
-
+            // localStorage.setItem('profile', JSON.stringify({ ...data }));
             return data;
         }
     }
@@ -63,7 +62,7 @@ export const authSlice = createSlice({
             state.status = "loading"
         },
         [sign_up.fulfilled]: (state, action) => {
-            state.profile = { ...action.payload }
+            // state.profile = { ...action.payload }
             state.status = "idle"
         },
         [sign_up.rejected]: (state) => {
