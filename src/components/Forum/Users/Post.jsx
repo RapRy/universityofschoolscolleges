@@ -57,25 +57,30 @@ const Post = ({ post }) => {
     }
 
     useEffect(() => {
-        const fetchAdditionals = async () => {
-            try {
-                const result = await Promise.all([
-                    api.getCategory(post.ref.category),
-                    api.getReplies(post._id)
-                ])
+        let isMounted = true
 
-                if(result[0].status === 200 || result[1].status === 200){
-                    setAdditionalData({ ...result[0].data, replies: result[1].data })
+        if(isMounted){
+            const fetchAdditionals = async () => {
+                try {
+                    const result = await Promise.all([
+                        api.getCategory(post.ref.category),
+                        api.getReplies(post._id)
+                    ])
+    
+                    if(result[0].status === 200 || result[1].status === 200){
+                        setAdditionalData({ ...result[0].data, replies: result[1].data })
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
-            } catch (error) {
-                console.log(error)
             }
+    
+            fetchAdditionals()
         }
-
-        fetchAdditionals()
 
         return () => {
             setAdditionalData({})
+            isMounted = false
         }
     }, [post])
 

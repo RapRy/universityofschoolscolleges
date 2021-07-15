@@ -14,7 +14,13 @@ const UserPosts = () => {
     const { topics, status } = useSelector(state => state.topics)
 
     useEffect(() => {
-        dispatch(get_topics_by_user(userId))
+        let isMounted = true
+
+        if(isMounted) dispatch(get_topics_by_user(userId))
+
+        return () => {
+            isMounted = false
+        }
     }, [userId])
 
     return (

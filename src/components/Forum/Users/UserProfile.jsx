@@ -25,17 +25,25 @@ const UserProfile = () => {
     const profileLs = JSON.parse(localStorage.getItem('profile')).result
 
     useEffect(() => {
-        const fetchUser = async () => {
-            try {
-                const { data, status } = await api.getUser(matchEdit?.params.userId || matchProfile?.params.userId)
+        let isMounted = true
 
-                if(status === 200) setUser(data)
-            } catch (error) {
-                console.log(error)
+        if(isMounted){
+            const fetchUser = async () => {
+                try {
+                    const { data, status } = await api.getUser(matchEdit?.params.userId || matchProfile?.params.userId)
+    
+                    if(status === 200) setUser(data)
+                } catch (error) {
+                    console.log(error)
+                }
             }
+    
+            fetchUser()
         }
 
-        fetchUser()
+        return () => {
+            isMounted = false
+        }
 
     }, [matchProfile?.params?.userId, matchEdit?.params?.userId])
 

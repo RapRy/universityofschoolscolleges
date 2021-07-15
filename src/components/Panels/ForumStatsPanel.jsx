@@ -21,25 +21,33 @@ const ForumStatsPanel = () => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        const fetchCount = async () => {
-            try {
-                const result = await Promise.all([
-                    api.getActiveUsersCount(),
-                    api.getRegisteredCount(),
-                    api.getCategoriesCount(),
-                    api.getTopicCount(),
-                    api.repliesCount()
-                ])
+        let isMounted = true
 
-                if(result[0].status === 200 && result[1].status === 200 && result[2].status === 200 && result[3].status === 200 && result[4].status === 200){
-                    dispatch(update_count({ ...result[0].data, ...result[1].data, ...result[2].data, ...result[3].data, ...result[4].data }))
+        if(isMounted){
+            const fetchCount = async () => {
+                try {
+                    const result = await Promise.all([
+                        api.getActiveUsersCount(),
+                        api.getRegisteredCount(),
+                        api.getCategoriesCount(),
+                        api.getTopicCount(),
+                        api.repliesCount()
+                    ])
+    
+                    if(result[0].status === 200 && result[1].status === 200 && result[2].status === 200 && result[3].status === 200 && result[4].status === 200){
+                        dispatch(update_count({ ...result[0].data, ...result[1].data, ...result[2].data, ...result[3].data, ...result[4].data }))
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
-            } catch (error) {
-                console.log(error)
             }
+    
+            fetchCount()
         }
 
-        fetchCount()
+        return () => {
+            isMounted = false
+        }
     }, [dispatch, categories, topics, selectedTopic.replies])
 
     return (

@@ -19,10 +19,13 @@ const BackToTop = () => {
                     setShow(true)
                 }
             }else if(window.scrollY < 500){
+                if(show === true){
                     setShow(false)
+                }
             }
 
             return () => {
+                setShow(false)
                 window.removeEventListener('scroll')
             }
         })

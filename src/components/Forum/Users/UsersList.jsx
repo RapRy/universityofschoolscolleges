@@ -16,19 +16,27 @@ const  UsersList = ({ selectorName, emptyMessage }) => {
     const [refresher, setRefresher] = useState("")
 
     useEffect(() => {
-        switch(selectorName){
-            case "activeUsers":
-                dispatch(active_users_list(0))
-                break
-            case "newUsers":
-                dispatch(new_users_list(10))
-                break
-            case "blacklistedUsers":
-                dispatch(blacklisted_list())
-                break
-            default:
-                dispatch(registered_users_list())
-                break
+        let isMounted = true
+
+        if(isMounted){
+            switch(selectorName){
+                case "activeUsers":
+                    dispatch(active_users_list(0))
+                    break
+                case "newUsers":
+                    dispatch(new_users_list(10))
+                    break
+                case "blacklistedUsers":
+                    dispatch(blacklisted_list())
+                    break
+                default:
+                    dispatch(registered_users_list())
+                    break
+            }
+        }
+
+        return () => {
+            isMounted = false
         }
     }, [dispatch, refresher])
 

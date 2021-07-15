@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { TableRow, TableCell, IconButton, Avatar } from '@material-ui/core';
 import PersonIcon from '@material-ui/icons/Person';
@@ -31,7 +31,7 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
         }
     }
 
-    const blockUser = async () => {
+    const blockUser = useCallback( async () => {
         try {
             const { status } = await api.blockUser(user._id)
 
@@ -42,9 +42,9 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
         } catch (error) {
             console.log(error)
         }
-    }
+    }, [])
 
-    const unblockUser = async () => {
+    const unblockUser = useCallback( async () => {
         try {
             const { status } = await api.unblockUser(user._id)
 
@@ -55,9 +55,9 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
         } catch (error) {
             console.log(error)
         }
-    }
+    }, [])
 
-    const activateUser = async () => {
+    const activateUser = useCallback( async () => {
         try {
             const { status } = await api.activateUser(user._id)
 
@@ -68,9 +68,9 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
         } catch (error) {
             console.log(error)
         }
-    }
+    }, [])
 
-    const deactivateUser = async () => {
+    const deactivateUser = useCallback(async () => {
         try {
             const { status } = await api.deactivateUser(user._id)
 
@@ -81,7 +81,7 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
         } catch (error) {
             console.log(error)
         }
-    }
+    }, [])
 
     return (
         <>
