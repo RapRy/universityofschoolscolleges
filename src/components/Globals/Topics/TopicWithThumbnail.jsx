@@ -8,9 +8,9 @@ import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
 import * as api from '../../../api'
 
-const TopicWithThumbnail = ({ topic }) => {
+const TopicWithThumbnail = ({ topic, from }) => {
     const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
-    const classes = useStyles({ max600 })
+    const classes = useStyles({ max600, from })
 
     const [additionalData, setAdditionalData] = useState({})
 
@@ -77,9 +77,9 @@ const TopicWithThumbnail = ({ topic }) => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        background: theme.palette.primary.contrastText,
+        background: props => props.from ? theme.palette.secondary.contrastText : theme.palette.primary.contrastText,
         padding: props => props.max600 ? theme.spacing(2) : theme.spacing(4),
-        marginTop: theme.spacing(3),
+        marginTop: props => props.from ? theme.spacing(0) : theme.spacing(3),
         boxShadow: theme.shadows[7],
         borderRadius: theme.shape.borderRadius
     },

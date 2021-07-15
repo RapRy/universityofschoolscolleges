@@ -5,6 +5,8 @@ import TopBg from '../TopBg';
 import Slideshow from './Slider/Slideshow';
 import CoursesOffered from './CoursesOffered';
 import BackToTop from '../Globals/BackToTop';
+import UpcomingEvents from './UpcomingEvents';
+import FromForum from './FromForum';
 
 const Home = () => {
     return (
@@ -14,6 +16,8 @@ const Home = () => {
             <Navigation type="" />
             <Slideshow />
             <CoursesOffered />
+            <UpcomingEvents />
+            <FromForum />
         </div>
     )
 }
