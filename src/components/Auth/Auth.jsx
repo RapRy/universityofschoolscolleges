@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Container, Grid, Typography, Box, Backdrop, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -83,7 +83,7 @@ const Auth = () => {
         if(localStorage.getItem('profile') !== null){
             history.push('/forum')
         }
-    }, [dispatch]);
+    }, [dispatch, history]);
 
     return (
         <Grid container direction="row" justify="center" alignItems="center" className={classes.mainContainer}>

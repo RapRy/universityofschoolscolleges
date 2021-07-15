@@ -79,7 +79,7 @@ const useStyles = makeStyles(theme => ({
         bottom: 0,
         zIndex: 5,
         background: "rgba(0,0,0,.7)",
-        padding: theme.spacing(3, 4),
+        padding: theme.spacing(2, 4),
         transform: "translateY(200px)",
         opacity: 0,
         transition: "opacity 2000ms, transform 1500ms"
@@ -87,13 +87,13 @@ const useStyles = makeStyles(theme => ({
     heading: {
         color: theme.palette.secondary.contrastText,
         fontWeight: theme.typography.fontWeightMedium,
-        fontSize: "1.1rem",
-        marginBottom: theme.spacing(2),
+        fontSize: ".95rem",
+        marginBottom: theme.spacing(1),
     },
     snippet: {
         color: theme.palette.primary.contrastText,
-        fontSize: ".9rem",
-        marginBottom: theme.spacing(4),
+        fontSize: ".85rem",
+        marginBottom: theme.spacing(2),
         lineHeight: "1.8"
     },
     link: {

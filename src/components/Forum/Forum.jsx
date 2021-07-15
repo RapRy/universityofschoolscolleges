@@ -49,7 +49,7 @@ const Forum = () => {
             history.push(history.action === "POP" ? '/' : '/auth');
         }
 
-    }, [dispatch, profile])
+    }, [dispatch, profile, history, profileLS])
 
     return (
         <div>

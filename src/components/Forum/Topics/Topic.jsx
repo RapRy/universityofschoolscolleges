@@ -71,7 +71,7 @@ const Topic = () => {
         } catch (error) {
             console.log(error)
         } 
-    }, [url])
+    }, [url]) 
     
     return (
         <Container>

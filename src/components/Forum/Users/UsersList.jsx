@@ -25,6 +25,7 @@ const  UsersList = ({ selectorName, emptyMessage }) => {
                 break
             case "blacklistedUsers":
                 dispatch(blacklisted_list())
+                break
             default:
                 dispatch(registered_users_list())
                 break

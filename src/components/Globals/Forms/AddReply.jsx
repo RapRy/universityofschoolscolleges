@@ -7,7 +7,6 @@ import SendIcon from '@material-ui/icons/Send';
 import TextArea from './TextArea'
 import * as api from '../../../api'
 import { update_selected_topic_replies } from '../../../redux/topicsReducer'
-import IconBtn from '../IconBtn';
 
 const profileLs = JSON.parse(localStorage.getItem('profile'))?.result;
 

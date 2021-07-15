@@ -28,7 +28,7 @@ const Categories = () => {
             { (status === 'idle' && categories.length === 0) && <Empty message="No created categories" /> }
            {
                categories.map((cat) => (
-                   cat.active == 1 && <Category key={cat._id} cat={cat} />
+                   cat.active === 1 && <Category key={cat._id} cat={cat} />
                ))
            }
         </Container>

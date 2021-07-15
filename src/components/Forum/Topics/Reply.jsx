@@ -28,7 +28,7 @@ const Reply = ({ reply }) => {
         return () => {
             setUser({})
         }
-    }, [reply._id])
+    }, [reply._id, reply.ref.creator])
 
     return (
         <Container className={classes.container}>

@@ -7,7 +7,7 @@ const TopBg = () => {
             left: 0,
             top: 0,
             width: "100%",
-            height: "600px",
+            height: "500px",
             background: `url(${process.env.PUBLIC_URL}/assets/bg_blue.jpg)`,
             backgroundSize: "cover",
             zIndex: "-1"
