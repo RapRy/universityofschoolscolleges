@@ -31,7 +31,7 @@ const AddReply = ({ categoryId, topicId }) => {
         e.preventDefault()
 
         if(formData.reply === ""){
-            setErrors({ ...errors, ['reply']: "Field required." })
+            setErrors({ ...errors, 'reply': "Field required." })
             return
         }
 
@@ -46,7 +46,7 @@ const AddReply = ({ categoryId, topicId }) => {
         <Container classes={{ root: classes.containerRoot }}>
             <Grid container direction="row" spacing={1}>
                 <Grid item xs={'auto'} md={1}>
-                    <Avatar>{ profile.result?.username.charAt(0) || profileLs.username.charAt(0) }</Avatar>
+                    <Avatar>{ profile.result?.username?.charAt(0) || profileLs?.username?.charAt(0) }</Avatar>
                 </Grid>
                 <Grid item xs={9} sm={11} style={{ marginTop: "3px" }}>
                     <form onSubmit={handleFormSubmit}>

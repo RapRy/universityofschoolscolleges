@@ -38,7 +38,7 @@ const  UsersList = ({ selectorName, emptyMessage }) => {
         return () => {
             isMounted = false
         }
-    }, [dispatch, refresher])
+    }, [dispatch, refresher, selectorName])
 
     if(users.status === "idle" && users[selectorName].length === 0){
         return <Empty message={emptyMessage} />

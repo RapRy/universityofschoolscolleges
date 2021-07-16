@@ -19,7 +19,7 @@ import DeleteDialog from '../../Globals/DeleteDialog'
 import { update_active_status } from '../../../redux/topicsReducer'
 
 const Topic = () => {
-    const profileLS = JSON.parse(localStorage.getItem('profile')).result
+    let profileLS = null || JSON.parse(localStorage.getItem('profile')).result
 
     const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
     const classes = useStyles()
@@ -61,7 +61,12 @@ const Topic = () => {
     const handleEdit = () => setEdit(true)
 
     useEffect(() => {
-        if(profile.result === null || profileLS === null) history.push('/forum')
+        if(profile.result === null || profileLS === null) {
+            history.push('/auth')
+            return
+        }
+
+        // profileLS = JSON.parse(localStorage.getItem('profile')).result
 
         dispatch(get_topic_details(params.topicId))    
 
@@ -71,7 +76,7 @@ const Topic = () => {
         } catch (error) {
             console.log(error)
         } 
-    }, [url]) 
+    }, [url]) // eslint-disable-line react-hooks/exhaustive-deps
     
     return (
         <Container>
@@ -133,7 +138,7 @@ const Topic = () => {
                             }
 
                             {
-                                (profileLS._id === selectedTopic.topic?.ref?.creator || profile.result?._id === selectedTopic.topic?.ref?.creator) &&
+                                (profileLS?._id === selectedTopic.topic?.ref?.creator || profile.result?._id === selectedTopic.topic?.ref?.creator) &&
                                     <div className={classes.ctaContainer}>
                                         <IconBtn icon={<EditIcon />} text="edit" handleClick={handleEdit} />
                                         <IconBtn icon={<DeleteIcon />} text="delete" handleClick={handleDelete} />

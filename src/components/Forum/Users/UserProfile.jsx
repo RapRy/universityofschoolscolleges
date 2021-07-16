@@ -7,7 +7,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import DescriptionIcon from '@material-ui/icons/Description';
 import ForumIcon from '@material-ui/icons/Forum';
-import { Link, useRouteMatch } from 'react-router-dom';
+import { Link, useRouteMatch, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import * as api from '../../../api'
@@ -18,34 +18,33 @@ const UserProfile = () => {
     const classes = useStyles()
     const [user, setUser] = useState({})
 
+    const history = useHistory()
+
     const matchEdit = useRouteMatch('/forum/profile/edit/:userId')
     const matchProfile = useRouteMatch('/forum/profile/:userId')
 
     const { profile } = useSelector(state => state.auth)
-    const profileLs = JSON.parse(localStorage.getItem('profile')).result
 
     useEffect(() => {
-        let isMounted = true
+        if(profile.result === null) history.push('/auth')
 
-        if(isMounted){
-            const fetchUser = async () => {
-                try {
-                    const { data, status } = await api.getUser(matchEdit?.params.userId || matchProfile?.params.userId)
-    
-                    if(status === 200) setUser(data)
-                } catch (error) {
-                    console.log(error)
-                }
+        const fetchUser = async () => {
+            try {
+                const { data, status } = await api.getUser(matchEdit?.params.userId || matchProfile?.params.userId)
+
+                if(status === 200) setUser(data)
+            } catch (error) {
+                console.log(error)
             }
-    
-            fetchUser()
         }
+
+        fetchUser()
 
         return () => {
-            isMounted = false
+            setUser({})
         }
 
-    }, [matchProfile?.params?.userId, matchEdit?.params?.userId])
+    }, [matchProfile?.params?.userId, matchEdit?.params?.userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container className={classes.container}>
@@ -68,7 +67,8 @@ const UserProfile = () => {
                 </Grid>
             </Grid>
             {
-                (user._id === profileLs?._id || user._id === profile.result?._id) &&
+                // (user._id === profileLs?._id || user._id === profile.result?._id) &&
+                (user._id === profile.result?._id) &&
                     <>
                         <Divider className={classes.divider} />
                         <Link to="/forum" style={{ textDecoration: "none", marginRight: "16px" }}>

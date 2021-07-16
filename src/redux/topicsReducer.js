@@ -44,13 +44,13 @@ export const update_topic = createAsyncThunk(
 export const update_active_status = createAsyncThunk(
     'topics/update_active_status',
     async (id, { getState }) => {
-        const { data, status } = await api.updateTopicActiveStatus(id)
+        const { status } = await api.updateTopicActiveStatus(id)
 
         if(status === 200){
             const { topics, selectedTopic } = getState().topics
 
-            const updatedTopics = topics.map(top => top._id === id ? { ...top, ['active']: 0 } : top)
-            const updatedSelected = { ...selectedTopic.topic, ['active']: 0 }
+            const updatedTopics = topics.map(top => top._id === id ? { ...top, 'active': 0 } : top)
+            const updatedSelected = { ...selectedTopic.topic, 'active': 0 }
 
             return { updatedTopics, updatedSelected }
         }
@@ -153,7 +153,7 @@ export const topicsSlice = createSlice({
             state.status = "loading"
         },
         [update_selected_topic_replies.fulfilled]: (state, action) => {
-            state.selectedTopic = { ...state.selectedTopic, ['replies']: [ ...state.selectedTopic.replies, action.payload ] }
+            state.selectedTopic = { ...state.selectedTopic, 'replies': [ ...state.selectedTopic.replies, action.payload ] }
             state.status = "idle"
         },
         [update_selected_topic_replies.rejected]: (state) => {

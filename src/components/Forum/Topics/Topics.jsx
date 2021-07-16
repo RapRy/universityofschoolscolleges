@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Container, Typography, LinearProgress, Box, useMediaQuery } from '@material-ui/core'
+import { Container, Typography, LinearProgress, Box } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import { useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
@@ -16,7 +16,6 @@ import { get_topics, get_latest_topics_view_all, get_hot_topics_view_all, get_re
 import Empty from '../../Globals/Empty/Empty'
 
 const Topics = () => {
-    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
     const classes = useStyles()
     const { category } = useParams()
 
@@ -31,12 +30,17 @@ const Topics = () => {
     const { profile } = useSelector(state => state.auth)
     const dispatch = useDispatch()
 
-    const userFromLocal = JSON.parse(localStorage.getItem('profile'))
+    let userFromLocal = null || JSON.parse(localStorage.getItem('profile'))
 
     const toggleShow = () => setShowForm(prevState => !prevState)
 
     useEffect(() => {
-        if(profile?.result === null || userFromLocal?.result === null || selectedCat?.active === 0) history.push('/')
+        if(profile?.result === null || userFromLocal?.result === null || selectedCat?.active === 0) {
+            history.push('/')
+            return
+        }
+
+        // userFromLocal = JSON.parse(localStorage.getItem('profile'))
 
         setDisplayCat("")
 
@@ -74,7 +78,7 @@ const Topics = () => {
         }
 
         if(profile?.result?.accountType === 1 || userFromLocal?.result?.accountType === 1) setShowForm(true)
-    }, [match.url])
+    }, [match.url]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container className={classes.container}> 

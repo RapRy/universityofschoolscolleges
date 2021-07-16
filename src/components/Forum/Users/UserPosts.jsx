@@ -21,7 +21,7 @@ const UserPosts = () => {
         return () => {
             isMounted = false
         }
-    }, [userId])
+    }, [userId]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container>

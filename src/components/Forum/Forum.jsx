@@ -67,7 +67,6 @@ const Forum = () => {
                         <SideNavigation />
                     </Grid>
                     <Grid item md={9} xs={12}>
-                        {/* <Empty message="No Topics fro this category" /> */}
                         <Switch>
                             <Route exact path={path} >
                                 { ((profile?.result?.accountType === 1 && profile?.result !== null) || (profileLS?.result?.accountType === 1 && profileLS?.result !== null)) ? <Overview /> : <Redirect to={`${path}/topics`} />}

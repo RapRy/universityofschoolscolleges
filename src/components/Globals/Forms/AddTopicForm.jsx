@@ -31,10 +31,10 @@ const AddTopicForm = ({ action }) => {
         setSelect(e.target.value)
         const cat = categories.filter(({ name }) => name === e.target.value)
         
-        const updatedRef = { ...formData.ref, ['category']: cat[0]._id }
+        const updatedRef = { ...formData.ref, 'category': cat[0]._id }
 
-        setFormData({ ...formData, ['ref']: updatedRef })
-        setErrors({ ...errors, ['ref']: { ['category']: "" }})
+        setFormData({ ...formData, 'ref': updatedRef })
+        setErrors({ ...errors, 'ref': { 'category': "" }})
     }
 
     const handleInputChange = (e) => {
@@ -46,17 +46,17 @@ const AddTopicForm = ({ action }) => {
         e.preventDefault()
 
         if(formData.title === ""){
-            setErrors({ ...errors, ['title']: "Field required." })
+            setErrors({ ...errors, 'title': "Field required." })
             return
         }
 
         if(formData.description === ""){
-            setErrors({ ...errors, ['description']: "Field required." })
+            setErrors({ ...errors, 'description': "Field required." })
             return
         }
 
         if(formData.ref.category === "" || formData.ref.category === "select category" || formData.ref.category === null){
-            setErrors({ ...errors, ['ref']: { ['category']: "Field required." } })
+            setErrors({ ...errors, 'ref': { 'category': "Field required." } })
             return
         }
 
@@ -65,7 +65,7 @@ const AddTopicForm = ({ action }) => {
 
             if(status === 200){
                 if(data.status === 0){
-                    setErrors({ ...errors, ['title']: data.message })
+                    setErrors({ ...errors, 'title': data.message })
                     return
                 }
 
@@ -76,9 +76,9 @@ const AddTopicForm = ({ action }) => {
                 enqueueSnackbar(`update successful`, { variant: "success" })
 
                 const cat = categories.filter(({ name }) => name === select)
-                const ref = { ...initialState.ref, ['category']: cat[0]._id, ['creator']: profile.result?._id || JSON.parse(localStorage.getItem('profile'))?.result?._id }
+                const ref = { ...initialState.ref, 'category': cat[0]._id, 'creator': profile.result?._id || JSON.parse(localStorage.getItem('profile'))?.result?._id }
 
-                setFormData({ ...initialState, ['ref']: ref })
+                setFormData({ ...initialState, 'ref': ref })
             }
 
             return
@@ -88,7 +88,7 @@ const AddTopicForm = ({ action }) => {
 
         if(status === 200){
             if(data.status === 0){
-                setErrors({ ...errors, ['title']: data.message })
+                setErrors({ ...errors, 'title': data.message })
                 return
             }
 
@@ -97,24 +97,24 @@ const AddTopicForm = ({ action }) => {
             enqueueSnackbar(`${formData.title} publish at ${select}`, { variant: "success" })
 
             const cat = categories.filter(({ name }) => name === select)
-            const ref = { ...initialState.ref, ['category']: cat[0]._id, ['creator']: profile.result?._id || JSON.parse(localStorage.getItem('profile'))?.result?._id }
+            const ref = { ...initialState.ref, 'category': cat[0]._id, 'creator': profile.result?._id || JSON.parse(localStorage.getItem('profile'))?.result?._id }
 
-            setFormData({ ...initialState, ['ref']: ref })
+            setFormData({ ...initialState, 'ref': ref })
         }
         
     }
 
     useEffect(() => {
         setSelect(selectedCat.name)
-        const ref = { ...formData.ref, ['category']: selectedCat._id || null }
+        const ref = { ...formData.ref, 'category': selectedCat._id || null }
         
         if(action === "edit"){
-            setFormData({ ...formData, ['ref']: ref, ['title']: selectedTopic.topic.title, ['description']: selectedTopic.topic.description, topicId: selectedTopic.topic._id })
+            setFormData({ ...formData, 'ref': ref, 'title': selectedTopic.topic.title, 'description': selectedTopic.topic.description, topicId: selectedTopic.topic._id })
         }else{
-            setFormData({ ...formData, ['ref']: ref })
+            setFormData({ ...formData, 'ref': ref })
         }
 
-    }, [selectedCat])
+    }, [selectedCat]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container classes={{ root: classes.containerRoot }}>

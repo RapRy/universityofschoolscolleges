@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Container, Grid, Typography, Box, Backdrop, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import { useDispatch, useSelector } from 'react-redux';
@@ -50,28 +50,28 @@ const Auth = () => {
 
         if(switchForm){
             if(formData.username === ""){
-                setErrors({ ...errors, ['username']: "Field required." })
+                setErrors({ ...errors, 'username': "Field required." })
             }else if(formData.email === ""){
-                setErrors({ ...errors, ['email']: "Field required." })
+                setErrors({ ...errors, 'email': "Field required." })
             }else if(formData.schoolId === ""){
-                setErrors({ ...errors, ['schoolId']: "Field required." })
+                setErrors({ ...errors, 'schoolId': "Field required." })
             }else if(formData.password === ""){
-                setErrors({ ...errors, ['password']: "Field required." })
+                setErrors({ ...errors, 'password': "Field required." })
             }else if(formData.confirmPassword === ""){
-                setErrors({ ...errors, ['confirmPassword']: "Field required." })
+                setErrors({ ...errors, 'confirmPassword': "Field required." })
             }else if(formData.password.length > 8){
-                setErrors({ ...errors, ['password']: "Password must be 8 characters." })
+                setErrors({ ...errors, 'password': "Password must be 8 characters." })
             }else if(formData.password !== formData.confirmPassword){
-                setErrors({ ...errors, ['confirmPassword']: "Password didn't match." })
+                setErrors({ ...errors, 'confirmPassword': "Password didn't match." })
             }else{
                 dispatch(sign_up(formData))
                 enqueueSnackbar(`Sign up successful`, { variant: "success" })
             }
         }else{
             if(formData.email === ""){
-                setErrors({ ...errors, ['email']: "Field required." })
+                setErrors({ ...errors, 'email': "Field required." })
             }else if(formData.password === ""){
-                setErrors({ ...errors, ['password']: "Field required." })
+                setErrors({ ...errors, 'password': "Field required." })
             }else{
                 const data = { formData, history }
                 dispatch(sign_in(data))

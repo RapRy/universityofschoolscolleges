@@ -39,15 +39,15 @@ const EditProfileForm = () => {
         e.preventDefault()
 
         if(formData.firstName === ""){
-            setErrors({ ...errors, ['firstName']: "Field required." })
+            setErrors({ ...errors, 'firstName': "Field required." })
         }else if(formData.lastName === ""){
-            setErrors({ ...errors, ['lastName']: "Field required." })
+            setErrors({ ...errors, 'lastName': "Field required." })
         }else if(formData.username === ""){
-            setErrors({ ...errors, ['username']: "Field required." })
+            setErrors({ ...errors, 'username': "Field required." })
         }else if(formData.email === ""){
-            setErrors({ ...errors, ['email']: "Field required." })
+            setErrors({ ...errors, 'email': "Field required." })
         }else if(formData.schoolId === ""){
-            setErrors({ ...errors, ['schoolId']: "Field required." })
+            setErrors({ ...errors, 'schoolId': "Field required." })
         }else{
 
             const sendForm = async () => {

@@ -26,7 +26,7 @@ const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon, limitOr
         }
         
         fetchTopics()
-    }, [dispatch])
+    }, [dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container style={{ padding: "0" }}>

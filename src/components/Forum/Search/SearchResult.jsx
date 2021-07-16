@@ -19,7 +19,7 @@ const SearchResult = () => {
 
     useEffect(() => {
         dispatch(search_topics(keyword.replace("-", " ")))
-    }, [match.url])
+    }, [match.url]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container className={classes.container}>

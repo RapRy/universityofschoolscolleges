@@ -1,12 +1,11 @@
 import React from 'react'
-import { Container, Avatar, Divider, Typography, Grid, useMediaQuery } from '@material-ui/core'
+import { Container, Avatar, Divider, Typography, Grid } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import EmailIcon from '@material-ui/icons/Email';
 import { Link } from 'react-router-dom'
 
 const UserThumbnailPanel = ({ user, type }) => {
-    const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
     const classes = useStyles()
 
     const dateString = () => {

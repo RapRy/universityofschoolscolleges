@@ -26,7 +26,7 @@ const UsersPanelLg = ({ header, API, reduxDispatch, selectorName }) => {
         }
 
         fetchUsers()
-    }, [dispatch])
+    }, [dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container className={classes.mainContainer}>

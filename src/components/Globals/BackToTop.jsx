@@ -29,7 +29,7 @@ const BackToTop = () => {
                 window.removeEventListener('scroll')
             }
         })
-    }, [])
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         show &&

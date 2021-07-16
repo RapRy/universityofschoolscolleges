@@ -30,7 +30,7 @@ const TopicsPanelLg = ({ header, API, reduxDispatch, selectorName }) => {
         } 
 
         fetchTopics()
-    }, [dispatch])
+    }, [dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <Container className={classes.mainContainer}>

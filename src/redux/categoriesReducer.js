@@ -27,12 +27,12 @@ export const set_selected = createAsyncThunk(
 export const update_active_status = createAsyncThunk(
     'categories/update_active_status',
     async (id, { getState }) => {
-        const { data, status } = await api.updateActiveStatus(id)
+        const { status } = await api.updateActiveStatus(id)
 
         if(status === 200){
             const { categories } = getState().categories
 
-            const updatedCategories = categories.map(cat => cat._id === id ? { ...cat, ['active']: 0 } : cat)
+            const updatedCategories = categories.map(cat => cat._id === id ? { ...cat, 'active': 0 } : cat)
 
             return updatedCategories 
         }
