@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 const UserThumbnailPanel = ({ user, type }) => {
     const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
-    const classes = useStyles({ max600 })
+    const classes = useStyles()
 
     const dateString = () => {
         const months =['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -50,9 +50,13 @@ const useStyles = makeStyles(theme => ({
         marginBottom: theme.spacing(1)
     },
     avatar: {
-        width: props => props.max600 ? theme.spacing(6) : theme.spacing(9),
-        height: props => props.max600 ? theme.spacing(6) : theme.spacing(9),
-        marginRight: theme.spacing(1)
+        width: theme.spacing(9),
+        height: theme.spacing(9),
+        marginRight: theme.spacing(1),
+        [theme.breakpoints.down('sm')]: {
+            width: theme.spacing(6),
+            height: theme.spacing(6)
+        }
     },
     data: {
         display: "block",

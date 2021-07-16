@@ -8,11 +8,11 @@ import OutlinedButton from '../Globals/OutlinedButton'
 
 const CoursesOffered = () => {
     const max900 = useMediaQuery(theme => theme.breakpoints.down('sm'))
-    const classes = useStyles({ max900 })
+    const classes = useStyles()
 
     return (
         <Container className={classes.mainContainer}>
-            <Grid container direction={ max900 ? "column-reverse" : "row" } spacing={10}>
+            <Grid container direction={ max900 ? "column-reverse" : "row" } spacing={2}>
                 <Grid item xs={12} md={6}>
                     <MainHeader heading="courses offered" cta="" />
                     <Typography variant="body1" className={classes.paragh}>
@@ -44,7 +44,20 @@ const useStyles = makeStyles(theme => ({
     img: {
         width: "100%",
         height: "100%",
-        objectFit: "contain"
+        objectFit: "contain",
+        marginLeft: theme.spacing(2),
+        [theme.breakpoints.down('sm')]: {
+            width: "80%",
+            height: "80%",
+            marginLeft: "10%",
+            marginBottom: theme.spacing(3)
+        },
+        [theme.breakpoints.down('xs')]: {
+            width: "100%",
+            height: "100%",
+            marginLeft: "0",
+            marginBottom: theme.spacing(3)
+        }
     }
 }))
 

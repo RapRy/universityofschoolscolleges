@@ -17,7 +17,7 @@ import Empty from '../../Globals/Empty/Empty'
 
 const Topics = () => {
     const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
-    const classes = useStyles({ max600 })
+    const classes = useStyles()
     const { category } = useParams()
 
     const [showForm, setShowForm] = useState(false)
@@ -114,7 +114,10 @@ const Topics = () => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        marginTop: props => props.max600 ? theme.spacing(8) : theme.spacing(4)
+        marginTop: theme.spacing(4),
+        [theme.breakpoints.down('xs')]: {
+            marginTop: theme.spacing(8)
+        }
     },
     typoH2: {
         fontWeight: theme.typography.fontWeightBold,

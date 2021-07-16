@@ -77,16 +77,25 @@ const TopicWithThumbnail = ({ topic, from }) => {
 
 const useStyles = makeStyles(theme => ({
     container: {
-        background: props => props.from ? theme.palette.secondary.contrastText : theme.palette.primary.contrastText,
-        padding: props => props.max600 ? theme.spacing(2) : theme.spacing(4),
+        background: theme.palette.primary.contrastText,
+        padding: theme.spacing(4),
         marginTop: props => props.from ? theme.spacing(0) : theme.spacing(3),
         boxShadow: theme.shadows[7],
-        borderRadius: theme.shape.borderRadius
+        borderRadius: theme.shape.borderRadius,
+        [theme.breakpoints.down('xs')]: {
+            background: theme.palette.secondary.contrastText,
+            padding: theme.spacing(2)
+        }
     },
     avatar: {
-        width: props => props.max600 ? theme.spacing(6) : theme.spacing(10),
-        height: props => props.max600 ? theme.spacing(6) : theme.spacing(10),
-        fontSize: props => props.max600 ? "1.5rem" : "3rem"
+        width: theme.spacing(10),
+        height: theme.spacing(10),
+        fontSize: "3rem",
+        [theme.breakpoints.down('xs')]: {
+            width: theme.spacing(6),
+            height: theme.spacing(6),
+            fontSize: "1.5rem"
+        }
     },
     title: {
         fontWeight: theme.typography.fontWeightBold,

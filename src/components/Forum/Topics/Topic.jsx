@@ -22,7 +22,7 @@ const Topic = () => {
     const profileLS = JSON.parse(localStorage.getItem('profile')).result
 
     const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
-    const classes = useStyles({ max600 })
+    const classes = useStyles()
 
     const { params, url } = useRouteMatch()
     const history = useHistory()
@@ -221,14 +221,16 @@ const useStyles = makeStyles(theme => ({
         },
         [theme.breakpoints.down('xs')]:{
             display: "inline-block",
-            fontSize: ".8rem",
             position: "relative",
             bottom: theme.spacing(1) - 4,
             left: theme.spacing(1)
         }
     },
     titleContainer: {
-        marginTop: props => props.max600 ? 0 : theme.spacing(2)
+        marginTop: theme.spacing(2),
+        [theme.breakponts.down('xs')]: {
+            marginTop: 0
+        }
     },
     title: {
         fontSize: "1.1rem",
@@ -248,7 +250,10 @@ const useStyles = makeStyles(theme => ({
         marginTop: theme.spacing(3)
     },
     divider: {
-        marginTop: props => props.max600 ? theme.spacing(1) : theme.spacing(3)
+        marginTop: theme.spacing(3),
+        [theme.breakponts.down('xs')]: {
+            marginTop: theme.spacing(1)
+        }
     },
     descContainer: {
         margin: `${theme.spacing(3)}px 0`

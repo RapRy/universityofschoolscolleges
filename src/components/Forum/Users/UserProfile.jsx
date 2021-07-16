@@ -15,7 +15,7 @@ import * as api from '../../../api'
 const UserProfile = () => {
     const max600 = useMediaQuery(theme => theme.breakpoints.down('sm'))
 
-    const classes = useStyles({ max600 })
+    const classes = useStyles()
     const [user, setUser] = useState({})
 
     const matchEdit = useRouteMatch('/forum/profile/edit/:userId')
@@ -101,9 +101,14 @@ const useStyles = makeStyles(theme => ({
         padding: 0
     },
     avatar: {
-        width: props => props.max600 ? theme.spacing(18) : theme.spacing(24),
-        height: props => props.max600 ? theme.spacing(18) : theme.spacing(24),
+        width: theme.spacing(24),
+        height: theme.spacing(24),
         fontSize: theme.spacing(18),
+        [theme.breakpoints.down('sm')]: {
+            width: theme.spacing(18),
+            height: theme.spacing(18),
+            fontSize: theme.spacing(12)
+        }
     },
     marginTop2: {
         marginTop: theme.spacing(2)
