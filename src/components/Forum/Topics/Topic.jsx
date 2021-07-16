@@ -190,15 +190,17 @@ const useStyles = makeStyles(theme => ({
     },
     statContainer: {
         marginTop: theme.spacing(2),
-        display: props => props.max600 ? "inline-block" : "block",
-        marginRight: props => props.max600 ? theme.spacing(4) : 0,
+        display: "block",
+        marginRight: 0,
         [theme.breakpoints.down('xs')]: {
             marginTop: theme.spacing(1),
+            display: "inline-block",
+            marginRight: theme.spacing(4)
         }
     },
     numType: {
         fontWeight: theme.typography.fontWeightBlack,
-        fontSize: props => props.max600 ? "1.4rem" : "2rem",
+        fontSize: "2rem",
         color: theme.palette.primary.main,
         textAlign: "center",
         marginBottom: theme.spacing(1),
@@ -228,7 +230,7 @@ const useStyles = makeStyles(theme => ({
     },
     titleContainer: {
         marginTop: theme.spacing(2),
-        [theme.breakponts.down('xs')]: {
+        [theme.breakpoints.down('xs')]: {
             marginTop: 0
         }
     },
@@ -251,7 +253,7 @@ const useStyles = makeStyles(theme => ({
     },
     divider: {
         marginTop: theme.spacing(3),
-        [theme.breakponts.down('xs')]: {
+        [theme.breakpoints.down('xs')]: {
             marginTop: theme.spacing(1)
         }
     },
