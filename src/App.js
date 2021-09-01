@@ -1,59 +1,41 @@
-import React, { lazy, Suspense } from 'react'
-import { Switch, Route, useRouteMatch } from 'react-router-dom';
-import { Backdrop, CircularProgress, ThemeProvider, createMuiTheme } from '@material-ui/core';
+import React, { lazy, Suspense } from "react";
+import { Switch, Route, useRouteMatch } from "react-router-dom";
+import { Backdrop, CircularProgress, ThemeProvider } from "@material-ui/core";
 
-import './index.css';
-import Footer from './components/Footer/Footer';
-import FourOFour from './components/Globals/FourOFour/FourOFour';
-const Auth = lazy(() => import('./components/Auth/Auth'));
-const Forum = lazy(() => import('./components/Forum/Forum'));
-const Home = lazy(() => import('./components/Home/Home'));
+import { mainTheme } from "./theme/themes";
+
+import "./index.css";
+import Footer from "./components/Footer/Footer";
+import FourOFour from "./components/Globals/FourOFour/FourOFour";
+const Auth = lazy(() => import("./components/Auth/Auth"));
+const Forum = lazy(() => import("./components/Forum/Forum"));
+const Home = lazy(() => import("./components/Home/Home"));
 
 const App = () => {
+  const matchAuth = useRouteMatch("/auth");
+  const match404 = useRouteMatch("*");
 
-    const theme = createMuiTheme({
-      palette: {
-        primary: {
-          main: "#003566",
-          dark: "#001D3D",
-          light: "#868686",
-          contrastText: "#F6F6F6"
-        },
-        secondary: {
-          main: "#C44536",
-          dark: "#464646",
-          light: "#E3E3E3",
-          contrastText: "#FFFFFF"
+  return (
+    <ThemeProvider theme={mainTheme}>
+      <Suspense
+        fallback={
+          <Backdrop open={true} style={{ zIndex: 5 }}>
+            <CircularProgress />
+          </Backdrop>
         }
-      },
-      typography: {
-        fontWeightBlack: 900
-      },
-      shape: {
-        borderRadius: 5
-      },
-      overrides: {
-      }
-    })
+      >
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/auth" component={Auth} />
+          <Route path="/forum" component={Forum} />
 
-    const matchAuth = useRouteMatch('/auth')
-    const match404 = useRouteMatch('*')
+          <Route path="*" component={FourOFour} />
+        </Switch>
+      </Suspense>
 
-    return (
-      <ThemeProvider theme={theme}> 
-          <Suspense fallback={<Backdrop open={true} style={{zIndex:5}}><CircularProgress /></Backdrop>}>
-              <Switch>
-                <Route exact path="/" component={Home} />
-                <Route exact path="/auth" component={Auth} />
-                <Route path="/forum" component={Forum} />
+      {(matchAuth || match404) === null && <Footer />}
+    </ThemeProvider>
+  );
+};
 
-                <Route path="*" component={FourOFour} />
-              </Switch>
-          </Suspense>
-
-          { (matchAuth || match404) === null && <Footer /> }
-      </ThemeProvider>
-    )
-}
-
-export default App
+export default App;
