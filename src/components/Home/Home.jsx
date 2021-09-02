@@ -4,7 +4,7 @@ import Navigation from "../Navigation/Navigation";
 import LandingPage from "./LandingPage";
 import CoursesOffered from "./CoursesOffered";
 import BackToTop from "../Globals/BackToTop";
-import UpcomingEvents from "./UpcomingEvents";
+import UpcomingEvents from "./UpcomingEvents/UpcomingEvents";
 import FromForum from "./FromForum";
 
 const Home = () => {

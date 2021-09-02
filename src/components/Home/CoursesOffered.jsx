@@ -16,11 +16,11 @@ import { PillButton } from "../Globals/Buttons";
 import { poppinsFont } from "../../theme/themes";
 
 const CoursesOffered = () => {
-  const max900 = useMediaQuery((theme) => theme.breakpoints.down("sm"));
-  const max600 = useMediaQuery((theme) => theme.breakpoints.down("sxsm"));
+  const max960 = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const max600 = useMediaQuery((theme) => theme.breakpoints.down("xs"));
   const imgRef = useRef(null);
   const theme = useTheme();
-  const [topPos, setTopPos] = useState(theme.spacing(32));
+  const [topPos, setTopPos] = useState(theme.spacing(28));
   const classes = useStyles({ topPos });
 
   useEffect(() => {
@@ -30,13 +30,12 @@ const CoursesOffered = () => {
       }
     });
 
-    if (window.innerWidth < 900) setTopPos(imgRef.current.height - 220);
-    // eslint-disable-next-line
-  }, []);
+    max600 && setTopPos(theme.spacing(24));
+  }, [theme, max600]);
 
   return (
     <Container className={classes.mainContainer}>
-      <Grid container direction={max900 ? "column-reverse" : "row"} spacing={2}>
+      <Grid container direction={max960 ? "column-reverse" : "row"} spacing={2}>
         <Grid item xs={12} md={5} className={classes.marginTop}>
           <MainHeader heading="courses offered" cta="" />
           <ThemeProvider theme={poppinsFont}>

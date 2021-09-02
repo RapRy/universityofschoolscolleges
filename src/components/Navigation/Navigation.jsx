@@ -15,15 +15,16 @@ import MenuIcon from "@material-ui/icons/Menu";
 
 import UserMenu from "./UserMenu";
 import ProfileMenu from "./ProfileMenu";
-import SearchBar from "./SearchBar";
-import HomeMenu from "./HomeMenu";
+import { withHomeMenu } from "../HOC";
 
 import { poppinsFont, ubuntuFont } from "../../theme/themes";
+
+const ProfileWithHomeMenu = withHomeMenu(ProfileMenu);
+const UserWithHomeMenu = withHomeMenu(UserMenu);
 
 const Navigation = ({ type }) => {
   const classes = useStyles({ type });
   const max960 = useMediaQuery("(max-width:960px)");
-  const min600 = useMediaQuery("(min-width:600px)");
 
   const [showAside, setShowAside] = useState(false);
 
@@ -42,9 +43,11 @@ const Navigation = ({ type }) => {
                     display="inline"
                   >
                     SCHOOL LOGO
+                    {/* add pipe if forum page */}
                     {type !== "" ? "   |" : ""}
                   </Typography>
                 </Link>
+                {/* add forum text if forum page */}
                 {type !== "" ? (
                   <Link to="/forum" className={classes.logo}>
                     <Typography
@@ -67,35 +70,33 @@ const Navigation = ({ type }) => {
             <Grid item xs={1} sm={7} md={6}>
               <ThemeProvider theme={ubuntuFont}>
                 {/* mobile menu start */}
-                {type !== "" ? (
-                  <Drawer
-                    anchor="right"
-                    open={showAside}
-                    onClose={() => setShowAside((prevState) => !prevState)}
-                    classes={{
-                      paper: classes.drawerBg,
-                    }}
-                    elevation={1}
-                  >
+                <Drawer
+                  anchor="right"
+                  open={showAside}
+                  onClose={() => setShowAside((prevState) => !prevState)}
+                  classes={{
+                    paper: classes.drawerBg,
+                  }}
+                  elevation={1}
+                >
+                  {/* TODO delete  this commented section */}
+                  {/* {type !== "" ? (
                     <ProfileMenu max960={max960} setShowAside={setShowAside} />
-                  </Drawer>
-                ) : (
-                  <Drawer
-                    anchor="right"
-                    open={showAside}
-                    onClose={() => setShowAside((prevState) => !prevState)}
-                    classes={{
-                      paper: classes.drawerBg,
-                    }}
-                    elevation={1}
-                  >
+                  ) : (
                     <HomeMenu aside={true} />
-                  </Drawer>
-                )}
+                  )} */}
+
+                  <ProfileWithHomeMenu
+                    max960={max960}
+                    setShowAside={setShowAside}
+                    type={type}
+                    aside={true}
+                  />
+                </Drawer>
                 {/* mobile menu end */}
 
                 {/* desktop menu start */}
-                {max960 === true ? (
+                {max960 ? (
                   <Grid
                     container
                     direction="row"
@@ -103,11 +104,6 @@ const Navigation = ({ type }) => {
                     alignItems="center"
                     justify="flex-end"
                   >
-                    {min600 && type !== "" && (
-                      <Grid item sm={10} md={11}>
-                        <SearchBar />
-                      </Grid>
-                    )}
                     <Grid
                       item
                       xs={12}
@@ -123,14 +119,21 @@ const Navigation = ({ type }) => {
                   </Grid>
                 ) : (
                   <>
-                    {type !== "" ? (
+                    {/* TODO delete  this commented section */}
+                    {/* {type !== "" ? (
                       <UserMenu
                         setShowAside={setShowAside}
                         showAside={showAside}
                       />
                     ) : (
                       <HomeMenu aside={false} />
-                    )}
+                    )} */}
+                    <UserWithHomeMenu
+                      setShowAside={setShowAside}
+                      showAside={showAside}
+                      type={type}
+                      aside={false}
+                    />
                   </>
                 )}
                 {/* desktop menu end */}

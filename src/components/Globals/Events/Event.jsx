@@ -1,141 +1,168 @@
-import React from 'react'
-import { Divider, Typography, Grid, useMediaQuery, Box } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles';
-import { Link } from 'react-router-dom'
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
+import React from "react";
+import {
+  Typography,
+  Grid,
+  Box,
+  makeStyles,
+  useTheme,
+  ThemeProvider,
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import LocationOnIcon from "@material-ui/icons/LocationOn";
 
-const Event = ({ event, ind, events }) => {
-    const classes = useStyles()
-    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
-    const max900 = useMediaQuery(theme => theme.breakpoints.down('sm'))
+import { PillButton } from "../Buttons";
+import { poppinsFont, ubuntuFont } from "../../../theme/themes";
 
-    return (
-        <>
-            <Grid container direction="row" alignItems="center" spacing={2} className={classes.mainContainer}>
-                <Grid item xs={12} sm={4} md={3}>
-                    <Link to="/">
-                        <img className={classes.img} src={`${process.env.PUBLIC_URL}/assets/${event.img}`} alt={event.title} />
-                    </Link>
-                </Grid>
-                <Grid item xs={12} sm={7} md={2}>
-                    <Box display={max900 ? "inline-block" : "block"} paddingLeft={max900 && !max600 ? "20px" : 0}>
-                        <Typography className={classes.day} variant="h2">{event.date.day}</Typography>
-                        <Typography className={classes.month} variant="h6">{event.date.month}</Typography>
-                    </Box>
-                    {
-                        (max900) && 
-                            <Box display="inline-block" paddingLeft="20px">
-                                <Link to="/" style={{ textDecoration: "none" }}>    
-                                    <Typography className={classes.title} variant="h5">{event.title}</Typography>
-                                </Link>
-                                <Typography variant="body1" className={classes.time}>
-                                    <AccessTimeIcon className={classes.icon} /> {`${event.date.startTime} - ${event.date.lastTime}`}
-                                </Typography>
-                                <Typography variant="body1" className={classes.location}>
-                                    <LocationOnIcon className={classes.icon} /> {event.location}
-                                </Typography>
-                            </Box>
-                    }
-                </Grid>
-                <Grid item xs={12} md={7}>
-                    {
-                        (!max900) &&
-                            <>
-                                <Link to="/" style={{ textDecoration: "none" }}>    
-                                    <Typography className={classes.title} variant="h5">{event.title}</Typography>
-                                </Link>
-                                <Typography variant="body1" className={classes.time}>
-                                    <AccessTimeIcon className={classes.icon} /> {`${event.date.startTime} - ${event.date.lastTime}`}
-                                </Typography>
-                                <Typography variant="body1" className={classes.location}>
-                                    <LocationOnIcon className={classes.icon} /> {event.location}
-                                </Typography>
-                            </>
-                    }
-                    <Typography variant="body1" className={classes.description}>
-                        {event.description}
-                    </Typography>
-                </Grid>
-            </Grid>
-            { ind !== (events.length - 1) && <Divider /> }
-        </>
-    )
-}
+const Event = ({ event }) => {
+  const theme = useTheme();
+  const classes = useStyles();
 
-const useStyles = makeStyles(theme => ({
-    mainContainer: {
-        padding: theme.spacing(4, 0)
-    },
-    img: {
-        borderRadius: theme.shape.borderRadius,
-        boxShadow: theme.shadows[7],
-        [theme.breakpoints.down('sm')]: {
-            width: "100%"
-        }
-    },
-    day: {
-        fontWeight: theme.typography.fontWeightBlack,
-        color: theme.palette.primary.main,
-        textAlign: "center",
-        [theme.breakpoints.down('xs')]: {
-            fontSize: "1.8rem",
-            textAlign: "right",
-        },
-        [theme.breakpoints.down('sm')]: {
-            fontSize: "2rem",
-            textAlign: "left",
-        }
-    },
-    month: {
-        fontWeight: theme.typography.fontWeightBlack,
-        color: theme.palette.primary.main,
-        textAlign: "center",
-        fontSize: "1.1rem",
-        [theme.breakpoints.down('xs')]: {
-            fontSize: "1rem",
-            textAlign: "right",
-        },
-        [theme.breakpoints.down('sm')]: {
-            fontSize: "1.2rem",
-            textAlign: "left",
-        }
-    },
-    title: {
-        fontSize: "1rem",
-        fontWeight: theme.typography.fontWeightBold,
-        color: theme.palette.primary.main,
-        marginBottom: theme.spacing(1),
-        [theme.breakpoints.down('xs')]: {
-            fontSize: "1.2rem",
-        }
-    },
-    icon:{
-        fontSize: ".9rem",
-        color: theme.palette.secondary.dark,
-        position: "relative",
-        top: "2px"
-    },
-    time: {
-        fontSize: ".85rem",
-        fontWeight: theme.typography.fontWeightBold,
-        color: theme.palette.secondary.dark,
-        marginBottom: theme.spacing(2),
-        display: "inline-block",
-        marginRight: theme.spacing(2)
-    },
-    location: {
-        fontSize: ".85rem",
-        fontWeight: theme.typography.fontWeightBold,
-        color: theme.palette.secondary.dark,
-        marginBottom: theme.spacing(2),
-        display: "inline-block"
-    },
-    description: {
-        fontSize: ".85rem",
-        fontWeight: theme.typography.fontWeightLight,
-        color: theme.palette.primary.light,
-    }
-}))
+  return (
+    <Box position="relative" padding={theme.spacing(0, 4)}>
+      <Grid
+        container
+        direction="row"
+        alignItems="flex-end"
+        spacing={4}
+        className={`${classes.gridContainer} ${classes.padding}`}
+      >
+        <Grid item xs={2}>
+          <img
+            className={classes.calIcon}
+            src={`${process.env.PUBLIC_URL}/assets/calendar-icon.svg`}
+            alt="Calendar Icon"
+          />
+        </Grid>
+        <Grid item xs={10}>
+          <Link to="/">
+            <img
+              className={classes.img}
+              src={`${process.env.PUBLIC_URL}/assets/${event.img}`}
+              alt={event.title}
+            />
+          </Link>
+        </Grid>
+      </Grid>
+      <div>
+        <ThemeProvider theme={poppinsFont}>
+          <Link to="/" style={{ textDecoration: "none" }}>
+            <Typography
+              className={`${classes.date} ${classes.padding}`}
+              variant="h5"
+            >{`${event.date.day} ${event.date.month} ${event.date.year}`}</Typography>
+            <Typography
+              className={`${classes.title} ${classes.padding}`}
+              variant="h5"
+            >
+              {event.title}
+            </Typography>
+          </Link>
+        </ThemeProvider>
+        <ThemeProvider theme={ubuntuFont}>
+          <div className={`${classes.timeVenueContainer} ${classes.padding}`}>
+            <Typography variant="body1" className={classes.timeVenueData}>
+              <AccessTimeIcon className={classes.icon} />{" "}
+              {`${event.date.startTime} - ${event.date.lastTime}`}
+            </Typography>
+            <Typography variant="body1" className={classes.timeVenueData}>
+              <LocationOnIcon className={classes.icon} /> {event.location}
+            </Typography>
+          </div>
+          <Typography
+            className={`${classes.snippet} ${classes.padding}`}
+            variant="body1"
+          >
+            {event.description}
+          </Typography>
+        </ThemeProvider>
+        <Box padding={theme.spacing(0, 2)}>
+          <PillButton
+            text="more details"
+            bgColor={theme.palette.primary.light}
+            bgColorHover={theme.palette.primary.main}
+            textColor={theme.palette.common.white}
+            padding={theme.spacing(2, 3)}
+            isFullWidth={true}
+          />
+        </Box>
+      </div>
+      <Box
+        position="absolute"
+        top="110px"
+        left="5%"
+        bgcolor={theme.palette.background.default}
+        width="90%"
+        height="72%"
+        zIndex="-1"
+        borderRadius={theme.spacing(2)}
+      ></Box>
+    </Box>
+  );
+};
 
-export default Event
+const useStyles = makeStyles((theme) => ({
+  padding: {
+    padding: theme.spacing(0, 1),
+    [theme.breakpoints.down("xs")]: {
+      padding: theme.spacing(0, 2),
+    },
+  },
+  gridContainer: {
+    marginBottom: theme.spacing(2),
+  },
+  calIcon: {
+    marginBottom: theme.spacing(1),
+  },
+  img: {
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[2],
+    width: "100%",
+    transform:
+      "perspective(0px) rotateY(0deg) rotateZ(0deg) rotateX(0deg) scale(1)",
+    transition: "transform 1s ease 0s",
+    "&:hover": {
+      transform:
+        "perspective(800px) rotateY(-8deg) rotate(1deg) rotateX(10deg) scale(.96)",
+    },
+  },
+  date: {
+    fontWeight: theme.typography.fontWeightBold,
+    fontSize: "1.4rem",
+    color: theme.palette.primary.dark,
+    marginBottom: theme.spacing(1),
+  },
+  title: {
+    fontSize: "1rem",
+    fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.common.black,
+    marginBottom: theme.spacing(2),
+  },
+  timeVenueContainer: {
+    marginBottom: theme.spacing(2),
+  },
+  icon: {
+    color: theme.palette.common.black,
+    fontSize: ".9rem",
+    transform: "translateY(2px)",
+    marginRight: "3px",
+  },
+  timeVenueData: {
+    display: "inline-block",
+    fontWeight: theme.typography.fontWeightBold,
+    color: theme.palette.common.black,
+    fontSize: ".8rem",
+    "&:first-child": {
+      marginRight: theme.spacing(2),
+    },
+  },
+  snippet: {
+    color: theme.palette.common.black,
+    fontSize: ".8rem",
+    lineHeight: 1.9,
+    marginBottom: theme.spacing(3),
+    wordWrap: "break-word",
+  },
+}));
+
+export default Event;

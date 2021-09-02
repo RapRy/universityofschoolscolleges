@@ -27,10 +27,14 @@ const palette = {
 };
 
 const shape = {
-  borderRadius: 5,
+  borderRadius: 10,
 };
 
-const shadows = ["none", "4px 4px 15px rgba(0, 0, 0, 0.25)"];
+const shadows = [
+  "none",
+  "4px 4px 15px rgba(0, 0, 0, 0.25)",
+  "0px 6px 30px rgba(0, 0, 0, 0.15)",
+];
 
 export const poppinsFont = createMuiTheme({
   palette: palette,
