@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "https://universityofschoolscolleges.herokuapp.com",
+  // baseURL: "https://universityofschoolscolleges.herokuapp.com",
+  baseURL: "http://localhost:5000",
 });
 
 API.interceptors.request.use((req) => {
@@ -21,6 +22,7 @@ export const getNewUsers = (limit) => API.get(`/users/newUsers/${limit}`);
 export const getActiveUsers = (limit) => API.get(`/users/activeUsers/${limit}`);
 export const getRegisteredUsers = () => API.get("/users/registeredUsers");
 export const getBlacklistedUsers = () => API.get("/users/blacklistedUsers");
+export const getParticipants = (id) => API.get(`/users/participants/${id}`);
 export const signUp = (formData) => API.post("/users/signup", formData);
 export const signIn = (formData) => API.post("/users/signin", formData);
 export const blockUser = (id) => API.put(`/users/blockuser/${id}`);

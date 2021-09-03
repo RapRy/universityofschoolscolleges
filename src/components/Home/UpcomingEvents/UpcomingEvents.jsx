@@ -138,7 +138,7 @@ const UpcomingEvents = () => {
     slidesToShow: 3,
     slidesToScroll: 3,
     autoplay: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 8000,
     pauseOnHover: true,
     swipeToSlide: true,
     nextArrow: <ArrowNext />,
@@ -176,7 +176,7 @@ const UpcomingEvents = () => {
       <MainHeader heading="upcoming events" cta="view all" />
       <Slider {...slickSettings}>
         {events.map((event, i) => (
-          <Event key={i} ind={i} event={event} events={events} />
+          <Event key={i} event={event} />
         ))}
       </Slider>
     </Container>

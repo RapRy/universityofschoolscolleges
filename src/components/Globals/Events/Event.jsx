@@ -89,7 +89,7 @@ const Event = ({ event }) => {
       </div>
       <Box
         position="absolute"
-        top="110px"
+        top="105px"
         left="5%"
         bgcolor={theme.palette.background.default}
         width="90%"
@@ -118,6 +118,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
     boxShadow: theme.shadows[2],
     width: "100%",
+    height: theme.spacing(19),
+    objectFit: "cover",
     transform:
       "perspective(0px) rotateY(0deg) rotateZ(0deg) rotateX(0deg) scale(1)",
     transition: "transform 1s ease 0s",
