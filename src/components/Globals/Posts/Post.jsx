@@ -15,6 +15,7 @@ import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import Moment from "react-moment";
 import "moment-timezone";
+import { Link } from "react-router-dom";
 
 import { poppinsFont, ubuntuFont } from "../../../theme/themes";
 
@@ -31,9 +32,14 @@ const Post = (props) => {
         </ThemeProvider>
       )}
       <ThemeProvider theme={ubuntuFont}>
-        <Typography variant="body1" className={classes.title}>
-          {topic.title}
-        </Typography>
+        <Link
+          to={`/forum/${props.category?.name?.replace(" ", "-")}/${topic._id}`}
+          style={{ textDecoration: "none" }}
+        >
+          <Typography variant="body1" className={classes.title}>
+            {topic.title}
+          </Typography>
+        </Link>
       </ThemeProvider>
       {/* for updated message */}
       {!fromHome && <Typography variant="body1"></Typography>}
@@ -60,7 +66,7 @@ const Post = (props) => {
         </Box>
       </ThemeProvider>
       <div className={classes.avatarGroup}>
-        <AvatarGroup max={2} classes={{ avatar: classes.avatarBorder }}>
+        <AvatarGroup max={3} classes={{ avatar: classes.avatarBorder }}>
           <Avatar classes={{ colorDefault: classes.avatarBgAuthor }}>
             {props.author?.username?.charAt(0)}
           </Avatar>
@@ -95,6 +101,10 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.common.black,
     fontSize: "1rem",
     marginBottom: theme.spacing(1),
+    transition: "color 300ms ease-in-out",
+    "&:hover": {
+      color: theme.palette.secondary.dark,
+    },
   },
   counterContainer: {
     display: "inline-block",

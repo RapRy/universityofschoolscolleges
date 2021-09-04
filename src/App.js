@@ -33,7 +33,8 @@ const App = () => {
         </Switch>
       </Suspense>
 
-      {(matchAuth || match404) === null && <Footer />}
+      <Footer />
+      {/* {(matchAuth || match404) === null && <Footer />} */}
     </ThemeProvider>
   );
 };

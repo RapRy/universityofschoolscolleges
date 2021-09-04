@@ -1,40 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { Container, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import axios from "axios";
 
 import MainHeader from "../Globals/MainHeader";
-import TopicWithThumbnail from "../Globals/Topics/TopicWithThumbnail";
 import Post from "../Globals/Posts/Post";
-import { withAuthor, withParticipants } from "../HOC";
+import { withAuthor, withParticipants, withCategory } from "../HOC";
 import * as api from "../../api";
 
 const PostWithParticipants = withParticipants(Post);
-const PostWithAuthor = withAuthor(PostWithParticipants);
+const PostWithCategory = withCategory(PostWithParticipants);
+const PostWithAuthor = withAuthor(PostWithCategory);
 const FromForum = () => {
   const classes = useStyles();
   const [topics, setTopics] = useState([]);
 
   useEffect(() => {
-    let isMounted = true;
+    const source = axios.CancelToken.source();
 
-    if (isMounted === true) {
-      try {
-        const fetchTopics = async () => {
-          const { data, status } = await api.getTopicsWithLimit(0);
-
-          if (status === 200) {
-            setTopics(data);
-          }
-        };
-
-        fetchTopics();
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    api
+      .getTopicsWithLimit(12, source)
+      .then((res) => {
+        if (res.status === 200) setTopics(res.data);
+      })
+      .catch((err) => {
+        if (axios.isCancel(err)) {
+          console.log(err.message);
+          return;
+        }
+        console.log(err);
+      });
 
     return () => {
-      isMounted = false;
+      source.cancel("Request Cancelled");
     };
   }, []);
 
@@ -45,8 +43,7 @@ const FromForum = () => {
         <Grid container direction="row" spacing={4}>
           {topics &&
             topics.map((topic) => (
-              <Grid item xs={12} md={6} key={topic._id}>
-                {/* <TopicWithThumbnail topic={topic} from="home" /> */}
+              <Grid item xs={12} md={6} lg={4} key={topic._id}>
                 <PostWithAuthor topic={topic} fromHome={true} />
               </Grid>
             ))}
@@ -59,7 +56,7 @@ const FromForum = () => {
 const useStyles = makeStyles((theme) => ({
   bg: {
     background: theme.palette.primary.contrastText,
-    padding: `${theme.spacing(10)}px 0px ${theme.spacing(13)}px`,
+    padding: theme.spacing(30, 0),
   },
 }));
 

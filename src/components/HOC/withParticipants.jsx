@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 import * as api from "../../api";
 
@@ -8,15 +9,24 @@ const withParticipants = (Component) => {
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
+      const source = axios.CancelToken.source();
+      const formData = { postId: topic._id, creatorId: topic.ref.creator };
       api
-        .getParticipants(topic._id)
+        .getParticipants(formData, source)
         .then((res) => {
-          const filteredUsers = res.data.users.filter(
-            (user) => user._id !== topic.ref.creator
-          );
-          setUsers(filteredUsers);
+          if (res.status === 200) setUsers(res.data.users);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          if (axios.isCancel(err)) {
+            console.log(err.message);
+            return;
+          }
+          console.log(err);
+        });
+
+      return () => {
+        source.cancel("Operation canceled");
+      };
     }, [topic._id, topic.ref.creator]);
 
     return <Component {...props} participants={users} />;
