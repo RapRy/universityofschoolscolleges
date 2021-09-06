@@ -10,6 +10,8 @@ const PillButton = ({
   textColor,
   padding,
   isFullWidth,
+  eventHandler,
+  type,
 }) => {
   const classes = useStyles({
     bgColor,
@@ -24,6 +26,8 @@ const PillButton = ({
         className={classes.root}
         disableRipple
         fullWidth={isFullWidth}
+        onClick={eventHandler}
+        type={type}
       >
         {text}
       </Button>

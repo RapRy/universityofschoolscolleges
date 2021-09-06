@@ -84,6 +84,8 @@ const Event = ({ event }) => {
             textColor={theme.palette.common.white}
             padding={theme.spacing(2, 3)}
             isFullWidth={true}
+            eventHandler={null}
+            type="button"
           />
         </Box>
       </div>

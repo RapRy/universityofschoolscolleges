@@ -53,6 +53,8 @@ const LandingPage = () => {
           textColor={theme.palette.common.white}
           padding={theme.spacing(1, 4)}
           isFullWidth={false}
+          eventHandler={null}
+          type="button"
         />
       </Container>
     </Box>

@@ -57,6 +57,8 @@ const CoursesOffered = () => {
                 textColor={theme.palette.common.white}
                 padding={theme.spacing(1, 4)}
                 isFullWidth={false}
+                eventHandler={null}
+                type="button"
               />
             </Box>
             <PillButton
@@ -66,6 +68,8 @@ const CoursesOffered = () => {
               textColor={theme.palette.common.white}
               padding={theme.spacing(1, 4)}
               isFullWidth={false}
+              eventHandler={null}
+              type="button"
             />
           </Box>
         </Grid>
