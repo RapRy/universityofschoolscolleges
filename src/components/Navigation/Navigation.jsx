@@ -34,7 +34,7 @@ const Navigation = ({ type }) => {
         <Container className={classes.container}>
           <Grid container direction="row" alignItems="center">
             {/* logo start */}
-            <Grid item xs={11} sm={5} md={6}>
+            <Grid item xs={11} sm={11} md={6}>
               <ThemeProvider theme={poppinsFont}>
                 <Link to="/" className={classes.logo}>
                   <Typography
@@ -67,7 +67,7 @@ const Navigation = ({ type }) => {
             {/* logo end */}
 
             {/* nav menu start */}
-            <Grid item xs={1} sm={7} md={6}>
+            <Grid item xs={1} sm={1} md={max960 ? 1 : 6}>
               <ThemeProvider theme={ubuntuFont}>
                 {/* mobile menu start */}
                 <Drawer
@@ -79,13 +79,6 @@ const Navigation = ({ type }) => {
                   }}
                   elevation={1}
                 >
-                  {/* TODO delete  this commented section */}
-                  {/* {type !== "" ? (
-                    <ProfileMenu max960={max960} setShowAside={setShowAside} />
-                  ) : (
-                    <HomeMenu aside={true} />
-                  )} */}
-
                   <ProfileWithHomeMenu
                     max960={max960}
                     setShowAside={setShowAside}
@@ -97,37 +90,14 @@ const Navigation = ({ type }) => {
 
                 {/* desktop menu start */}
                 {max960 ? (
-                  <Grid
-                    container
-                    direction="row"
-                    spacing={1}
-                    alignItems="center"
-                    justify="flex-end"
-                  >
-                    <Grid
-                      item
-                      xs={12}
-                      sm={2}
-                      md={1}
-                      style={{ textAlign: "right" }}
-                    >
-                      <MenuIcon
-                        className={classes.menuIcon}
-                        onClick={() => setShowAside((prevState) => !prevState)}
-                      />
-                    </Grid>
+                  <Grid container justify="flex-end">
+                    <MenuIcon
+                      className={classes.menuIcon}
+                      onClick={() => setShowAside((prevState) => !prevState)}
+                    />
                   </Grid>
                 ) : (
                   <>
-                    {/* TODO delete  this commented section */}
-                    {/* {type !== "" ? (
-                      <UserMenu
-                        setShowAside={setShowAside}
-                        showAside={showAside}
-                      />
-                    ) : (
-                      <HomeMenu aside={false} />
-                    )} */}
                     <UserWithHomeMenu
                       setShowAside={setShowAside}
                       showAside={showAside}
@@ -149,8 +119,7 @@ const Navigation = ({ type }) => {
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
-    background: (props) =>
-      props.type !== "" ? theme.palette.primary.main : "transparent",
+    background: "transparent",
     boxShadow: "none",
   },
   container: {

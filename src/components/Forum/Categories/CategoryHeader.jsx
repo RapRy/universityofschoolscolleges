@@ -1,86 +1,118 @@
-import React, { useState } from 'react'
-import { Typography, Grid, useMediaQuery } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core'
-import { useDispatch } from 'react-redux';
-import PostAddIcon from '@material-ui/icons/PostAdd';
-import DeleteIcon from '@material-ui/icons/Delete'
-import { useSnackbar } from 'notistack'
+import React, { useState } from "react";
+import { Typography, Grid, useMediaQuery } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+import PostAddIcon from "@material-ui/icons/PostAdd";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { useSnackbar } from "notistack";
 
-import IconBtn from '../../Globals/IconBtn'
-import { set_selected } from '../../../redux/categoriesReducer';
-import DeleteDialog from '../../Globals/DeleteDialog'
-import { update_active_status } from '../../../redux/categoriesReducer'
+import IconBtn from "../../Globals/IconBtn";
+import { set_selected } from "../../../redux/categoriesReducer";
+import DeleteDialog from "../../Globals/DeleteDialog";
+import { update_active_status } from "../../../redux/categoriesReducer";
 
 const CategoryHeader = ({ cat, setShowForm, showForm }) => {
-    const classes = useStyles()
-    const max600 = useMediaQuery(theme => theme.breakpoints.down('xs'))
+  const classes = useStyles();
+  const max600 = useMediaQuery((theme) => theme.breakpoints.down("xs"));
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-    const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
-    const { enqueueSnackbar } = useSnackbar()
+  const { enqueueSnackbar } = useSnackbar();
 
-    const handleAddTopic = () => {
-        showForm === false && dispatch(set_selected(cat._id))
-        setShowForm(prevState => !prevState)
-    }
+  const handleAddTopic = () => {
+    showForm === false && dispatch(set_selected(cat._id));
+    setShowForm((prevState) => !prevState);
+  };
 
-    const handleDelete = () => setOpen(true)
+  const handleDelete = () => setOpen(true);
 
-    const handleConfirmDelete = () => {
-        dispatch(update_active_status(cat._id))
-        enqueueSnackbar(`${cat.name} deleted`, { variant: "success" })
-        setOpen(false)
-    }
+  const handleConfirmDelete = () => {
+    dispatch(update_active_status(cat._id));
+    enqueueSnackbar(`${cat.name} deleted`, { variant: "success" });
+    setOpen(false);
+  };
 
-    const handleCloseDialog = () => setOpen(false)
+  const handleCloseDialog = () => setOpen(false);
 
-    return (
-        <Grid container direction={ max600 === true ? "column" : "row" } alignItems="center" justify="space-between" spacing={ max600 === true ? 3 : 1 } style={{ paddingBottom: "20px" }}>
-            { open && <DeleteDialog status={open} message={`Click confirm to delete ${cat.name}`} handleDelete={handleConfirmDelete} handleCancel={handleCloseDialog} /> }
-            <Grid item md={"auto"} sm={'auto'} xs={12}>
-                <Typography variant="h4" className={classes.typoH4}>{ cat.name }</Typography>
-            </Grid>
-            <Grid item md={2} sm={2} xs={12}>
-                <span className={classes.statsGrid}>
-                    <Typography variant="h5" className={classes.typoH5}>{cat.meta.topics.length}</Typography>
-                    <Typography variant="body1" className={classes.body1}>{ cat.meta.topics.length === 1 ? "Topic" : "Topics" }</Typography>
-                </span>
-            </Grid>
-            <Grid item md={8} sm={12} xs={12}>
-                <Grid container direction="row" justify={ max600 === true ? "center" : "flex-end" }>
-                    <IconBtn icon={<PostAddIcon />} text="Add Topic" handleClick={handleAddTopic} />
-                    <IconBtn icon={<DeleteIcon />} text="Delete" handleClick={handleDelete} />
-                </Grid>
-            </Grid>
+  return (
+    <Grid
+      container
+      direction={max600 === true ? "column" : "row"}
+      alignItems="center"
+      justify="space-between"
+      spacing={max600 === true ? 3 : 1}
+      style={{ paddingBottom: "20px" }}
+    >
+      {open && (
+        <DeleteDialog
+          status={open}
+          message={`Click confirm to delete ${cat.name}`}
+          handleDelete={handleConfirmDelete}
+          handleCancel={handleCloseDialog}
+        />
+      )}
+      <Grid item md={"auto"} sm={"auto"} xs={12}>
+        <Typography variant="h4" className={classes.typoH4}>
+          {cat.name}
+        </Typography>
+      </Grid>
+      <Grid item md={2} sm={2} xs={12}>
+        <span className={classes.statsGrid}>
+          <Typography variant="h5" className={classes.typoH5}>
+            {cat.meta.topics.length}
+          </Typography>
+          <Typography variant="body1" className={classes.body1}>
+            {cat.meta.topics.length === 1 ? "Topic" : "Topics"}
+          </Typography>
+        </span>
+      </Grid>
+      <Grid item md={8} sm={12} xs={12}>
+        <Grid
+          container
+          direction="row"
+          justify={max600 === true ? "center" : "flex-end"}
+        >
+          <IconBtn
+            icon={<PostAddIcon />}
+            text="Add Topic"
+            handleClick={handleAddTopic}
+          />
+          <IconBtn
+            icon={<DeleteIcon />}
+            text="Delete"
+            handleClick={handleDelete}
+          />
         </Grid>
-    )
-}
+      </Grid>
+    </Grid>
+  );
+};
 
-const useStyles = makeStyles(theme => ({
-    typoH4: {
-        color: theme.palette.secondary.dark,
-        fontSize: '.95rem',
-        fontWeight: theme.typography.fontWeightBold
-    },
-    statsGrid: {
-        padding: theme.spacing(1, 2),
-        background: theme.palette.secondary.contrastText,
-        borderRadius: theme.shape.borderRadius
-    },
-    typoH5: {
-        color: theme.palette.primary.dark,
-        fontSize: '1.2rem',
-        fontWeight: theme.typography.fontWeightBlack,
-        marginRight: theme.spacing(1),
-        display: "inline-block"
-    },
-    body1: {
-        color: theme.palette.secondary.dark,
-        fontSize: '.8rem',
-        display: "inline-block"
-    }
-}))
+const useStyles = makeStyles((theme) => ({
+  typoH4: {
+    color: theme.palette.secondary.dark,
+    fontSize: ".95rem",
+    fontWeight: theme.typography.fontWeightBold,
+  },
+  statsGrid: {
+    padding: theme.spacing(1, 2),
+    background: theme.palette.secondary.contrastText,
+    borderRadius: theme.shape.borderRadius,
+  },
+  typoH5: {
+    color: theme.palette.primary.dark,
+    fontSize: "1.2rem",
+    fontWeight: theme.typography.fontWeightBlack,
+    marginRight: theme.spacing(1),
+    display: "inline-block",
+  },
+  body1: {
+    color: theme.palette.secondary.dark,
+    fontSize: ".8rem",
+    display: "inline-block",
+  },
+}));
 
-export default CategoryHeader
+export default CategoryHeader;

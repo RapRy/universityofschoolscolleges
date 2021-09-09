@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   TextField,
   IconButton,
@@ -11,7 +11,6 @@ import { makeStyles } from "@material-ui/styles";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
-import { formContext } from "../../Auth/formContext";
 import { poppinsFont } from "../../../theme/themes";
 
 const Input = ({
@@ -22,12 +21,11 @@ const Input = ({
   errors,
   value,
   iconAdorn,
+  switchForm,
 }) => {
   const classes = useStyles();
 
   const [show, setShow] = useState(false);
-
-  const { switchForm } = useContext(formContext);
 
   return (
     <div className={classes.rootContainer}>

@@ -13,7 +13,7 @@ const Home = lazy(() => import("./components/Home/Home"));
 
 const App = () => {
   const matchAuth = useRouteMatch("/auth");
-  const match404 = useRouteMatch("*");
+  // const match404 = useRouteMatch("*");
 
   return (
     <ThemeProvider theme={mainTheme}>
@@ -33,8 +33,7 @@ const App = () => {
         </Switch>
       </Suspense>
 
-      <Footer />
-      {/* {(matchAuth || match404) === null && <Footer />} */}
+      {matchAuth === null && <Footer />}
     </ThemeProvider>
   );
 };

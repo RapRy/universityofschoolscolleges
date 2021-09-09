@@ -1,48 +1,52 @@
-import React, { useEffect } from 'react'
-import { Typography, Container, LinearProgress } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useEffect } from "react";
+import { Typography, Container, LinearProgress } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import { useSelector, useDispatch } from "react-redux";
 
-import AddCategoryForm from '../../Globals/Forms/AddCategoryForm';
-import { update_categories } from '../../../redux/categoriesReducer';
-import Category from './Category';
-import Empty from '../../Globals/Empty/Empty'
+import AddCategoryForm from "../../Globals/Forms/AddCategoryForm";
+import { get_categories } from "../../../redux/categoriesReducer";
+import Category from "./Category";
+import Empty from "../../Globals/Empty/Empty";
 
 const Categories = () => {
-    const classes = useStyles();
-    
-    const { status, categories } = useSelector(state => state.categories)
-    const dispatch = useDispatch()
+  const classes = useStyles();
 
-    useEffect(() => {
-        dispatch(update_categories())
-    }, [dispatch])
+  const { status, categories } = useSelector((state) => state.categories);
+  const dispatch = useDispatch();
 
-    return (
-        <Container>
-            <Typography className={classes.typoH2} variant="h2">Categories</Typography>
-            <AddCategoryForm />
+  useEffect(() => {
+    dispatch(get_categories());
+  }, [dispatch]);
 
-           { (status === "loading" && categories.length === 0) && <LinearProgress style={{ margin: "30px 0" }} /> }
+  return (
+    <Container>
+      <Typography className={classes.typoH2} variant="h2">
+        Categories
+      </Typography>
+      <AddCategoryForm />
 
-            { (status === 'idle' && categories.length === 0) && <Empty message="No created categories" /> }
-           {
-               categories.map((cat) => (
-                   cat.active === 1 && <Category key={cat._id} cat={cat} />
-               ))
-           }
-        </Container>
-    )
-}
+      {status === "loading" && categories.length === 0 && (
+        <LinearProgress style={{ margin: "30px 0" }} />
+      )}
 
-const useStyles = makeStyles(theme => ({
-    typoH2: {
-        fontWeight: 700,
-        fontSize: "1.2rem",
-        marginTop: "40px",
-        textTransform: "uppercase",
-        color: theme.palette.secondary.dark
-    }
-}))
+      {status === "idle" && categories.length === 0 && (
+        <Empty message="No created categories" />
+      )}
+      {categories.map(
+        (cat) => cat.active === 1 && <Category key={cat._id} cat={cat} />
+      )}
+    </Container>
+  );
+};
 
-export default Categories
+const useStyles = makeStyles((theme) => ({
+  typoH2: {
+    fontWeight: 700,
+    fontSize: "1.2rem",
+    marginTop: "40px",
+    textTransform: "uppercase",
+    color: theme.palette.secondary.dark,
+  },
+}));
+
+export default Categories;

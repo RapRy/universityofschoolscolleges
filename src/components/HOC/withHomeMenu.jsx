@@ -3,7 +3,7 @@ import React from "react";
 import HomeMenu from "../Navigation/HomeMenu";
 
 const withHomeMenu = (Component) => {
-  const EnhancedHomeMenuComp = ({ type, aside, ...props }) => {
+  const EnhancedComponent = ({ type, aside, ...props }) => {
     if (type !== "") {
       return <Component {...props} />;
     }
@@ -11,7 +11,7 @@ const withHomeMenu = (Component) => {
     return <HomeMenu aside={aside} />;
   };
 
-  return EnhancedHomeMenuComp;
+  return EnhancedComponent;
 };
 
 export default withHomeMenu;

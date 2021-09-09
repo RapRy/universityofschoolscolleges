@@ -1,31 +1,33 @@
-import React from 'react'
-import { Grid, Avatar } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import { useSelector } from 'react-redux'
-
-import SearchBar from './SearchBar'
+import React, { useEffect } from "react";
+import { Avatar, makeStyles, Grid } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
 const UserMenu = ({ setShowAside, showAside }) => {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    const { profile } = useSelector(state => state.auth);
+  const { profile } = useSelector((state) => state.auth);
 
-    return (
-        <Grid container direction="row" spacing={2} alignItems="center" justify="flex-end">
-            <Grid item xs={10}>
-                <SearchBar />  
-            </Grid>
-            <Grid className={classes.avatar} item xs={1} container direction="row" justify="flex-end" alignItems="center" onClick={() => setShowAside(!showAside)}>
-                <Avatar>{ profile.result?.username.charAt(0) }</Avatar>
-            </Grid>
-        </Grid>
-    )
-}
+  return (
+    <Grid container justify="flex-end">
+      <Avatar
+        onClick={() => setShowAside(!showAside)}
+        className={classes.avatar}
+        src={
+          profile.result?.accountType === 0
+            ? `${process.env.PUBLIC_URL}/assets/defaultProPic.jpg`
+            : `${process.env.PUBLIC_URL}/assets/adminProPic.jpg`
+        }
+      >
+        {profile.result?.username.charAt(0)}
+      </Avatar>
+    </Grid>
+  );
+};
 
 const useStyles = makeStyles((theme) => ({
-    avatar: {
-        marginLeft: theme.spacing(2)
-    }
-}))
+  avatar: {
+    cursor: "pointer",
+  },
+}));
 
-export default UserMenu
+export default UserMenu;

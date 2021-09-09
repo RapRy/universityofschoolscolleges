@@ -20,7 +20,6 @@ import PermIdentityIcon from "@material-ui/icons/PermIdentity";
 
 import Input from "../Globals/Forms/Input";
 import { sign_up, sign_in } from "../../redux/authReducer";
-import { formContext } from "./formContext";
 import { poppinsFont, ubuntuFont } from "../../theme/themes";
 import { PillButton } from "../Globals/Buttons";
 
@@ -203,9 +202,9 @@ const Auth = () => {
                   : "Lorem ipsum dolor sit amet."}
               </Typography>
             </ThemeProvider>
-            {error.login !== undefined && (
+            {error.message !== undefined && (
               <Typography variant="body1" className={classes.paraghrapError}>
-                {error.login}
+                {error.message}
               </Typography>
             )}
             <Backdrop
@@ -215,59 +214,58 @@ const Auth = () => {
               <CircularProgress color="inherit" />
             </Backdrop>
             <form onSubmit={handleSubmit} style={{ width: "100%" }}>
-              <formContext.Provider value={{ switchForm }}>
-                {switchForm && (
-                  <Input
-                    type={"text"}
-                    label={"Username"}
-                    name={"username"}
-                    errors={errors}
-                    handleInputChange={handleInputChange}
-                    value={formData.username}
-                    iconAdorn={<AccountCircleIcon />}
-                  />
-                )}
+              {switchForm && (
                 <Input
-                  type={"email"}
-                  label={"Email"}
-                  name={"email"}
+                  type={"text"}
+                  label={"Username"}
+                  name={"username"}
                   errors={errors}
                   handleInputChange={handleInputChange}
-                  value={formData.email}
-                  iconAdorn={<AlternateEmailIcon />}
+                  value={formData.username}
+                  iconAdorn={<AccountCircleIcon />}
+                  switchForm={switchForm}
                 />
-                {switchForm && (
-                  <Input
-                    type={"text"}
-                    label={"Student ID"}
-                    name={"schoolId"}
-                    errors={errors}
-                    handleInputChange={handleInputChange}
-                    value={formData.schoolId}
-                    iconAdorn={<PermIdentityIcon />}
-                  />
-                )}
+              )}
+              <Input
+                type={"email"}
+                label={"Email"}
+                name={"email"}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                value={formData.email}
+                iconAdorn={<AlternateEmailIcon />}
+              />
+              {switchForm && (
+                <Input
+                  type={"text"}
+                  label={"Student ID"}
+                  name={"schoolId"}
+                  errors={errors}
+                  handleInputChange={handleInputChange}
+                  value={formData.schoolId}
+                  iconAdorn={<PermIdentityIcon />}
+                />
+              )}
+              <Input
+                type={"password"}
+                label={"Password"}
+                name={"password"}
+                errors={errors}
+                handleInputChange={handleInputChange}
+                value={formData.password}
+                iconAdorn={<LockIcon />}
+              />
+              {switchForm && (
                 <Input
                   type={"password"}
-                  label={"Password"}
-                  name={"password"}
+                  label={"Confirm Password"}
+                  name={"confirmPassword"}
                   errors={errors}
                   handleInputChange={handleInputChange}
-                  value={formData.password}
+                  value={formData.confirmPassword}
                   iconAdorn={<LockIcon />}
                 />
-                {switchForm && (
-                  <Input
-                    type={"password"}
-                    label={"Confirm Password"}
-                    name={"confirmPassword"}
-                    errors={errors}
-                    handleInputChange={handleInputChange}
-                    value={formData.confirmPassword}
-                    iconAdorn={<LockIcon />}
-                  />
-                )}
-              </formContext.Provider>
+              )}
               <Box textAlign="center" paddingTop="30px">
                 <PillButton
                   text={switchForm ? "CREATE" : "LOGIN"}

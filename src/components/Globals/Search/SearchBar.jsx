@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { InputBase } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { InputBase, makeStyles, ThemeProvider } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 
-// TODO delete me
+import { poppinsFont } from "../../../theme/themes";
 
 const SearchBar = () => {
   const classes = useStyles();
@@ -34,16 +33,18 @@ const SearchBar = () => {
         <div className={classes.searchIcon}>
           <SearchIcon />
         </div>
-        <InputBase
-          type="text"
-          name="search"
-          placeholder="Search..."
-          fullWidth
-          onChange={handleInputChange}
-          classes={{
-            input: classes.input,
-          }}
-        />
+        <ThemeProvider theme={poppinsFont}>
+          <InputBase
+            type="text"
+            name="search"
+            placeholder="Search..."
+            fullWidth
+            onChange={handleInputChange}
+            classes={{
+              input: classes.input,
+            }}
+          />
+        </ThemeProvider>
       </div>
     </form>
   );
@@ -52,7 +53,6 @@ const SearchBar = () => {
 const useStyles = makeStyles((theme) => ({
   search: {
     position: "relative",
-    borderRadius: theme.shape.borderRadius,
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -62,18 +62,18 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    color: theme.palette.secondary.main,
+    color: theme.palette.primary.main,
     zIndex: 2,
   },
   input: {
-    fontSize: ".8rem",
+    fontSize: ".75rem",
     fontWeight: 500,
     width: "100%",
-    color: theme.palette.secondary.dark,
-    background: theme.palette.secondary.contrastText,
+    color: theme.palette.common.black,
+    background: theme.palette.common.white,
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    borderRadius: theme.shape.borderRadius,
+    borderRadius: "5px",
   },
 }));
 

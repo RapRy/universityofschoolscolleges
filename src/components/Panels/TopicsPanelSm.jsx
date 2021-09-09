@@ -1,49 +1,59 @@
-import React, { useEffect } from 'react'
-import { Container, List, ListItem } from '@material-ui/core'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from "react";
+import { Container, List, ListItem } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
-import PanelHeader from '../Globals/PanelHeader'
-import TopicInSideNav from '../Globals/Topics/TopicInSideNav'
+import PanelHeader from "../Globals/PanelHeader";
+import TopicInSideNav from "../Globals/Topics/TopicInSideNav";
+import { withCategory } from "../HOC";
 
-const TopicsPanelSm = ({ header, API, reduxDispatch, selectorName, icon, limitOrId }) => {
+const TopicInSideNavWithCat = withCategory(TopicInSideNav);
 
-    const dispatch = useDispatch()
-    const topics = useSelector(state => state.topics)
+const TopicsPanelSm = ({
+  header,
+  API,
+  reduxDispatch,
+  selectorName,
+  icon,
+  limitOrId,
+}) => {
+  const dispatch = useDispatch();
+  const topics = useSelector((state) => state.topics);
 
+  useEffect(() => {
+    const fetchTopics = async () => {
+      try {
+        const { data, status } = await API(limitOrId);
 
-    useEffect(() => {
-        const fetchTopics = async () => {
-            try {
-                const { data, status } = await API(limitOrId);
-
-                if(status === 200){
-                    dispatch(reduxDispatch(data))
-                }   
-            } catch (error) {
-                console.log(error)
-            }
+        if (status === 200) {
+          dispatch(reduxDispatch(data));
         }
-        
-        fetchTopics()
-    }, [dispatch]) // eslint-disable-line react-hooks/exhaustive-deps
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-    return (
-        <Container style={{ padding: "0" }}>
-            <Link to={`/forum/${header.replace(" ", "-")}`} style={{ textDecoration: "none" }}>
-                <PanelHeader title={header} />
-            </Link>
-            <List>
-                {
-                    topics[selectorName].map((top) => (
-                        <ListItem key={top._id}>
-                            <TopicInSideNav top={top} icon={icon} header={header} />
-                        </ListItem>
-                    ))
-                }
-            </List>
-        </Container>
-    )
-}
+    fetchTopics();
+  }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
-export default TopicsPanelSm
+  return (
+    <Container style={{ padding: "0" }}>
+      <Link
+        to={`/forum/${header.replace(" ", "-")}`}
+        style={{ textDecoration: "none" }}
+      >
+        <PanelHeader title={header} />
+      </Link>
+      <List>
+        {topics[selectorName].map((top) => (
+          <ListItem key={top._id}>
+            <TopicInSideNavWithCat topic={top} icon={icon} header={header} />
+            {/* <TopicInSideNav top={top} icon={icon} header={header} /> */}
+          </ListItem>
+        ))}
+      </List>
+    </Container>
+  );
+};
+
+export default TopicsPanelSm;
