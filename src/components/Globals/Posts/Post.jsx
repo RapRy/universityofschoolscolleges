@@ -13,24 +13,47 @@ import InsertCommentIcon from "@material-ui/icons/InsertComment";
 import VisibilityIcon from "@material-ui/icons/Visibility";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import Moment from "react-moment";
-import "moment-timezone";
 import { Link } from "react-router-dom";
+import moment from "moment";
+import ReactHtmlParser from "react-html-parser";
+import _ from "lodash";
+// remove later
+import { convertFromRaw, EditorState } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
 
 import { poppinsFont, ubuntuFont } from "../../../theme/themes";
 
 const Post = (props) => {
   const { topic, fromHome } = props;
   const classes = useStyles({ fromHome });
+
+  const textProps = EditorState.createWithContent(
+    convertFromRaw(JSON.parse(topic.description))
+  );
+
+  const textCreated = `created on <strong>${moment(topic.createdAt).format(
+    "MMMM D, YYYY"
+  )}</strong>`;
+  const textUpdated = `updated on <strong>${moment(topic.updatedAt).format(
+    "MMMM D, YYYY"
+  )}</strong>${
+    _.isEmpty(props.lastCommentor)
+      ? " "
+      : `, last comment by <strong>${props.lastCommentor.username}</strong>`
+  }`;
+
   return (
     <Container className={classes.container}>
+      {/* date upper left */}
       {fromHome && (
         <ThemeProvider theme={poppinsFont}>
           <Typography variant="body1" className={classes.topDate}>
-            <Moment format="MMM Do YYYY">{topic.createdAt}</Moment>
+            {/* <Moment format="MMM Do YYYY">{topic.createdAt}</Moment> */}
+            {moment(topic.createdAt).format("MMM Do YYYY")}
           </Typography>
         </ThemeProvider>
       )}
+      {/* blog title */}
       <ThemeProvider theme={ubuntuFont}>
         <Link
           to={`/forum/${props.category?.name?.replace(" ", "-")}/${topic._id}`}
@@ -41,8 +64,19 @@ const Post = (props) => {
           </Typography>
         </Link>
       </ThemeProvider>
+
+      {/* test only delete later */}
+
+      <Editor editorState={textProps} readOnly toolbarHidden />
+
       {/* for updated message */}
-      {!fromHome && <Typography variant="body1"></Typography>}
+      {!fromHome && (
+        <Typography variant="body1" className={classes.textMessage}>
+          {moment(topic.createdAt).isSame(topic.updatedAt)
+            ? ReactHtmlParser(textCreated)
+            : ReactHtmlParser(textUpdated)}
+        </Typography>
+      )}
       <ThemeProvider theme={poppinsFont}>
         <Box>
           <Typography variant="body1" className={classes.counterContainer}>
@@ -71,7 +105,15 @@ const Post = (props) => {
             {props.author?.username?.charAt(0)}
           </Avatar>
           {props.participants?.map((user) => (
-            <Avatar key={user._id} classes={{ colorDefault: classes.avatarBg }}>
+            <Avatar
+              key={user._id}
+              classes={{ colorDefault: classes.avatarBg }}
+              src={
+                user.accountType === 0
+                  ? `${process.env.PUBLIC_URL}/assets/defaultProPic.jpg`
+                  : `${process.env.PUBLIC_URL}/assets/adminProPic.jpg`
+              }
+            >
               {user.username.charAt(0)}
             </Avatar>
           ))}
@@ -106,10 +148,15 @@ const useStyles = makeStyles((theme) => ({
       color: theme.palette.secondary.dark,
     },
   },
+  textMessage: {
+    fontSize: ".75rem",
+    color: theme.palette.common.black,
+    marginBottom: theme.spacing(1),
+  },
   counterContainer: {
     display: "inline-block",
     color: theme.palette.common.black,
-    fontSize: ".85rem",
+    fontSize: ".75rem",
     marginRight: theme.spacing(2),
   },
   counterIcon: {

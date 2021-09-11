@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Typography, LinearProgress, Box } from "@material-ui/core";
+import { Container, LinearProgress, Grid } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,9 +8,6 @@ import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import _ from "lodash";
 
 import AddTopicForm from "../../Globals/Forms/AddTopicForm";
-import IconBtn from "../../Globals/IconBtn";
-import PanelHeader from "../../Globals/PanelHeader";
-import TopicWithThumbnail from "../../Globals/Topics/TopicWithThumbnail";
 import { set_selected } from "../../../redux/categoriesReducer";
 import {
   get_topics,
@@ -19,12 +16,25 @@ import {
   get_related_topics_view_all,
 } from "../../../redux/topicsReducer";
 import Empty from "../../Globals/Empty/Empty";
+import { HeaderWithCta } from "../../Globals/Headers";
+import { IconTextBtn } from "../../Globals/Buttons";
+import Post from "../../Globals/Posts/Post";
+import {
+  withParticipants,
+  withCategory,
+  withAuthor,
+  withLastCommentor,
+} from "../../HOC";
+
+const PostWithParticipants = withParticipants(Post);
+const PostWithCategory = withCategory(PostWithParticipants);
+const PostWithLastCommentor = withLastCommentor(PostWithCategory);
+const PostWithAuthor = withAuthor(PostWithLastCommentor);
 
 const Topics = () => {
-  const classes = useStyles();
   const { category } = useParams();
 
-  const [showForm, setShowForm] = useState(false);
+  const [showForm, setShowForm] = useState(true);
   const [displayCat, setDisplayCat] = useState("");
 
   const match = useRouteMatch("/forum/:topic");
@@ -95,39 +105,20 @@ const Topics = () => {
   }, [match.url]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Container className={classes.container}>
-      {profile?.result?.accountType === 1 ||
-      userFromLocal?.result?.accountType === 1 ? (
-        <Box>
-          <Typography className={classes.typoH2} variant="h2" display="inline">
-            Topics |
-          </Typography>
-          <Typography
-            className={classes.headerH6}
-            variant="h6"
-            display="inline"
-          >
-            {displayCat !== "" ? displayCat : selectedCat.name}
-          </Typography>
-        </Box>
-      ) : (
-        <PanelHeader
-          title={`Topics / ${
-            displayCat !== "" ? displayCat : selectedCat.name
-          }`}
-        />
-      )}
-
-      {showForm === false && (
-        <Box marginTop="10px">
-          <IconBtn
-            icon={<NoteAddIcon />}
-            text="Add Topic"
-            handleClick={toggleShow}
+    <Container>
+      <HeaderWithCta
+        title={`Topics / ${displayCat !== "" ? displayCat : selectedCat.name}`}
+        ctaButton={
+          <IconTextBtn
+            icon={<NoteAddIcon style={{ fontSize: "1.1rem" }} />}
+            text="write a post"
+            color="secondary"
+            size=".8rem"
+            isLowercase={true}
+            event={toggleShow}
           />
-        </Box>
-      )}
-
+        }
+      />
       {showForm === true && <AddTopicForm action="add" />}
 
       <div>
@@ -138,34 +129,18 @@ const Topics = () => {
         {status === "idle" && topics.length === 0 && (
           <Empty message="No Topics" />
         )}
-        {topics.map((topic) => (
-          <TopicWithThumbnail topic={topic} key={topic._id} />
-        ))}
+        <Grid container spacing={4} direction="row">
+          {topics.map((topic) => (
+            <Grid item xs={12} sm={6} key={topic._id}>
+              <PostWithAuthor topic={topic} fromHome={false} />
+            </Grid>
+          ))}
+        </Grid>
       </div>
     </Container>
   );
 };
 
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: theme.spacing(4),
-    [theme.breakpoints.down("xs")]: {
-      marginTop: theme.spacing(8),
-    },
-  },
-  typoH2: {
-    fontWeight: theme.typography.fontWeightBold,
-    fontSize: "1.2rem",
-    textTransform: "uppercase",
-    color: theme.palette.secondary.dark,
-  },
-  headerH6: {
-    fontWeight: theme.typography.fontWeightBold,
-    fontSize: "1rem",
-    marginLeft: theme.spacing(1),
-    textTransform: "uppercase",
-    color: theme.palette.secondary.dark,
-  },
-}));
+const useStyles = makeStyles((theme) => ({}));
 
 export default Topics;

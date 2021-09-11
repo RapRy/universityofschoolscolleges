@@ -30,16 +30,16 @@ const shape = {
   borderRadius: 10,
 };
 
-const shadows = [
-  "none",
-  "4px 4px 15px rgba(0, 0, 0, 0.25)",
-  "0px 6px 30px rgba(0, 0, 0, 0.15)",
-];
+// const shadows = [
+//   "none",
+//   "4px 4px 15px rgba(0, 0, 0, 0.25)",
+//   "0px 6px 30px rgba(0, 0, 0, 0.15)",
+// ];
 
 export const poppinsFont = createMuiTheme({
   palette: palette,
   shape: shape,
-  shadows: shadows,
+  // shadows: shadows,
   typography: {
     fontFamily: ["Poppins", "sans-serif"].join(","),
   },
@@ -48,7 +48,7 @@ export const poppinsFont = createMuiTheme({
 export const ubuntuFont = createMuiTheme({
   palette: palette,
   shape: shape,
-  shadows: shadows,
+  // shadows: shadows,
   typography: {
     fontFamily: ["Ubuntu", "sans-serif"].join(","),
   },
@@ -57,5 +57,5 @@ export const ubuntuFont = createMuiTheme({
 export const mainTheme = createMuiTheme({
   palette: palette,
   shape: shape,
-  shadows: shadows,
+  // shadows: shadows,
 });

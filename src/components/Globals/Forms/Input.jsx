@@ -29,16 +29,13 @@ const Input = ({
 
   return (
     <div className={classes.rootContainer}>
-      <Grid
-        container
-        spacing={1}
-        alignItems="center"
-        className={classes.rootGrid}
-      >
-        <Grid item xs={1} className={classes.startIcon}>
-          {iconAdorn}
-        </Grid>
-        <Grid item xs={11}>
+      <Grid container alignItems="center" className={classes.rootGrid}>
+        {iconAdorn && (
+          <Grid item xs={1} className={classes.startIcon}>
+            {iconAdorn}
+          </Grid>
+        )}
+        <Grid item xs={iconAdorn ? 11 : 12}>
           <ThemeProvider theme={poppinsFont}>
             <TextField
               value={value}

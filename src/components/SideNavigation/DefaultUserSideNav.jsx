@@ -77,7 +77,7 @@ const DefaultUserSideNav = () => {
 
 const useStyles = makeStyles((theme) => ({
   svg: {
-    color: theme.palette.primary.light,
+    color: theme.palette.common.black,
     fontSize: ".95rem",
     verticalAlign: "middle",
   },

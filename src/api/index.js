@@ -52,10 +52,12 @@ export const addTopicViews = (data) => API.post("/topics/views", data);
 export const getTopics = (id) => API.get(`/topics/${id}`);
 export const getTopic = (id) => API.get(`/topics/details/${id}`);
 export const getTopicCount = () => API.get("/topics/count");
-export const getLatestTopics = (limit) =>
-  API.get(`/topics/latest/limit/${limit}`);
-export const getHotTopics = (limit) => API.get(`/topics/hot/limit/${limit}`);
-export const getRelatedTopics = (id) => API.get(`/topics/related/${id}`);
+export const getLatestTopics = (limit, source) =>
+  API.get(`/topics/latest/limit/${limit}`, { cancelToken: source.token });
+export const getHotTopics = (limit, source) =>
+  API.get(`/topics/hot/limit/${limit}`, { cancelToken: source.token });
+export const getRelatedTopics = (id, source) =>
+  API.get(`/topics/related/${id}`, { cancelToken: source.token });
 export const getLatestTopicsByCategory = (id) =>
   API.get(`/topics/latest/${id}`);
 export const getHotTopicsByCategory = (id) => API.get(`/topics/hot/${id}`);

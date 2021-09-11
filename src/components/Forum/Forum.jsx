@@ -67,17 +67,17 @@ const Forum = () => {
     <div>
       <BackToTop />
       <Navigation type="forum" />
-      {max600 && (
-        <Box className={classes.container}>
+      {/* {max600 && (
+        <Box className={classes.searchContainer}>
           <SearchBar />
         </Box>
-      )}
-      <Container style={{ padding: 0, marginTop: theme.spacing(8) }}>
+      )} */}
+      <Container className={classes.forumContainer}>
         <Grid container>
-          <Grid item md={3} xs={12}>
+          <Grid item md={4} xs={12}>
             <SideNavigation />
           </Grid>
-          <Grid item md={9} xs={12}>
+          <Grid item md={8} xs={12}>
             <Switch>
               <Route exact path={path}>
                 {(profile?.result?.accountType === 1 &&
@@ -132,7 +132,7 @@ const Forum = () => {
                 component={UserPosts}
               />
 
-              {/* <Route exact path={`${path}/:category`} component={Topics} /> */}
+              <Route exact path={`${path}/:category`} component={Topics} />
 
               <Route
                 exact
@@ -154,14 +154,18 @@ const Forum = () => {
 };
 
 const useStyles = makeStyles((theme) => ({
-  container: {
+  searchContainer: {
     marginTop: theme.spacing(4),
     marginLeft: theme.spacing(2),
     marginRight: theme.spacing(2),
     padding: theme.spacing(2),
-    background: theme.palette.primary.contrastText,
+    background: theme.palette.common.white,
     borderRadius: theme.shape.borderRadius,
     boxShadow: theme.shadows[7],
+  },
+  forumContainer: {
+    padding: 0,
+    marginTop: theme.spacing(10),
   },
 }));
 
