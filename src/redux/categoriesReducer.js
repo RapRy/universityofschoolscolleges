@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axios from "axios";
 
 import * as api from "../api";
 
@@ -19,14 +20,20 @@ export const get_categories = createAsyncThunk(
 
 export const set_selected = createAsyncThunk(
   "categories/set_selected",
-  async (topicId) => {
-    if (topicId === "topics") {
-      return { name: "" };
+  async (catId) => {
+    try {
+      if (catId === "topics") {
+        return { name: "" };
+      }
+
+      const source = axios.CancelToken.source();
+
+      const { data, status } = await api.getCategory(catId, source);
+
+      if (status === 200) return data.category;
+    } catch (error) {
+      console.log(error);
     }
-
-    const { data, status } = await api.getCategory(topicId);
-
-    if (status === 200) return data.category;
   }
 );
 

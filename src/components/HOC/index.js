@@ -3,3 +3,4 @@ export { default as withAuthor } from "./withAuthor";
 export { default as withCategory } from "./withCategory";
 export { default as withParticipants } from "./withParticipants";
 export { default as withLastCommentor } from "./withLastCommentor";
+export { default as withAllUsersCount } from "./withAllUsersCount";

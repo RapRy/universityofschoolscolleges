@@ -6,16 +6,16 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  Button,
   ThemeProvider,
+  useTheme,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useSelector, useDispatch } from "react-redux";
-import PublishIcon from "@material-ui/icons/Publish";
 import { useSnackbar } from "notistack";
 import { EditorState, convertToRaw } from "draft-js";
 
 import Input from "./Input";
+import { PillButton } from "../Buttons";
 import TextAreaWithEditor from "./TextAreaWithEditor";
 import { publish_topic, update_topic } from "../../../redux/topicsReducer";
 import * as api from "../../../api";
@@ -32,6 +32,7 @@ const initialState = {
 
 const AddTopicForm = ({ action }) => {
   const classes = useStyles();
+  const theme = useTheme();
 
   const { categories, selectedCat } = useSelector((state) => state.categories);
   const { selectedTopic } = useSelector((state) => state.topics);
@@ -96,7 +97,8 @@ const AddTopicForm = ({ action }) => {
           return;
         }
 
-        // if(selectedCat._id === data.result.ref.category) dispatch(update_topic(data.result))
+        if (selectedCat._id === data.result.ref.category)
+          dispatch(update_topic(data.result));
 
         dispatch(update_topic(data.result));
 
@@ -247,13 +249,16 @@ const AddTopicForm = ({ action }) => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button
+            <PillButton
+              text="Publish"
+              bgColor={theme.palette.secondary.main}
+              bgColorHover={theme.palette.secondary.light}
+              textColor={theme.palette.common.white}
+              padding={theme.spacing(0.5, 3)}
+              isFullWidth={false}
+              eventHandler={null}
               type="submit"
-              className={classes.buttonSubmit}
-              startIcon={<PublishIcon />}
-            >
-              PUBLISH
-            </Button>
+            />
           </Grid>
         </Grid>
       </form>
@@ -267,21 +272,6 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(2),
     padding: theme.spacing(2, 3),
     borderRadius: theme.shape.borderRadius,
-  },
-  buttonSubmit: {
-    borderRadius: theme.shape.borderRadius,
-    margin: `${theme.spacing(2)}px auto`,
-    fontSize: ".9rem",
-    fontWeight: theme.typography.fontWeightLight,
-    color: theme.palette.secondary.contrastText,
-    padding: theme.spacing(1, 3),
-    background: theme.palette.secondary.main,
-    "&:hover": {
-      background: theme.palette.secondary.dark,
-    },
-    [theme.breakpoints.down("xs")]: {
-      margin: `${theme.spacing(1)}px auto 0`,
-    },
   },
   formControl: {
     width: "100%",
@@ -309,7 +299,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   textAreaGrid: {
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 0, 1),
   },
 }));
 

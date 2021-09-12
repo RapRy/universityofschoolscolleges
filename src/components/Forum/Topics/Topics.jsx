@@ -34,7 +34,7 @@ const PostWithAuthor = withAuthor(PostWithLastCommentor);
 const Topics = () => {
   const { category } = useParams();
 
-  const [showForm, setShowForm] = useState(true);
+  const [showForm, setShowForm] = useState(false);
   const [displayCat, setDisplayCat] = useState("");
 
   const match = useRouteMatch("/forum/:topic");

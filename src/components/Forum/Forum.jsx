@@ -18,13 +18,12 @@ import {
 } from "react-router-dom";
 
 import Navigation from "../Navigation/Navigation";
-import SearchBar from "../Navigation/SearchBar";
 import SideNavigation from "../SideNavigation/SideNavigation";
 import { sign_in_LS } from "../../redux/authReducer";
 
 import Overview from "./Overview/Overview";
 import Categories from "./Categories/Categories";
-import Topics from "./Topics/Topics";
+import ForumHome from "./ForumHome";
 import Topic from "./Topics/Topic";
 import ActiveUsersList from "./Users/ActiveUsersList";
 import RegisteredUsersList from "./Users/RegisteredUsersList";
@@ -67,11 +66,6 @@ const Forum = () => {
     <div>
       <BackToTop />
       <Navigation type="forum" />
-      {/* {max600 && (
-        <Box className={classes.searchContainer}>
-          <SearchBar />
-        </Box>
-      )} */}
       <Container className={classes.forumContainer}>
         <Grid container>
           <Grid item md={4} xs={12}>
@@ -132,7 +126,7 @@ const Forum = () => {
                 component={UserPosts}
               />
 
-              <Route exact path={`${path}/:category`} component={Topics} />
+              <Route exact path={`${path}/:category`} component={ForumHome} />
 
               <Route
                 exact

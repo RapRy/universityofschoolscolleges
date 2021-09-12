@@ -1,137 +1,80 @@
-import React, { useEffect } from "react";
-import { Container, Grid, Divider, useMediaQuery } from "@material-ui/core";
+import React from "react";
+import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { People, Forum, Comment, Folder } from "@material-ui/icons";
 
-import PanelHeader from "../Globals/PanelHeader";
-import { UserStatData, AdminStatData } from "./Stats";
+import { PanelHeader } from "../Globals/Headers";
 import * as api from "../../api";
-import { update_count } from "../../redux/statsReducer";
+import Stat from "./Stats/Stat";
+import { withAllUsersCount } from "../HOC";
+
+const StatWithAllUsersCount = withAllUsersCount(Stat);
 
 const ForumStatsPanel = () => {
-  const max600 = useMediaQuery((theme) => theme.breakpoints.down("xs"));
-
   const { profile } = useSelector((state) => state.auth);
-  const { categories } = useSelector((state) => state.categories);
-  const { topics, selectedTopic } = useSelector((state) => state.topics);
-  const {
-    activeUsersCount,
-    categoriesCount,
-    registeredUsersCount,
-    topicsCount,
-    repliesCount,
-  } = useSelector((state) => state.stats);
 
   const classes = useStyles();
 
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    let isMounted = true;
-
-    if (isMounted) {
-      const fetchCount = async () => {
-        try {
-          const result = await Promise.all([
-            api.getActiveUsersCount(),
-            api.getRegisteredCount(),
-            api.getCategoriesCount(),
-            api.getTopicCount(),
-            api.repliesCount(),
-          ]);
-
-          if (
-            result[0].status === 200 &&
-            result[1].status === 200 &&
-            result[2].status === 200 &&
-            result[3].status === 200 &&
-            result[4].status === 200
-          ) {
-            dispatch(
-              update_count({
-                ...result[0].data,
-                ...result[1].data,
-                ...result[2].data,
-                ...result[3].data,
-                ...result[4].data,
-              })
-            );
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      fetchCount();
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [dispatch, categories, topics, selectedTopic.replies]);
-
   return (
-    <Container style={{ padding: "0" }}>
+    <Container className={classes.container}>
       <PanelHeader title="forum statistics" />
-      {profile.result?.accountType === 1 ? (
-        <Grid
-          container
-          justify="space-evenly"
-          direction={max600 === true ? "column" : "row"}
-          className={`${classes.grid} ${classes.shadow}`}
-        >
-          <AdminStatData
-            numData={activeUsersCount}
-            stringData="Active Members"
-          />
-          <Divider
-            orientation={max600 === true ? "horizontal" : "vertical"}
-            flexItem={!max600}
-          />
-          <AdminStatData
-            numData={registeredUsersCount}
-            stringData="Registered Members"
-          />
-          <Divider
-            orientation={max600 === true ? "horizontal" : "vertical"}
-            flexItem={!max600}
-          />
-          <AdminStatData numData={categoriesCount} stringData="Categories" />
-          <Divider
-            orientation={max600 === true ? "horizontal" : "vertical"}
-            flexItem={!max600}
-          />
-          <AdminStatData numData={topicsCount} stringData="Topics" />
-          <Divider
-            orientation={max600 === true ? "horizontal" : "vertical"}
-            flexItem={!max600}
-          />
-          <AdminStatData numData={repliesCount} stringData="Replies" />
-        </Grid>
-      ) : (
-        <Grid container direction="column" className={classes.grid}>
-          <UserStatData numData={activeUsersCount} stringData="Members" />
-          <Divider />
-          <UserStatData numData={categoriesCount} stringData="Categories" />
-          <Divider />
-          <UserStatData numData={topicsCount} stringData="Topics" />
-          {/* <Divider />
-                        <UserStatData numData={repliesCount} stringData="Replies"  /> */}
-        </Grid>
+      {profile.result?.accountType === 0 && (
+        <Stat
+          header="members"
+          icon={<People fontSize="large" className={classes.iconBlue} />}
+          apiReq={api.getActiveUsersCount}
+          index="activeUsersCount"
+          colorType="primary"
+        />
       )}
+      {profile.result?.accountType === 1 && (
+        <>
+          <StatWithAllUsersCount
+            header="active members"
+            icon={<People fontSize="large" className={classes.iconBlue} />}
+            apiReq={api.getActiveUsersCount}
+            index="activeUsersCount"
+            colorType="primary"
+          />
+          <Stat
+            header="categories"
+            icon={<Folder fontSize="large" className={classes.iconOrange} />}
+            apiReq={api.getCategoriesCount}
+            index="categoriesCount"
+            colorType="secondary"
+          />
+        </>
+      )}
+      <Stat
+        header="topics"
+        icon={<Forum fontSize="large" className={classes.iconOrange} />}
+        apiReq={api.getTopicCount}
+        index="topicsCount"
+        colorType="secondary"
+      />
+      <Stat
+        header="comments"
+        icon={<Comment fontSize="large" className={classes.iconOrange} />}
+        apiReq={api.repliesCount}
+        index="repliesCount"
+        colorType="secondary"
+      />
     </Container>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  grid: {
-    background: theme.palette.primary.contrastText,
-    marginTop: theme.spacing(2),
-    padding: theme.spacing(1, 2),
-    borderRadius: theme.shape.borderRadius,
+  container: {
+    marginBottom: theme.spacing(4),
   },
-  shadow: {
-    boxShadow: theme.shadows[7],
+  iconBlue: {
+    verticalAlign: "bottom",
+    color: theme.palette.primary.main,
+  },
+  iconOrange: {
+    verticalAlign: "bottom",
+    color: theme.palette.secondary.main,
   },
 }));
 
