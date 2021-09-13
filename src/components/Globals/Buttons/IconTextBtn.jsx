@@ -23,6 +23,7 @@ const IconTextBtn = ({ icon, text, color, size, isLowercase, event }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 0,
+    marginRight: theme.spacing(3),
     color: (props) =>
       props.color === "primary"
         ? theme.palette.primary.main

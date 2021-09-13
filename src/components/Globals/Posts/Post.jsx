@@ -17,19 +17,12 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 import ReactHtmlParser from "react-html-parser";
 import _ from "lodash";
-// remove later
-import { convertFromRaw, EditorState } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
 
 import { poppinsFont, ubuntuFont } from "../../../theme/themes";
 
 const Post = (props) => {
   const { topic, fromHome } = props;
   const classes = useStyles({ fromHome });
-
-  const textProps = EditorState.createWithContent(
-    convertFromRaw(JSON.parse(topic.description))
-  );
 
   const textCreated = `created on <strong>${moment(topic.createdAt).format(
     "MMMM D, YYYY"
@@ -64,10 +57,6 @@ const Post = (props) => {
           </Typography>
         </Link>
       </ThemeProvider>
-
-      {/* test only delete later */}
-
-      <Editor editorState={textProps} readOnly toolbarHidden />
 
       {/* for updated message */}
       {!fromHome && (

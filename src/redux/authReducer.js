@@ -61,6 +61,9 @@ export const authSlice = createSlice({
     sign_in_LS: (state, action) => {
       state.profile = { ...action.payload };
     },
+    updateVotes: (state, action) => {
+      state.profile = { ...action.payload };
+    },
   },
   extraReducers: {
     [sign_up.pending]: (state) => {
@@ -110,6 +113,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { sign_in_LS } = authSlice.actions;
+export const { sign_in_LS, updateVotes } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -50,6 +50,7 @@ export const addCategory = (formData) => API.post("/categories/add", formData);
 export const updateActiveStatus = (id) =>
   API.put(`/categories/updateStatus/${id}`);
 
+export const voteTopic = (formData) => API.post("/topics/vote", formData);
 export const publishTopic = (formData) => API.post("/topics/publish", formData);
 export const addTopicViews = (data) => API.post("/topics/views", data);
 export const getTopics = (id) => API.get(`/topics/${id}`);

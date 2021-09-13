@@ -1,241 +1,332 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { updateVotes } from "./authReducer";
 
-import * as api from '../api'
+import * as api from "../api";
 
 export const publish_topic = createAsyncThunk(
-    'topics/publish_topic',
-    async (data) => {
-        return data
-    }
-)
+  "topics/publish_topic",
+  async (data) => {
+    return data;
+  }
+);
 
 export const get_topics = createAsyncThunk(
-    'topics/get_topics',
-    async (topicId) => {
-        const { data, status } = await api.getTopics(topicId)
+  "topics/get_topics",
+  async (topicId) => {
+    const { data, status } = await api.getTopics(topicId);
 
-        if(status === 200) return data
-    }
-)
+    if (status === 200) return data;
+  }
+);
 
 export const get_topic_details = createAsyncThunk(
-    'topics/get_topic_details',
-    async (topicId) => {
-        const { data, status } = await api.getTopic(topicId)
+  "topics/get_topic_details",
+  async (topicId) => {
+    const { data, status } = await api.getTopic(topicId);
 
-        if(status === 200) return data
-    }
-)
+    if (status === 200) return data;
+  }
+);
 
 export const update_selected_topic_replies = createAsyncThunk(
-    'topics/update_selected_topic_replies',
-    async (data) => {
-        return data
-    }
-)
+  "topics/update_selected_topic_replies",
+  async (data) => {
+    return data;
+  }
+);
 
 export const update_topic = createAsyncThunk(
-    'topics/update_topic',
-    async (data) => {
-        return data
-    }
-)
+  "topics/update_topic",
+  async (data) => {
+    return data;
+  }
+);
 
 export const update_active_status = createAsyncThunk(
-    'topics/update_active_status',
-    async (id, { getState }) => {
-        const { status } = await api.updateTopicActiveStatus(id)
+  "topics/update_active_status",
+  async (id, { getState }) => {
+    const { status } = await api.updateTopicActiveStatus(id);
 
-        if(status === 200){
-            const { topics, selectedTopic } = getState().topics
+    if (status === 200) {
+      const { topics, selectedTopic } = getState().topics;
 
-            const updatedTopics = topics.map(top => top._id === id ? { ...top, 'active': 0 } : top)
-            const updatedSelected = { ...selectedTopic.topic, 'active': 0 }
+      const updatedTopics = topics.map((top) =>
+        top._id === id ? { ...top, active: 0 } : top
+      );
+      const updatedSelected = { ...selectedTopic.topic, active: 0 };
 
-            return { updatedTopics, updatedSelected }
-        }
+      return { updatedTopics, updatedSelected };
     }
-)
+  }
+);
+
+export const update_topic_votes = createAsyncThunk(
+  "topics/update_topic_votes",
+  async (formData, { getState, dispatch }) => {
+    const auth = getState().auth;
+    const selectedTopic = getState().topics.selectedTopic;
+    const { meta } = selectedTopic.topic;
+
+    let upvotes = [];
+    let downvotes = [];
+
+    const profile = auth.profile;
+
+    if (formData.type === "upvote") {
+      downvotes = meta.downvotes.filter((id) => id !== formData.userId);
+      upvotes = [...meta.upvotes, formData.userId];
+
+      const profileDownVotes = profile.result.post.downvotes.filter(
+        (id) => id !== formData.topicId
+      );
+      const profileUpVotes = [...profile.result.post.upvotes, formData.topicId];
+
+      const updatedPost = {
+        ...profile.result.post,
+        upvotes: profileUpVotes,
+        downvotes: profileDownVotes,
+      };
+
+      const updatedResult = { ...profile.result, post: updatedPost };
+
+      const updatedProfile = { ...profile, result: updatedResult };
+
+      dispatch(updateVotes(updatedProfile));
+    } else if (formData.type === "downvote") {
+      upvotes = meta.upvotes.filter((id) => id !== formData.userId);
+      downvotes = [...meta.downvotes, formData.userId];
+
+      const profileUpVotes = profile.result.post.upvotes.filter(
+        (id) => id !== formData.topicId
+      );
+      const profileDownVotes = [
+        ...profile.result.post.downvotes,
+        formData.topicId,
+      ];
+
+      const updatedPost = {
+        ...profile.result.post,
+        upvotes: profileUpVotes,
+        downvotes: profileDownVotes,
+      };
+
+      const updatedResult = { ...profile.result, post: updatedPost };
+
+      const updatedProfile = { ...profile, result: updatedResult };
+
+      dispatch(updateVotes(updatedProfile));
+    }
+
+    return { upvotes, downvotes };
+  }
+);
 
 export const get_latest_topics_view_all = createAsyncThunk(
-    'topics/get_latest_topics_view_all',
-    async (limit) => {
-        const { data, status } = await api.getLatestTopics(limit)
+  "topics/get_latest_topics_view_all",
+  async (limit) => {
+    const { data, status } = await api.getLatestTopics(limit);
 
-        if(status === 200) return data
-    }
-)
+    if (status === 200) return data;
+  }
+);
 
 export const get_hot_topics_view_all = createAsyncThunk(
-    'topics/get_latest_topics_view_all',
-    async (limit) => {
-        const { data, status } = await api.getHotTopics(limit)
+  "topics/get_latest_topics_view_all",
+  async (limit) => {
+    const { data, status } = await api.getHotTopics(limit);
 
-        if(status === 200) return data
-    }
-)
+    if (status === 200) return data;
+  }
+);
 
 export const get_related_topics_view_all = createAsyncThunk(
-    'topics/get_related_topics_view_all',
-    async (id) => {
-        const { data, status } = await api.getRelatedTopics(id)
+  "topics/get_related_topics_view_all",
+  async (id) => {
+    const { data, status } = await api.getRelatedTopics(id);
 
-        if(status === 200) return data
-    }
-)
+    if (status === 200) return data;
+  }
+);
 
 export const get_topics_by_user = createAsyncThunk(
-    'topics/get_topics_by_user',
-    async (id) => {
-        const { data, status } = await api.getTopicsByUser(id)
+  "topics/get_topics_by_user",
+  async (id) => {
+    const { data, status } = await api.getTopicsByUser(id);
 
-        if(status === 200) return data
-    }
-)
+    if (status === 200) return data;
+  }
+);
 
 export const search_topics = createAsyncThunk(
-    'topics/search_topics',
-    async (keyword) => {
-        const { data, status } = await api.searchTopics(keyword)
+  "topics/search_topics",
+  async (keyword) => {
+    const { data, status } = await api.searchTopics(keyword);
 
-        if(status === 200) return data
-    }
-)
+    if (status === 200) return data;
+  }
+);
 
 export const topicsSlice = createSlice({
-    name: "topics",
-    initialState: {
-        status: "idle",
-        topics: [],
-        selectedTopic: {
-            topic: {},
-            creator: {},
-            category: {},
-            replies: []
-        },
-        latestTopics: [],
-        hotTopics: [],
-        relatedTopics: []
+  name: "topics",
+  initialState: {
+    voteStatus: "idle",
+    status: "idle",
+    topics: [],
+    selectedTopic: {
+      topic: {},
+      creator: {},
+      category: {},
+      replies: [],
+      test: {},
     },
-    reducers: {
-        get_latest_topics: (state, action) => {
-            state.latestTopics = action.payload
-        },
-        get_hot_topics: (state, action) => {
-            state.hotTopics = action.payload
-        },
-        get_related_topics: (state, action) => {
-            state.relatedTopics = action.payload
-        }
+    latestTopics: [],
+    hotTopics: [],
+    relatedTopics: [],
+  },
+  reducers: {
+    get_latest_topics: (state, action) => {
+      state.latestTopics = action.payload;
     },
-    extraReducers: {
-        [get_topics.pending]: (state) => {
-            state.status = "loading"
-        },
-        [get_topics.fulfilled]: (state, action) => {
-            state.topics = action.payload
-            state.status = "idle"
-        },
-        [get_topics.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [get_topic_details.pending]: (state) => {
-            state.status = "loading"
-        },
-        [get_topic_details.fulfilled]: (state, action) => {
-            state.selectedTopic = action.payload
-            state.status = "idle"
-        },
-        [get_topic_details.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [update_selected_topic_replies.pending]: (state) => {
-            state.status = "loading"
-        },
-        [update_selected_topic_replies.fulfilled]: (state, action) => {
-            state.selectedTopic = { ...state.selectedTopic, 'replies': [ ...state.selectedTopic.replies, action.payload ] }
-            state.status = "idle"
-        },
-        [update_selected_topic_replies.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [publish_topic.pending]: (state) => {
-            state.status = "loading"
-        },
-        [publish_topic.fulfilled]: (state, action) => {
-            state.topics = [ ...state.topics, action.payload ]
-            state.status = "idle"
-        },
-        [publish_topic.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [update_topic.pending]: (state) => {
-            state.status = "loading"
-        },
-        [update_topic.fulfilled]: (state, action) => {
-            const newTopics = state.topics.filter(top => top._id !== action.payload._id)
-            state.topics = [ ...newTopics, action.payload ]
-            state.status = "idle"
-        },
-        [update_topic.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [update_active_status.pending]: (state) => {
-            state.status = 'loading'
-        },
-        [update_active_status.fulfilled]: (state, action) => {
-            state.topics = action.payload.updatedTopics
-            state.selectedTopic.topic = action.payload.updatedSelected
-            state.status = "idle"
-        },
-        [update_active_status.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [get_latest_topics_view_all.pending]: (state) => {
-            state.status = 'loading'
-        },
-        [get_latest_topics_view_all.fulfilled]: (state, action) => {
-            state.topics = action.payload
-            state.status = "idle"
-        },
-        [get_latest_topics_view_all.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [get_hot_topics_view_all.pending]: (state) => {
-            state.status = 'loading'
-        },
-        [get_hot_topics_view_all.fulfilled]: (state, action) => {
-            state.topics = action.payload
-            state.status = "idle"
-        },
-        [get_hot_topics_view_all.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [get_related_topics_view_all.pending]: (state) => {
-            state.status = 'loading'
-        },
-        [get_related_topics_view_all.fulfilled]: (state, action) => {
-            state.topics = action.payload
-            state.status = "idle"
-        },
-        [get_related_topics_view_all.rejected]: (state) => {
-            state.status = "failed"
-        },
-        [get_topics_by_user.pending]: (state) => { state.status = "loading" },
-        [get_topics_by_user.fulfilled]: (state, action) => {
-            state.topics = action.payload
-            state.status = "idle"
-        },
-        [get_topics_by_user.rejected]: (state) => { state.status = "failed" },
-        [search_topics.pending]: (state) => { state.status = "loading" },
-        [search_topics.fulfilled]: (state, action) => {
-            state.topics = action.payload
-            state.status = "idle"
-        },
-        [search_topics.rejected]: (state) => { state.status = "failed" }
-    }
-})
+    get_hot_topics: (state, action) => {
+      state.hotTopics = action.payload;
+    },
+    get_related_topics: (state, action) => {
+      state.relatedTopics = action.payload;
+    },
+  },
+  extraReducers: {
+    [get_topics.pending]: (state) => {
+      state.status = "loading";
+    },
+    [get_topics.fulfilled]: (state, action) => {
+      state.topics = action.payload;
+      state.status = "idle";
+    },
+    [get_topics.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [get_topic_details.pending]: (state) => {
+      state.status = "loading";
+    },
+    [get_topic_details.fulfilled]: (state, action) => {
+      state.selectedTopic = action.payload;
+      state.status = "idle";
+    },
+    [get_topic_details.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [update_selected_topic_replies.pending]: (state) => {
+      state.status = "loading";
+    },
+    [update_selected_topic_replies.fulfilled]: (state, action) => {
+      state.selectedTopic = {
+        ...state.selectedTopic,
+        replies: [...state.selectedTopic.replies, action.payload],
+      };
+      state.status = "idle";
+    },
+    [update_selected_topic_replies.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [publish_topic.pending]: (state) => {
+      state.status = "loading";
+    },
+    [publish_topic.fulfilled]: (state, action) => {
+      state.topics = [...state.topics, action.payload];
+      state.status = "idle";
+    },
+    [publish_topic.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [update_topic.pending]: (state) => {
+      state.status = "loading";
+    },
+    [update_topic.fulfilled]: (state, action) => {
+      const newTopics = state.topics.filter(
+        (top) => top._id !== action.payload._id
+      );
+      state.topics = [...newTopics, action.payload];
+      state.status = "idle";
+    },
+    [update_topic.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [update_active_status.pending]: (state) => {
+      state.status = "loading";
+    },
+    [update_active_status.fulfilled]: (state, action) => {
+      state.topics = action.payload.updatedTopics;
+      state.selectedTopic.topic = action.payload.updatedSelected;
+      state.status = "idle";
+    },
+    [update_active_status.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [get_latest_topics_view_all.pending]: (state) => {
+      state.status = "loading";
+    },
+    [get_latest_topics_view_all.fulfilled]: (state, action) => {
+      state.topics = action.payload;
+      state.status = "idle";
+    },
+    [get_latest_topics_view_all.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [get_hot_topics_view_all.pending]: (state) => {
+      state.status = "loading";
+    },
+    [get_hot_topics_view_all.fulfilled]: (state, action) => {
+      state.topics = action.payload;
+      state.status = "idle";
+    },
+    [get_hot_topics_view_all.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [get_related_topics_view_all.pending]: (state) => {
+      state.status = "loading";
+    },
+    [get_related_topics_view_all.fulfilled]: (state, action) => {
+      state.topics = action.payload;
+      state.status = "idle";
+    },
+    [get_related_topics_view_all.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [get_topics_by_user.pending]: (state) => {
+      state.status = "loading";
+    },
+    [get_topics_by_user.fulfilled]: (state, action) => {
+      state.topics = action.payload;
+      state.status = "idle";
+    },
+    [get_topics_by_user.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [search_topics.pending]: (state) => {
+      state.status = "loading";
+    },
+    [search_topics.fulfilled]: (state, action) => {
+      state.topics = action.payload;
+      state.status = "idle";
+    },
+    [search_topics.rejected]: (state) => {
+      state.status = "failed";
+    },
+    [update_topic_votes.pending]: (state) => {
+      state.voteStatus = "idle";
+    },
+    [update_topic_votes.fulfilled]: (state, action) => {
+      state.selectedTopic.topic.meta.upvotes = action.payload.upvotes;
+      state.selectedTopic.topic.meta.downvotes = action.payload.downvotes;
+      state.voteStatus = "idle";
+    },
+    [update_topic_votes.rejected]: (state) => {
+      state.voteStatus = "failed";
+    },
+  },
+});
 
-export const { get_latest_topics, get_hot_topics, get_related_topics } = topicsSlice.actions
+export const { get_latest_topics, get_hot_topics, get_related_topics } =
+  topicsSlice.actions;
 
-export default topicsSlice.reducer
+export default topicsSlice.reducer;
