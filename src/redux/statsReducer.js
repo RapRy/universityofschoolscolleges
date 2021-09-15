@@ -8,6 +8,8 @@ export const statsSlice = createSlice({
     categoriesCount: 0,
     topicsCount: 0,
     repliesCount: 0,
+    upvotesCount: 0,
+    downvotesCount: 0,
   },
   reducers: {
     update_count: (state, action) => {

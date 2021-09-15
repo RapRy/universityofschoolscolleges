@@ -221,7 +221,7 @@ export const topicsSlice = createSlice({
     [update_selected_topic_replies.fulfilled]: (state, action) => {
       state.selectedTopic = {
         ...state.selectedTopic,
-        replies: [...state.selectedTopic.replies, action.payload],
+        replies: [action.payload, ...state.selectedTopic.replies],
       };
       state.status = "idle";
     },

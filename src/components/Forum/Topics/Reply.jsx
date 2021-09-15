@@ -1,64 +1,68 @@
-import React, { useEffect, useState } from "react";
-import { Container, Avatar, Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import React, { useState, useEffect } from "react";
+import {
+  Container,
+  Avatar,
+  Grid,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
+import { Editor } from "react-draft-wysiwyg";
+import { convertFromRaw, EditorState } from "draft-js";
 
-import * as api from "../../../api";
-
-const Reply = ({ reply }) => {
+const Reply = (props) => {
   const classes = useStyles();
-
-  const [user, setUser] = useState({});
+  const [editorState, setEditorState] = useState(EditorState.createEmpty());
 
   useEffect(() => {
-    try {
-      const fetchUser = async () => {
-        const { data, status } = await api.getUser(reply.ref.creator);
+    // console.log(JSON.parse(props.topic.reply));
+    // editorState.current = EditorState.createWithContent(
+    //   convertFromRaw(JSON.parse(props.topic.reply))
+    // );
 
-        if (status === 200) setUser(data);
-      };
-
-      fetchUser();
-    } catch (error) {
-      console.log(error);
-    }
-
-    return () => {
-      setUser({});
-    };
-  }, [reply._id, reply.ref.creator]);
+    setEditorState(
+      EditorState.createWithContent(
+        convertFromRaw(JSON.parse(props.topic.reply))
+      )
+    );
+  }, []);
 
   return (
     <Container className={classes.container}>
       <Grid container direction="row" spacing={1}>
         <Grid item md={"auto"}>
           <Link
-            to={`/forum/profile/${user._id}`}
+            to={`/forum/profile/${props.author._id}`}
             style={{ textDecoration: "none" }}
           >
-            <Avatar className={classes.avatar}>
-              {user.username?.charAt(0)}
+            <Avatar
+              className={classes.avatar}
+              src={
+                props.author?.accountType === 0
+                  ? `${process.env.PUBLIC_URL}/assets/defaultProPic.jpg`
+                  : `${process.env.PUBLIC_URL}/assets/adminProPic.jpg`
+              }
+            >
+              {props.author.username?.charAt(0)}
             </Avatar>
           </Link>
         </Grid>
         <Grid item md={11}>
           <div>
             <Link
-              to={`/forum/profile/${user._id}`}
+              to={`/forum/profile/${props.author._id}`}
               style={{ textDecoration: "none" }}
             >
               <Typography variant="h5" className={classes.username}>
-                {user.username}
+                {props.author.username}
               </Typography>
             </Link>
             <Typography variant="body1" className={classes.timestamp}>
-              <Moment fromNow>{reply.createdAt}</Moment>
+              <Moment fromNow>{props.topic.createdAt}</Moment>
             </Typography>
           </div>
-          <Typography variant="body1" className={classes.reply}>
-            {reply.reply}
-          </Typography>
+          <Editor editorState={editorState} toolbarHidden readOnly />
         </Grid>
       </Grid>
     </Container>

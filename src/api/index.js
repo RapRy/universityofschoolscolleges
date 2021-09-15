@@ -57,6 +57,10 @@ export const getTopics = (id) => API.get(`/topics/${id}`);
 export const getTopic = (id) => API.get(`/topics/details/${id}`);
 export const getTopicCount = (source) =>
   API.get("/topics/count", { cancelToken: source.token });
+export const getUpVotesCount = (source) =>
+  API.get("/topics/votes/upVotesCount", { cancelToken: source.token });
+export const getDownVotesCount = (source) =>
+  API.get("/topics/votes/downVotesCount", { cancelToken: source.token });
 export const getLatestTopics = (limit, source) =>
   API.get(`/topics/latest/limit/${limit}`, { cancelToken: source.token });
 export const getHotTopics = (limit, source) =>

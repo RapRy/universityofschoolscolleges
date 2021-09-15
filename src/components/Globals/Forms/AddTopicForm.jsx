@@ -12,7 +12,7 @@ import {
 import { makeStyles } from "@material-ui/styles";
 import { useSelector, useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState, convertToRaw, convertFromRaw } from "draft-js";
 
 import Input from "./Input";
 import { PillButton } from "../Buttons";
@@ -89,7 +89,10 @@ const AddTopicForm = ({ action }) => {
     }
     // action edit
     if (action === "edit") {
-      const { data, status } = await api.updateTopic(formData);
+      const { data, status } = await api.updateTopic({
+        ...formData,
+        description: JSON.stringify(descriptionEditor),
+      });
 
       if (status === 200) {
         if (data.status === 0) {
@@ -162,6 +165,11 @@ const AddTopicForm = ({ action }) => {
         title: selectedTopic.topic.title,
         topicId: selectedTopic.topic._id,
       });
+      setEditorState(
+        EditorState.createWithContent(
+          convertFromRaw(JSON.parse(selectedTopic.topic.description))
+        )
+      );
     } else {
       setFormData({ ...formData, ref: ref });
     }

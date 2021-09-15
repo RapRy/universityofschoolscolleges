@@ -5,14 +5,11 @@ import {
   Typography,
   Divider,
   LinearProgress,
-  Collapse,
   useMediaQuery,
   ThemeProvider,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import { useSnackbar } from "notistack";
 import moment from "moment";
 import { Edit, Delete } from "@material-ui/icons";
@@ -32,6 +29,9 @@ import {
 import { poppinsFont, ubuntuFont } from "../../../theme/themes";
 import { IconTextBtn, VotesBtn } from "../../Globals/Buttons";
 import StatCounter from "./Stats/StatCounter";
+import { withAuthor } from "../../HOC";
+
+const ReplyWithAuthor = withAuthor(Reply);
 
 const Topic = () => {
   let profileLS = null || JSON.parse(localStorage.getItem("profile")).result;
@@ -230,6 +230,18 @@ const Topic = () => {
                 isAuthor={false}
               />
               <StatCounter
+                count={selectedTopic.topic?.meta?.upvotes.length}
+                label="up votes"
+                color="secondary"
+                isAuthor={false}
+              />
+              <StatCounter
+                count={selectedTopic.topic?.meta?.downvotes.length}
+                label="down votes"
+                color="secondary"
+                isAuthor={false}
+              />
+              <StatCounter
                 count={0}
                 label=""
                 color="primary"
@@ -253,40 +265,30 @@ const Topic = () => {
           <Divider className={classes.divider} />
 
           <div className={classes.descContainer}>
-            <Editor editorState={editorState} toolbarHidden />
+            <Editor editorState={editorState} toolbarHidden readOnly />
           </div>
 
+          <Divider className={classes.divider} />
+
           <div>
-            <Typography
-              onClick={expandReplies}
-              variant="h5"
-              className={classes.repliesCount}
-            >
-              {selectedTopic.replies?.length > 1
-                ? `${selectedTopic.replies?.length} Replies`
-                : `${selectedTopic.replies?.length} Reply`}{" "}
-              {showReplies ? (
-                <ExpandLessIcon className={classes.arrow} />
-              ) : (
-                <ExpandMoreIcon className={classes.arrow} />
-              )}
-            </Typography>
-
-            <Divider />
-
-            <div>
-              <Collapse in={showReplies}>
-                {selectedTopic.replies &&
-                  selectedTopic.replies.map((reply) => (
-                    <Reply reply={reply} key={reply._id} />
-                  ))}
-              </Collapse>
-            </div>
-
             <AddReply
               categoryId={selectedTopic.topic?.ref?.category}
               topicId={selectedTopic.topic?._id}
             />
+          </div>
+
+          <div className={classes.repliesContainer}>
+            <div>
+              <ThemeProvider theme={ubuntuFont}>
+                <Typography
+                  variant="body1"
+                  className={classes.repliesHeader}
+                >{`${selectedTopic.replies.length} comments`}</Typography>
+              </ThemeProvider>
+            </div>
+            {selectedTopic.replies.map((reply) => (
+              <ReplyWithAuthor topic={reply} key={reply._id} />
+            ))}
           </div>
         </>
       )}
@@ -327,22 +329,17 @@ const useStyles = makeStyles((theme) => ({
   descContainer: {
     margin: `${theme.spacing(3)}px 0`,
   },
-  description: {
+  repliesHeader: {
     fontSize: ".8rem",
-    color: theme.palette.secondary.dark,
-    lineHeight: "1.5rem",
-    wordWrap: "break-word",
-  },
-  repliesCount: {
-    fontSize: ".85rem",
     fontWeight: theme.typography.fontWeightBold,
     marginBottom: theme.spacing(1),
-    color: theme.palette.secondary.dark,
-    cursor: "pointer",
+    color: theme.palette.common.black,
   },
-  arrow: {
-    verticalAlign: "middle",
-    float: "right",
+  repliesContainer: {
+    marginTop: theme.spacing(4),
+    background: theme.palette.background.paper,
+    padding: theme.spacing(2),
+    borderRadius: theme.shape.borderRadius,
   },
 }));
 

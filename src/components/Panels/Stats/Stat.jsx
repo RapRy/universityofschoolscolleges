@@ -18,10 +18,11 @@ const Stat = ({ header, icon, apiReq, index, colorType, allUsersCount }) => {
         dispatch(update_count({ count: res.data.count, index }));
       })
       .catch((err) => {
-        if (err.response.status === 500) {
-          console.log(`${header}: Please refresh page!`);
-          return;
-        }
+        console.log(err);
+        // if (err.response.status === 500) {
+        //   console.log(`${header}: Please refresh page!`);
+        //   return;
+        // }
       });
 
     return () => source.cancel();

@@ -77,10 +77,12 @@ const Post = (props) => {
             {topic.meta.views.length}
           </Typography>
           <Typography variant="body1" className={classes.counterContainer}>
-            <ThumbUpIcon className={classes.counterIcon} /> {10}
+            <ThumbUpIcon className={classes.counterIcon} />{" "}
+            {topic.meta.upvotes.length}
           </Typography>
           <Typography variant="body1" className={classes.counterContainer}>
-            <ThumbDownIcon className={classes.counterIcon} /> {3}
+            <ThumbDownIcon className={classes.counterIcon} />{" "}
+            {topic.meta.downvotes.length}
           </Typography>
           <Typography variant="body1" className={classes.counterContainer}>
             <AccountBoxIcon className={classes.counterIcon} />{" "}

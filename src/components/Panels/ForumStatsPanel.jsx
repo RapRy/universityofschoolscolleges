@@ -2,7 +2,14 @@ import React from "react";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { People, Forum, Comment, Folder } from "@material-ui/icons";
+import {
+  People,
+  Forum,
+  Comment,
+  Folder,
+  ThumbUpAlt,
+  ThumbDownAlt,
+} from "@material-ui/icons";
 
 import { PanelHeader } from "../Globals/Headers";
 import * as api from "../../api";
@@ -58,6 +65,20 @@ const ForumStatsPanel = () => {
         icon={<Comment fontSize="large" className={classes.iconOrange} />}
         apiReq={api.repliesCount}
         index="repliesCount"
+        colorType="secondary"
+      />
+      <Stat
+        header="up votes"
+        icon={<ThumbUpAlt fontSize="large" className={classes.iconOrange} />}
+        apiReq={api.getUpVotesCount}
+        index="upvotesCount"
+        colorType="secondary"
+      />
+      <Stat
+        header="up votes"
+        icon={<ThumbDownAlt fontSize="large" className={classes.iconOrange} />}
+        apiReq={api.getDownVotesCount}
+        index="downvotesCount"
         colorType="secondary"
       />
     </Container>
