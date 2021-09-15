@@ -80,4 +80,5 @@ export const searchTopics = (keyword) => API.get(`/topics/search/${keyword}`);
 export const addReply = (formData) => API.post("/replies/add", formData);
 export const repliesCount = (source) =>
   API.get("/replies/count", { cancelToken: source.token });
-export const getReplies = (id) => API.get(`/replies/${id}`);
+export const getReplies = (id, source) =>
+  API.get(`/replies/${id}`, { cancelToken: source.token });

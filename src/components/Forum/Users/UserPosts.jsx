@@ -5,7 +5,11 @@ import { useParams } from "react-router-dom";
 
 import { get_topics_by_user } from "../../../redux/topicsReducer";
 import Empty from "../../Globals/Empty/Empty";
-import Topic from "../Topics/Topic";
+import Post from "./Post";
+import { withCategory, withAuthor } from "../../HOC";
+
+const PostWithCategory = withCategory(Post);
+const PostWithAuthor = withAuthor(PostWithCategory);
 
 const UserPosts = () => {
   const { userId } = useParams();
@@ -26,9 +30,8 @@ const UserPosts = () => {
 
       {topics.map((topic, i) => (
         <div key={topic._id}>
-          {i !== 0 && <Divider style={{ marginTop: "40px" }} />}
           <Box marginTop="40px">
-            <Topic topicId={topic._id} />
+            <PostWithAuthor topic={topic} />
           </Box>
         </div>
       ))}
