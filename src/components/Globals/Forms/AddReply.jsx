@@ -12,7 +12,10 @@ import { EditorState, convertToRaw } from "draft-js";
 
 import TextAreaWithEditor from "./TextAreaWithEditor";
 import * as api from "../../../api";
-import { update_selected_topic_replies } from "../../../redux/topicsReducer";
+import {
+  update_selected_topic_replies,
+  update_a_topic_replies,
+} from "../../../redux/topicsReducer";
 import { PillButton } from "../Buttons";
 
 const profileLs = JSON.parse(localStorage.getItem("profile"))?.result;
@@ -26,7 +29,7 @@ const initialState = {
   ref: { category: "", topic: "", creator: "" },
 };
 
-const AddReply = ({ categoryId, topicId }) => {
+const AddReply = ({ categoryId, topicId, isFromProfile, ind }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -57,7 +60,9 @@ const AddReply = ({ categoryId, topicId }) => {
     });
 
     if (status === 200) {
-      dispatch(update_selected_topic_replies(data));
+      isFromProfile
+        ? dispatch(update_a_topic_replies({ topicInd: ind, replyId: data._id }))
+        : dispatch(update_selected_topic_replies(data));
     }
   };
 

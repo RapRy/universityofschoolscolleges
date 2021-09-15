@@ -21,11 +21,12 @@ import { poppinsFont, ubuntuFont } from "../../../theme/themes";
 import StatCounter from "../Topics/Stats/StatCounter";
 import AddTopicForm from "../../Globals/Forms/AddTopicForm";
 import AddReply from "../../Globals/Forms/AddReply";
-import { withAuthor } from "../../HOC";
+import { withAuthor, withCategory } from "../../HOC";
 import Reply from "../Topics/Reply";
 import * as api from "../../../api";
 
 const ReplyWithAuthor = withAuthor(Reply);
+const AddTopicFormWithCategory = withCategory(AddTopicForm);
 
 const Post = (props) => {
   const proflieLS = null || JSON.parse(localStorage.getItem("profile")).result;
@@ -95,7 +96,7 @@ const Post = (props) => {
     );
 
     return () => source.cancel("request cancelled");
-  }, [props.topic._id]);
+  }, [props.topic._id, props.topic.meta.replies]);
 
   return (
     <Container>
@@ -194,7 +195,13 @@ const Post = (props) => {
         </div>
       </div>
 
-      {edit && <AddTopicForm action="edit" />}
+      {edit && (
+        <AddTopicFormWithCategory
+          action="edit"
+          isFromProfile={true}
+          topic={props.topic}
+        />
+      )}
 
       <Divider className={classes.divider} />
 
@@ -208,6 +215,8 @@ const Post = (props) => {
         <AddReply
           categoryId={props.topic?.ref?.category}
           topicId={props.topic?._id}
+          isFromProfile={true}
+          ind={props.topicInd}
         />
       </div>
 

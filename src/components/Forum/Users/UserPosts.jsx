@@ -17,7 +17,7 @@ const UserPosts = () => {
   const { topics, status } = useSelector((state) => state.topics);
 
   useEffect(() => {
-    dispatch(get_topics_by_user(userId)).then((res) => console.log(res));
+    dispatch(get_topics_by_user(userId));
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -31,7 +31,7 @@ const UserPosts = () => {
       {topics.map((topic, i) => (
         <div key={topic._id}>
           <Box marginTop="40px">
-            <PostWithAuthor topic={topic} />
+            <PostWithAuthor topic={topic} topicInd={i} />
           </Box>
         </div>
       ))}

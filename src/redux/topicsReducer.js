@@ -28,6 +28,24 @@ export const get_topic_details = createAsyncThunk(
   }
 );
 
+export const update_a_topic_replies = createAsyncThunk(
+  "topics/update_a_topic_replies",
+  async (data, { getState }) => {
+    const { topics } = getState().topics;
+
+    const getOtherTopics = topics.filter((topic, i) => i !== data.topicInd);
+    const selectedTopic = topics[data.topicInd];
+
+    const updatedRepliesArr = [data.replyId, ...selectedTopic.meta.replies];
+    const meta = { ...selectedTopic.meta, replies: updatedRepliesArr };
+    const updatedTopic = { ...selectedTopic, meta: meta };
+    // insert at assign index the updated topic
+    getOtherTopics.splice(data.topicInd, 0, updatedTopic);
+
+    return getOtherTopics;
+  }
+);
+
 export const update_selected_topic_replies = createAsyncThunk(
   "topics/update_selected_topic_replies",
   async (data) => {
@@ -169,6 +187,7 @@ export const search_topics = createAsyncThunk(
 export const topicsSlice = createSlice({
   name: "topics",
   initialState: {
+    insertReplyStatus: "idle",
     voteStatus: "idle",
     status: "idle",
     topics: [],
@@ -215,18 +234,28 @@ export const topicsSlice = createSlice({
     [get_topic_details.rejected]: (state) => {
       state.status = "failed";
     },
+    [update_a_topic_replies.pending]: (state) => {
+      state.insertReplyStatus = "loading";
+    },
+    [update_a_topic_replies.fulfilled]: (state, action) => {
+      state.insertReplyStatus = "idle";
+      state.topics = action.payload;
+    },
+    [update_a_topic_replies.rejected]: (state, action) => {
+      state.insertReplyStatus = "failed";
+    },
     [update_selected_topic_replies.pending]: (state) => {
-      state.status = "loading";
+      state.insertReplyStatus = "loading";
     },
     [update_selected_topic_replies.fulfilled]: (state, action) => {
       state.selectedTopic = {
         ...state.selectedTopic,
         replies: [action.payload, ...state.selectedTopic.replies],
       };
-      state.status = "idle";
+      state.insertReplyStatus = "idle";
     },
     [update_selected_topic_replies.rejected]: (state) => {
-      state.status = "failed";
+      state.insertReplyStatus = "failed";
     },
     [publish_topic.pending]: (state) => {
       state.status = "loading";

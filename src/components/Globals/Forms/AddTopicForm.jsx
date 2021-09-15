@@ -30,7 +30,7 @@ const initialState = {
   },
 };
 
-const AddTopicForm = ({ action }) => {
+const AddTopicForm = ({ action, isFromProfile, topic, category }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -82,7 +82,8 @@ const AddTopicForm = ({ action }) => {
     if (
       formData.ref.category === "" ||
       formData.ref.category === "select category" ||
-      formData.ref.category === null
+      formData.ref.category === null ||
+      formData.ref.category === undefined
     ) {
       setErrors({ ...errors, ref: { category: "Field required." } });
       return;
@@ -100,10 +101,12 @@ const AddTopicForm = ({ action }) => {
           return;
         }
 
-        if (selectedCat._id === data.result.ref.category)
+        const refCatId = isFromProfile ? category._id : selectedCat._id;
+
+        if (refCatId === data.result.ref.category)
           dispatch(update_topic(data.result));
 
-        dispatch(update_topic(data.result));
+        // dispatch(update_topic(data.result));
 
         enqueueSnackbar(`update successful`, { variant: "success" });
 
@@ -155,25 +158,34 @@ const AddTopicForm = ({ action }) => {
   };
 
   useEffect(() => {
-    setSelect(selectedCat.name);
-    const ref = { ...formData.ref, category: selectedCat._id || null };
+    setSelect(isFromProfile ? category.name : selectedCat.name);
+    const ref = {
+      ...formData.ref,
+      category: isFromProfile ? category._id : selectedCat._id,
+    };
 
     if (action === "edit") {
       setFormData({
         ...formData,
         ref: ref,
-        title: selectedTopic.topic.title,
-        topicId: selectedTopic.topic._id,
+        title: isFromProfile ? topic.title : selectedTopic.topic.title,
+        topicId: isFromProfile ? topic._id : selectedTopic.topic._id,
       });
       setEditorState(
         EditorState.createWithContent(
-          convertFromRaw(JSON.parse(selectedTopic.topic.description))
+          convertFromRaw(
+            JSON.parse(
+              isFromProfile
+                ? topic.description
+                : selectedTopic.topic.description
+            )
+          )
         )
       );
     } else {
       setFormData({ ...formData, ref: ref });
     }
-  }, [selectedCat]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container classes={{ root: classes.containerRoot }}>
