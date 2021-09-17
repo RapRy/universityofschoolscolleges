@@ -5,13 +5,17 @@ import * as api from "../api";
 
 export const get_categories = createAsyncThunk(
   "categories/get_categories",
-  async (thunkAPI) => {
+  async (thunkAPI, { signal }) => {
     try {
-      const { data, status } = await api.getCategories();
+      const source = axios.CancelToken.source();
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+
+      const { data, status } = await api.getCategories(source);
 
       if (status === 200) return data.categories;
     } catch (error) {
-      console.log(error);
       const { data, status } = error.response;
       return thunkAPI.rejectWithValue({ message: data.message, status });
     }

@@ -11,6 +11,7 @@ const withParticipants = (Component) => {
     useEffect(() => {
       const source = axios.CancelToken.source();
       const formData = { postId: topic._id, creatorId: topic.ref.creator };
+      const abortController = new AbortController();
       api
         .getParticipants(formData, source)
         .then((res) => {
@@ -25,6 +26,7 @@ const withParticipants = (Component) => {
         });
 
       return () => {
+        abortController.abort();
         source.cancel("Operation canceled");
       };
     }, [topic._id, topic.ref.creator]);

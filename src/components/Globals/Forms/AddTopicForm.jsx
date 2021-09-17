@@ -158,11 +158,12 @@ const AddTopicForm = ({ action, isFromProfile, topic, category }) => {
   };
 
   useEffect(() => {
-    setSelect(isFromProfile ? category.name : selectedCat.name);
     const ref = {
       ...formData.ref,
       category: isFromProfile ? category._id : selectedCat._id,
     };
+
+    setSelect(isFromProfile ? category.name : selectedCat.name);
 
     if (action === "edit") {
       setFormData({

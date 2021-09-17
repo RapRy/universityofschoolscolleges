@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { updateVotes } from "./authReducer";
+import axios from "axios";
 
 import * as api from "../api";
 
@@ -168,10 +169,19 @@ export const get_related_topics_view_all = createAsyncThunk(
 
 export const get_topics_by_user = createAsyncThunk(
   "topics/get_topics_by_user",
-  async (id) => {
-    const { data, status } = await api.getTopicsByUser(id);
+  async (id, { signal, rejectWithValue }) => {
+    try {
+      const source = axios.CancelToken.source();
+      signal.addEventListener("abort", () => {
+        source.cancel();
+      });
+      const { data, status } = await api.getTopicsByUser(id, source);
 
-    if (status === 200) return data;
+      if (status === 200) return data;
+    } catch (error) {
+      const { data, status } = error.response;
+      return rejectWithValue({ message: data.message, status });
+    }
   }
 );
 

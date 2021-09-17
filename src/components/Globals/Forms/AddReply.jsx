@@ -76,7 +76,7 @@ const AddReply = ({ categoryId, topicId, isFromProfile, ind }) => {
       ...prevState,
       ref,
     }));
-  }, [categoryId, topicId]);
+  }, [categoryId, topicId, profile.result?._id]);
 
   return (
     <Container classes={{ root: classes.containerRoot }}>

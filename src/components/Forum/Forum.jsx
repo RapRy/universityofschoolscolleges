@@ -1,13 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  Grid,
-  Container,
-  useMediaQuery,
-  Box,
-  makeStyles,
-  useTheme,
-} from "@material-ui/core";
+import { Grid, Container, useMediaQuery, makeStyles } from "@material-ui/core";
 import _ from "lodash";
 import {
   Switch,
@@ -39,14 +32,12 @@ const profileLS = JSON.parse(localStorage.getItem("profile"));
 
 const Forum = () => {
   const history = useHistory();
-  const theme = useTheme();
 
   const { profile } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { path } = useRouteMatch();
   const matchTopicId = useRouteMatch("/forum/:category/:topicId");
 
-  const max600 = useMediaQuery((theme) => theme.breakpoints.down("xs"));
   const max960 = useMediaQuery((theme) => theme.breakpoints.down("sm"));
 
   const classes = useStyles();

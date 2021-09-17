@@ -17,7 +17,6 @@ API.interceptors.request.use((req) => {
 
 export const getUser = (id, source) =>
   API.get(`/users/${id}`, { cancelToken: source.token });
-export const getTopicsByUser = (id) => API.get(`/users/${id}/topics`);
 export const getActiveUsersCount = (source) =>
   API.get("/users/activeCount", { cancelToken: source.token });
 export const getRegisteredCount = (source) =>
@@ -41,7 +40,8 @@ export const deactivateUser = (id) => API.put(`/users/deactivate/${id}`);
 export const updateUserDetails = (formData) =>
   API.put("/users/updateDetails", formData);
 
-export const getCategories = () => API.get("/categories");
+export const getCategories = (source) =>
+  API.get("/categories", { cancelToken: source.token });
 export const getCategory = (id, source) =>
   API.get(`/categories/${id}`, { cancelToken: source.token });
 export const getCategoriesCount = (source) =>
@@ -49,6 +49,8 @@ export const getCategoriesCount = (source) =>
 export const addCategory = (formData) => API.post("/categories/add", formData);
 export const updateActiveStatus = (id) =>
   API.put(`/categories/updateStatus/${id}`);
+export const getTopicsByUser = (id, source) =>
+  API.get(`/users/${id}/topics`, { cancelToken: source.token });
 
 export const voteTopic = (formData) => API.post("/topics/vote", formData);
 export const publishTopic = (formData) => API.post("/topics/publish", formData);

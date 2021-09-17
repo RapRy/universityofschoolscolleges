@@ -5,7 +5,6 @@ import {
   Typography,
   Divider,
   LinearProgress,
-  useMediaQuery,
   ThemeProvider,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -15,6 +14,7 @@ import moment from "moment";
 import { Edit, Delete } from "@material-ui/icons";
 import { Editor } from "react-draft-wysiwyg";
 import { convertFromRaw, EditorState } from "draft-js";
+import axios from "axios";
 
 import { get_topic_details } from "../../../redux/topicsReducer";
 import AddReply from "../../Globals/Forms/AddReply";
@@ -33,10 +33,9 @@ import { withAuthor } from "../../HOC";
 
 const ReplyWithAuthor = withAuthor(Reply);
 
-const Topic = () => {
+const Topic = (props) => {
   let profileLS = null || JSON.parse(localStorage.getItem("profile")).result;
 
-  const max600 = useMediaQuery((theme) => theme.breakpoints.down("xs"));
   const classes = useStyles();
 
   const { params, url } = useRouteMatch();
@@ -44,17 +43,15 @@ const Topic = () => {
 
   const [edit, setEdit] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  const [showReplies, setShowReplies] = useState(false);
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [votes, setVotes] = useState({ up: false, down: false });
+  const [replies, setReplies] = useState([]);
 
   const dispatch = useDispatch();
   const { selectedTopic, status } = useSelector((state) => state.topics);
   const { profile } = useSelector((state) => state.auth);
 
   const { enqueueSnackbar } = useSnackbar();
-
-  const expandReplies = () => setShowReplies((prevState) => !prevState);
 
   const handleDelete = () => setOpenDelete(true);
 
@@ -113,36 +110,66 @@ const Topic = () => {
       return;
     }
 
+    const source = axios.CancelToken.source();
+
     // profileLS = JSON.parse(localStorage.getItem('profile')).result
+    if (!props.isFromProfile) {
+      dispatch(get_topic_details(params.topicId))
+        .then((res) => {
+          if (res.meta.requestStatus === "fulfilled") {
+            const { description, meta } = res.payload.topic;
+            setVotes({
+              up: meta.upvotes.includes(profileLS._id),
+              down: meta.downvotes.includes(profileLS._id),
+            });
 
-    dispatch(get_topic_details(params.topicId))
-      .then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          const { description, meta } = res.payload.topic;
-          setVotes({
-            up: meta.upvotes.includes(profileLS._id),
-            down: meta.downvotes.includes(profileLS._id),
-          });
+            setEditorState(
+              EditorState.createWithContent(
+                convertFromRaw(JSON.parse(description))
+              )
+            );
+          }
+        })
+        .catch((err) => console.log(err));
 
-          setEditorState(
-            EditorState.createWithContent(
-              convertFromRaw(JSON.parse(description))
-            )
-          );
-        }
-      })
-      .catch((err) => console.log(err));
+      try {
+        const data = {
+          topicId: params.topicId,
+          viewer: profile.result?._id || profileLS._id,
+        };
+        api.addTopicViews(data);
+      } catch (error) {
+        console.log(error);
+      }
 
-    try {
-      const data = {
-        topicId: params.topicId,
-        viewer: profile.result?._id || profileLS._id,
-      };
-      api.addTopicViews(data);
-    } catch (error) {
-      console.log(error);
+      return;
     }
-  }, [url]); // eslint-disable-line react-hooks/exhaustive-deps
+
+    if (props.isFromProfile) {
+      api
+        .getReplies(props.topic._id, source)
+        .then((res) => {
+          if (res.status === 200) setReplies(res.data);
+        })
+        .catch((err) => console.log(err));
+
+      setVotes({
+        up: props.topic.meta.upvotes.includes(profileLS._id),
+        down: props.topic.meta.downvotes.includes(profileLS._id),
+      });
+
+      setEditorState(
+        EditorState.createWithContent(
+          convertFromRaw(JSON.parse(props.topic.description))
+        )
+      );
+      return;
+    }
+
+    return () => {
+      props.isFromProfile && source.cancel("request cancelled");
+    };
+  }, [url, props.isFromProfile && props.topic.meta.replies]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
@@ -151,7 +178,11 @@ const Topic = () => {
       {openDelete && (
         <DeleteDialog
           status={openDelete}
-          message={`Click confirm to delete ${selectedTopic.topic.title}`}
+          message={`Click confirm to delete ${
+            !props.isFromProfile
+              ? selectedTopic.topic.title
+              : props.topic?.title
+          }`}
           handleDelete={handleConfirmDelete}
           handleCancel={handleCloseDialog}
         />
@@ -160,8 +191,14 @@ const Topic = () => {
       {status === "idle" && (
         <>
           <div className={classes.titleContainer}>
-            {(profileLS?._id === selectedTopic.topic?.ref?.creator ||
-              profile.result?._id === selectedTopic.topic?.ref?.creator) && (
+            {(profileLS?._id ===
+              (!props.isFromProfile
+                ? selectedTopic.topic?.ref?.creator
+                : props.topic?.ref?.creator) ||
+              profile.result?._id ===
+                (!props.isFromProfile
+                  ? selectedTopic.topic?.ref?.creator
+                  : props.topic?.ref?.creator)) && (
               <div className={classes.ctaContainer}>
                 <IconTextBtn
                   icon={<Edit style={{ fontSize: "1.1rem" }} />}
@@ -184,7 +221,9 @@ const Topic = () => {
 
             <ThemeProvider theme={ubuntuFont}>
               <Typography variant="h3" className={classes.title}>
-                {selectedTopic.topic?.title}
+                {!props.isFromProfile
+                  ? selectedTopic.topic?.title
+                  : props.topic?.title}
               </Typography>
             </ThemeProvider>
             <ThemeProvider theme={poppinsFont}>
@@ -192,24 +231,40 @@ const Topic = () => {
                 Asked by{" "}
                 {
                   <Link
-                    to={`/forum/profile/${selectedTopic.creator?._id}`}
+                    to={`/forum/profile/${
+                      !props.isFromProfile
+                        ? selectedTopic.creator?._id
+                        : props.author?._id
+                    }`}
                     style={{ textDecoration: "none" }}
                   >
                     <span className={classes.span}>
-                      {selectedTopic.creator?.username}
+                      {!props.isFromProfile
+                        ? selectedTopic.creator?.username
+                        : props.author?.username}
                     </span>
                   </Link>
                 }{" "}
                 on{" "}
-                {moment(selectedTopic.topic.createdAt).format("MMMM D, YYYY")}{" "}
+                {moment(
+                  !props.isFromProfile
+                    ? selectedTopic.topic.createdAt
+                    : props.topic?.createdAt
+                ).format("MMMM D, YYYY")}{" "}
                 in{" "}
                 {
                   <Link
-                    to={`/forum/${selectedTopic.category?._id}`}
+                    to={`/forum/${
+                      !props.isFromProfile
+                        ? selectedTopic.category?._id
+                        : props.category?._id
+                    }`}
                     style={{ textDecoration: "none" }}
                   >
                     <span className={classes.span}>
-                      {selectedTopic.category?.name}
+                      {!props.isFromProfile
+                        ? selectedTopic.category?.name
+                        : props.category?.name}
                     </span>
                   </Link>
                 }
@@ -218,25 +273,41 @@ const Topic = () => {
             {/* stats */}
             <div>
               <StatCounter
-                count={selectedTopic.topic?.meta?.replies.length}
+                count={
+                  !props.isFromProfile
+                    ? selectedTopic.topic?.meta?.replies.length
+                    : props.topic?.meta?.replies.length
+                }
                 label="comments"
                 color="secondary"
                 isAuthor={false}
               />
               <StatCounter
-                count={selectedTopic.topic?.meta?.views.length}
+                count={
+                  !props.isFromProfile
+                    ? selectedTopic.topic?.meta?.views.length
+                    : props.topic?.meta?.views.length
+                }
                 label="views"
                 color="secondary"
                 isAuthor={false}
               />
               <StatCounter
-                count={selectedTopic.topic?.meta?.upvotes.length}
+                count={
+                  !props.isFromProfile
+                    ? selectedTopic.topic?.meta?.upvotes.length
+                    : props.topic?.meta?.upvotes.length
+                }
                 label="up votes"
                 color="secondary"
                 isAuthor={false}
               />
               <StatCounter
-                count={selectedTopic.topic?.meta?.downvotes.length}
+                count={
+                  !props.isFromProfile
+                    ? selectedTopic.topic?.meta?.downvotes.length
+                    : props.topic?.meta?.downvotes.length
+                }
                 label="down votes"
                 color="secondary"
                 isAuthor={false}
@@ -246,7 +317,9 @@ const Topic = () => {
                 label=""
                 color="primary"
                 isAuthor={true}
-                author={selectedTopic.creator}
+                author={
+                  !props.isFromProfile ? selectedTopic.creator : props.author
+                }
               />
             </div>
             {/* votes */}
@@ -260,7 +333,16 @@ const Topic = () => {
             </div>
           </div>
 
-          {edit && <AddTopicForm action="edit" />}
+          {edit && (
+            <AddTopicForm
+              action="edit"
+              isFromProfile={
+                props.isFromProfile ? props.isFromProfile : undefined
+              }
+              topic={props.isFromProfile ? props.topic : undefined}
+              category={props.isFromProfile ? props.category : undefined}
+            />
+          )}
 
           <Divider className={classes.divider} />
 
@@ -272,8 +354,16 @@ const Topic = () => {
 
           <div>
             <AddReply
-              categoryId={selectedTopic.topic?.ref?.category}
-              topicId={selectedTopic.topic?._id}
+              categoryId={
+                !props.isFromProfile
+                  ? selectedTopic.topic?.ref?.category
+                  : props.topic?.ref?.category
+              }
+              topicId={
+                !props.isFromProfile
+                  ? selectedTopic.topic?._id
+                  : props.topic?._id
+              }
             />
           </div>
 
@@ -283,12 +373,20 @@ const Topic = () => {
                 <Typography
                   variant="body1"
                   className={classes.repliesHeader}
-                >{`${selectedTopic.replies.length} comments`}</Typography>
+                >{`${
+                  !props.isFromProfile
+                    ? selectedTopic.replies.length
+                    : replies.length
+                } comments`}</Typography>
               </ThemeProvider>
             </div>
-            {selectedTopic.replies.map((reply) => (
-              <ReplyWithAuthor topic={reply} key={reply._id} />
-            ))}
+            {!props.isFromProfile
+              ? selectedTopic.replies.map((reply) => (
+                  <ReplyWithAuthor topic={reply} key={reply._id} />
+                ))
+              : replies.map((reply) => (
+                  <ReplyWithAuthor topic={reply} key={reply._id} />
+                ))}
           </div>
         </>
       )}

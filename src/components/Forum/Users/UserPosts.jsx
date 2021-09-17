@@ -5,10 +5,14 @@ import { useParams } from "react-router-dom";
 
 import { get_topics_by_user } from "../../../redux/topicsReducer";
 import Empty from "../../Globals/Empty/Empty";
-import Post from "./Post";
+import Topic from "../Topics/Topic";
 import { withCategory, withAuthor } from "../../HOC";
+import { get_categories } from "../../../redux/categoriesReducer";
 
-const PostWithCategory = withCategory(Post);
+// const PostWithCategory = withCategory(Post);
+// const PostWithAuthor = withAuthor(PostWithCategory);
+
+const PostWithCategory = withCategory(Topic);
 const PostWithAuthor = withAuthor(PostWithCategory);
 
 const UserPosts = () => {
@@ -17,7 +21,13 @@ const UserPosts = () => {
   const { topics, status } = useSelector((state) => state.topics);
 
   useEffect(() => {
-    dispatch(get_topics_by_user(userId));
+    const promiseTopics = dispatch(get_topics_by_user(userId));
+    const promiseCategories = dispatch(get_categories());
+
+    return () => {
+      promiseCategories.abort();
+      promiseTopics.abort();
+    };
   }, [userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
@@ -30,8 +40,9 @@ const UserPosts = () => {
 
       {topics.map((topic, i) => (
         <div key={topic._id}>
+          {i !== 0 && <Divider style={{ marginTop: "40px" }} />}
           <Box marginTop="40px">
-            <PostWithAuthor topic={topic} topicInd={i} />
+            <PostWithAuthor topic={topic} topicInd={i} isFromProfile={true} />
           </Box>
         </div>
       ))}

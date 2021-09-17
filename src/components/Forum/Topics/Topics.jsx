@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Container, LinearProgress, Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouteMatch, useHistory } from "react-router-dom";
@@ -140,7 +139,5 @@ const Topics = () => {
     </Container>
   );
 };
-
-const useStyles = makeStyles((theme) => ({}));
 
 export default Topics;

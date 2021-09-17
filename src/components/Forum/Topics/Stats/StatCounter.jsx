@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  makeStyles,
-  Typography,
-  ThemeProvider,
-  Avatar,
-} from "@material-ui/core";
+import { makeStyles, Typography, ThemeProvider } from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 
 import { poppinsFont } from "../../../../theme/themes";
