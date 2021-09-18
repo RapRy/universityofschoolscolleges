@@ -169,7 +169,11 @@ const Topic = (props) => {
     return () => {
       props.isFromProfile && source.cancel("request cancelled");
     };
-  }, [url, props.isFromProfile && props.topic.meta.replies]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [
+    url,
+    props.isFromProfile && props.topic.meta.replies,
+    selectedTopic.topic.description,
+  ]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container>
@@ -336,11 +340,12 @@ const Topic = (props) => {
           {edit && (
             <AddTopicForm
               action="edit"
-              isFromProfile={
-                props.isFromProfile ? props.isFromProfile : undefined
+              isFromProfile={props.isFromProfile ? props.isFromProfile : false}
+              topic={props.isFromProfile ? props.topic : selectedTopic.topic}
+              category={
+                props.isFromProfile ? props.category : selectedTopic.category
               }
-              topic={props.isFromProfile ? props.topic : undefined}
-              category={props.isFromProfile ? props.category : undefined}
+              topicInd={props.isFromProfile ? props.topicInd : null}
             />
           )}
 

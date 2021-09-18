@@ -56,8 +56,20 @@ export const update_selected_topic_replies = createAsyncThunk(
 
 export const update_topic = createAsyncThunk(
   "topics/update_topic",
-  async (data) => {
-    return data;
+  async (data, { getState }) => {
+    const { topics, selectedTopic } = getState().topics;
+    if (data.isFromProfile) {
+      const otherTopics = topics.filter((top) => top._id !== data.data._id);
+      // insert updated topic back to its index inside the array
+      otherTopics.splice(data.topicInd, 0, data.data);
+
+      return { updatedTopics: otherTopics, isFromProfile: data.isFromProfile };
+    }
+
+    if (!data.isFromProfile) {
+      const updatedSelectedTopic = { ...selectedTopic, topic: data.data };
+      return { updatedSelectedTopic, isFromProfile: data.isFromProfile };
+    }
   }
 );
 
@@ -281,10 +293,16 @@ export const topicsSlice = createSlice({
       state.status = "loading";
     },
     [update_topic.fulfilled]: (state, action) => {
-      const newTopics = state.topics.filter(
-        (top) => top._id !== action.payload._id
-      );
-      state.topics = [...newTopics, action.payload];
+      const { isFromProfile } = action.payload;
+
+      if (isFromProfile) {
+        state.topics = action.payload.updatedTopics;
+      }
+
+      if (!isFromProfile) {
+        state.selectedTopic = action.payload.updatedSelectedTopic;
+      }
+
       state.status = "idle";
     },
     [update_topic.rejected]: (state) => {

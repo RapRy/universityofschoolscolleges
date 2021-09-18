@@ -30,7 +30,7 @@ const initialState = {
   },
 };
 
-const AddTopicForm = ({ action, isFromProfile, topic, category }) => {
+const AddTopicForm = ({ action, isFromProfile, topic, category, topicInd }) => {
   const classes = useStyles();
   const theme = useTheme();
 
@@ -101,25 +101,16 @@ const AddTopicForm = ({ action, isFromProfile, topic, category }) => {
           return;
         }
 
-        const refCatId = isFromProfile ? category._id : selectedCat._id;
+        const refCatId = category._id;
 
         if (refCatId === data.result.ref.category)
-          dispatch(update_topic(data.result));
+          dispatch(
+            update_topic({ data: data.result, topicInd, isFromProfile })
+          );
 
         // dispatch(update_topic(data.result));
 
         enqueueSnackbar(`update successful`, { variant: "success" });
-
-        const cat = categories.filter(({ name }) => name === select);
-        const ref = {
-          ...initialState.ref,
-          category: cat[0]._id,
-          creator:
-            profile.result?._id ||
-            JSON.parse(localStorage.getItem("profile"))?.result?._id,
-        };
-
-        setFormData({ ...initialState, ref: ref });
       }
 
       return;
@@ -160,10 +151,10 @@ const AddTopicForm = ({ action, isFromProfile, topic, category }) => {
   useEffect(() => {
     const ref = {
       ...formData.ref,
-      category: isFromProfile ? category._id : selectedCat._id,
+      category: category._id,
     };
 
-    setSelect(isFromProfile ? category.name : selectedCat.name);
+    setSelect(category.name);
 
     if (action === "edit") {
       setFormData({
@@ -172,6 +163,9 @@ const AddTopicForm = ({ action, isFromProfile, topic, category }) => {
         title: isFromProfile ? topic.title : selectedTopic.topic.title,
         topicId: isFromProfile ? topic._id : selectedTopic.topic._id,
       });
+
+      console.log(JSON.parse(selectedTopic.topic.description));
+
       setEditorState(
         EditorState.createWithContent(
           convertFromRaw(
@@ -186,7 +180,7 @@ const AddTopicForm = ({ action, isFromProfile, topic, category }) => {
     } else {
       setFormData({ ...formData, ref: ref });
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedCat._id, category.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container classes={{ root: classes.containerRoot }}>
