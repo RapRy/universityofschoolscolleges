@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useRouteMatch, useHistory } from "react-router-dom";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
 import _ from "lodash";
+import axios from "axios";
 
 import AddTopicForm from "../../Globals/Forms/AddTopicForm";
 import { set_selected } from "../../../redux/categoriesReducer";
@@ -51,6 +52,7 @@ const Topics = () => {
   const toggleShow = () => setShowForm((prevState) => !prevState);
 
   useEffect(() => {
+    const source = axios.CancelToken.source();
     if (
       profile?.result === null ||
       userFromLocal?.result === null ||
@@ -66,12 +68,12 @@ const Topics = () => {
 
     switch (category) {
       case "latest-topics":
-        dispatch(get_latest_topics_view_all(20));
+        dispatch(get_latest_topics_view_all({ limit: 20, source }));
         setDisplayCat(category.replace("-", " "));
         dispatch(set_selected("topics"));
         break;
       case "hot-topics":
-        dispatch(get_hot_topics_view_all(20));
+        dispatch(get_hot_topics_view_all({ limit: 20, source }));
         setDisplayCat(category.replace("-", " "));
         dispatch(set_selected("topics"));
         break;
@@ -81,7 +83,9 @@ const Topics = () => {
           break;
         }
 
-        dispatch(get_related_topics_view_all(selectedTopic.topic?._id));
+        dispatch(
+          get_related_topics_view_all({ id: selectedTopic.topic?._id, source })
+        );
         setDisplayCat(category.replace("-", " "));
         dispatch(set_selected("topics"));
         break;
@@ -101,7 +105,13 @@ const Topics = () => {
       userFromLocal?.result?.accountType === 1
     )
       setShowForm(true);
+
+    return () => source.cancel("request cancelled");
   }, [match.url]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (status === "loading") {
+    return <LinearProgress style={{ margin: "30px 0" }} />;
+  }
 
   return (
     <Container>
@@ -118,19 +128,23 @@ const Topics = () => {
           />
         }
       />
-      {showForm === true && <AddTopicForm action="add" />}
+      {showForm === true && (
+        <AddTopicForm
+          action="add"
+          isFromProfile={false}
+          topic={undefined}
+          category={undefined}
+          topicInd={null}
+        />
+      )}
 
       <div>
-        {status === "loading" && (
-          <LinearProgress style={{ margin: "30px 0" }} />
-        )}
-
         {status === "idle" && topics.length === 0 && (
           <Empty message="No Topics" />
         )}
         <Grid container spacing={4} direction="row">
           {topics.map((topic) => (
-            <Grid item xs={12} sm={6} key={topic._id}>
+            <Grid item xs={12} md={6} key={topic._id}>
               <PostWithAuthor topic={topic} fromHome={false} />
             </Grid>
           ))}

@@ -140,7 +140,16 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.primary.main,
   },
   menuIcon: {
+    color: (props) =>
+      props.type === "forum"
+        ? theme.palette.primary.main
+        : theme.palette.common.white,
     fontSize: "2.5rem",
+    cursor: "pointer",
+    transition: "color 500ms linear",
+    "&:hover": {
+      color: theme.palette.primary.light,
+    },
   },
   drawerBg: {
     background: theme.palette.primary.main,

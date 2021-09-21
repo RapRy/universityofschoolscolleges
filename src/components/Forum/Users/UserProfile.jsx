@@ -8,8 +8,8 @@ import {
   Grid,
   useMediaQuery,
   ThemeProvider,
+  makeStyles,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import EditIcon from "@material-ui/icons/Edit";
@@ -27,8 +27,9 @@ import { IconTextBtn } from "../../Globals/Buttons";
 
 const UserProfile = () => {
   const max600 = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const min960 = useMediaQuery((theme) => theme.breakpoints.up("sm"));
 
-  const classes = useStyles();
+  const classes = useStyles({ min960 });
   const [user, setUser] = useState({});
 
   const history = useHistory();
@@ -90,20 +91,21 @@ const UserProfile = () => {
               {user.name?.lastName || "Last Name"}
             </Typography>
           </ThemeProvider>
+          <Box marginTop="20px">
+            <Typography
+              className={`${classes.typoWithIcon} ${classes.marginTop2}`}
+            >
+              <AccountCircleIcon className={classes.typoIcon} /> {user.username}
+            </Typography>
+            <Typography
+              className={`${classes.typoWithIcon} ${classes.marginTop1}`}
+            >
+              <AlternateEmailIcon className={classes.typoIcon} /> {user.email}
+            </Typography>
+          </Box>
+        </Grid>
+        <Grid item xs={12}>
           <ThemeProvider theme={poppinsFont}>
-            <Box marginTop="20px">
-              <Typography
-                className={`${classes.typoWithIcon} ${classes.marginTop2}`}
-              >
-                <AccountCircleIcon className={classes.typoIcon} />{" "}
-                {user.username}
-              </Typography>
-              <Typography
-                className={`${classes.typoWithIcon} ${classes.marginTop1}`}
-              >
-                <AlternateEmailIcon className={classes.typoIcon} /> {user.email}
-              </Typography>
-            </Box>
             <div className={classes.statsContainer}>
               <Box
                 display={max600 ? "inline-block" : "block"}
@@ -322,7 +324,6 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.secondary.main,
     padding: theme.spacing(2, 3),
     borderRadius: theme.shape.borderRadius,
-    marginTop: theme.spacing(4),
   },
 }));
 

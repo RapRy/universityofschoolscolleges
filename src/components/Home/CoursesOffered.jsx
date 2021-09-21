@@ -18,7 +18,7 @@ import { poppinsFont } from "../../theme/themes";
 const CoursesOffered = () => {
   const max960 = useMediaQuery((theme) => theme.breakpoints.down("sm"));
   const max600 = useMediaQuery((theme) => theme.breakpoints.down("xs"));
-  const imgRef = useRef(null);
+  const imgRef = useRef(400);
   const theme = useTheme();
   const [topPos, setTopPos] = useState(theme.spacing(28));
   const classes = useStyles({ topPos });

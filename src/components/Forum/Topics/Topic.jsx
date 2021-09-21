@@ -6,8 +6,9 @@ import {
   Divider,
   LinearProgress,
   ThemeProvider,
+  makeStyles,
+  useMediaQuery,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { useSnackbar } from "notistack";
 import moment from "moment";
@@ -36,7 +37,9 @@ const ReplyWithAuthor = withAuthor(Reply);
 const Topic = (props) => {
   let profileLS = null || JSON.parse(localStorage.getItem("profile")).result;
 
-  const classes = useStyles();
+  const min960 = useMediaQuery((theme) => theme.breakpoints.up("md"));
+
+  const classes = useStyles({ min960 });
 
   const { params, url } = useRouteMatch();
   const history = useHistory();
@@ -169,15 +172,13 @@ const Topic = (props) => {
     return () => {
       props.isFromProfile && source.cancel("request cancelled");
     };
-  }, [
-    url,
-    props.isFromProfile && props.topic.meta.replies,
-    selectedTopic.topic.description,
-  ]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [url, props.isFromProfile, props.topic?.meta?.replies]);
 
   return (
-    <Container>
-      {status === "loading" && <LinearProgress style={{ margin: "30px 0" }} />}
+    <Container className={classes.mainContainer}>
+      {status === "loading" && !props.isFromProfile && (
+        <LinearProgress style={{ margin: "30px 0" }} />
+      )}
 
       {openDelete && (
         <DeleteDialog
@@ -400,6 +401,9 @@ const Topic = (props) => {
 };
 
 const useStyles = makeStyles((theme) => ({
+  mainContainer: {
+    marginTop: (props) => (props.min960 ? 0 : theme.spacing(5)),
+  },
   titleContainer: {
     marginTop: 0,
     [theme.breakpoints.down("xs")]: {

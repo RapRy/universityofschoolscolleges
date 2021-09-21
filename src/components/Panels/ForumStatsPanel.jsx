@@ -1,6 +1,5 @@
 import React from "react";
-import { Container } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import { Container, useMediaQuery, makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import {
   People,
@@ -21,7 +20,9 @@ const StatWithAllUsersCount = withAllUsersCount(Stat);
 const ForumStatsPanel = () => {
   const { profile } = useSelector((state) => state.auth);
 
-  const classes = useStyles();
+  const min960 = useMediaQuery((theme) => theme.breakpoints.up("md"));
+
+  const classes = useStyles({ min960 });
 
   return (
     <Container className={classes.container}>
@@ -87,6 +88,7 @@ const ForumStatsPanel = () => {
 
 const useStyles = makeStyles((theme) => ({
   container: {
+    marginTop: (props) => (props.min960 ? 0 : theme.spacing(5)),
     marginBottom: theme.spacing(4),
   },
   iconBlue: {

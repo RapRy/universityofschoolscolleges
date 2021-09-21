@@ -42,7 +42,15 @@ const ProfileMenu = ({ max960, setShowAside }) => {
             <Box marginBottom="25px" marginTop="20px">
               <Grid container direction="row" spacing={2} alignItems="center">
                 <Grid item xs={"auto"}>
-                  <Avatar>{profile.result?.username?.charAt(0)}</Avatar>
+                  <Avatar
+                    src={
+                      profile.result?.accountType === 0
+                        ? `${process.env.PUBLIC_URL}/assets/defaultProPic.jpg`
+                        : `${process.env.PUBLIC_URL}/assets/adminProPic.jpg`
+                    }
+                  >
+                    {profile.result?.username?.charAt(0)}
+                  </Avatar>
                 </Grid>
                 <Grid item>
                   <Typography className={classes.username}>

@@ -28,6 +28,7 @@ const withParticipants = (Component) => {
       return () => {
         abortController.abort();
         source.cancel("Operation canceled");
+        setUsers([]);
       };
     }, [topic._id, topic.ref.creator]);
 

@@ -59,10 +59,10 @@ const Forum = () => {
       <Navigation type="forum" />
       <Container className={classes.forumContainer}>
         <Grid container>
-          <Grid item md={4} xs={12}>
+          <Grid item md={3} xs={12}>
             <SideNavigation />
           </Grid>
-          <Grid item md={8} xs={12}>
+          <Grid item md={9} xs={12}>
             <Switch>
               <Route exact path={path}>
                 {(profile?.result?.accountType === 1 &&

@@ -150,29 +150,27 @@ const AddTopicForm = ({ action, isFromProfile, topic, category, topicInd }) => {
 
   useEffect(() => {
     const ref = {
-      ...formData.ref,
-      category: category._id,
+      ...formData?.ref,
+      category: category?._id,
     };
 
-    setSelect(category.name);
+    setSelect(category?.name);
 
     if (action === "edit") {
       setFormData({
         ...formData,
         ref: ref,
-        title: isFromProfile ? topic.title : selectedTopic.topic.title,
-        topicId: isFromProfile ? topic._id : selectedTopic.topic._id,
+        title: isFromProfile ? topic?.title : selectedTopic?.topic?.title,
+        topicId: isFromProfile ? topic?._id : selectedTopic?.topic?._id,
       });
-
-      console.log(JSON.parse(selectedTopic.topic.description));
 
       setEditorState(
         EditorState.createWithContent(
           convertFromRaw(
             JSON.parse(
               isFromProfile
-                ? topic.description
-                : selectedTopic.topic.description
+                ? topic?.description
+                : selectedTopic?.topic?.description
             )
           )
         )
@@ -180,7 +178,7 @@ const AddTopicForm = ({ action, isFromProfile, topic, category, topicInd }) => {
     } else {
       setFormData({ ...formData, ref: ref });
     }
-  }, [selectedCat._id, category.id]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [selectedCat?._id, category?.id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Container classes={{ root: classes.containerRoot }}>
@@ -284,7 +282,7 @@ const AddTopicForm = ({ action, isFromProfile, topic, category, topicInd }) => {
 const useStyles = makeStyles((theme) => ({
   containerRoot: {
     background: theme.palette.grey.A100,
-    marginTop: theme.spacing(2),
+    margin: theme.spacing(2, 0),
     padding: theme.spacing(2, 3),
     borderRadius: theme.shape.borderRadius,
   },

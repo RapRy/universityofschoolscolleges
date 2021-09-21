@@ -1,8 +1,7 @@
 import React from "react";
-import { Grid, useMediaQuery } from "@material-ui/core";
+import { Grid, useMediaQuery, makeStyles } from "@material-ui/core";
 import TodayIcon from "@material-ui/icons/Today";
 import CommentIcon from "@material-ui/icons/Comment";
-import { makeStyles } from "@material-ui/styles";
 import { useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
 
@@ -26,12 +25,8 @@ const DefaultUserSideNav = () => {
 
   return (
     <div>
-      <Grid
-        container
-        direction={min960 ? "column" : "row"}
-        spacing={min960 ? 0 : 4}
-      >
-        <Grid item xs={6} md={12}>
+      <Grid container direction="row" spacing={4}>
+        <Grid item xs={12} md={12}>
           <CategoriesPanel />
         </Grid>
         {min960 && matchSearch === null && match !== null && (

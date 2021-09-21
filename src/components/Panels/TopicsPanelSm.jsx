@@ -63,7 +63,7 @@ const TopicsPanelSm = ({
 const useStyles = makeStyles((theme) => ({
   mainContainer: {
     padding: 0,
-    marginTop: theme.spacing(5),
+    marginTop: theme.spacing(2),
   },
   listRoot: {
     borderRadius: theme.shape.borderRadius,

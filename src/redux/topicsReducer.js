@@ -154,8 +154,11 @@ export const update_topic_votes = createAsyncThunk(
 
 export const get_latest_topics_view_all = createAsyncThunk(
   "topics/get_latest_topics_view_all",
-  async (limit) => {
-    const { data, status } = await api.getLatestTopics(limit);
+  async (formData) => {
+    const { data, status } = await api.getLatestTopics(
+      formData.limit,
+      formData.source
+    );
 
     if (status === 200) return data;
   }
@@ -163,8 +166,11 @@ export const get_latest_topics_view_all = createAsyncThunk(
 
 export const get_hot_topics_view_all = createAsyncThunk(
   "topics/get_latest_topics_view_all",
-  async (limit) => {
-    const { data, status } = await api.getHotTopics(limit);
+  async (formData) => {
+    const { data, status } = await api.getHotTopics(
+      formData.limit,
+      formData.source
+    );
 
     if (status === 200) return data;
   }
@@ -172,8 +178,11 @@ export const get_hot_topics_view_all = createAsyncThunk(
 
 export const get_related_topics_view_all = createAsyncThunk(
   "topics/get_related_topics_view_all",
-  async (id) => {
-    const { data, status } = await api.getRelatedTopics(id);
+  async (formData) => {
+    const { data, status } = await api.getRelatedTopics(
+      formData.id,
+      formData.source
+    );
 
     if (status === 200) return data;
   }
