@@ -2,8 +2,8 @@ import React from "react";
 import { Typography, makeStyles, ThemeProvider } from "@material-ui/core";
 import { poppinsFont } from "../../../theme/themes";
 
-const PanelHeader = ({ title }) => {
-  const classes = useStyles();
+const PanelHeader = ({ title, isWhite, isSmall }) => {
+  const classes = useStyles({ isWhite, isSmall });
   return (
     <ThemeProvider theme={poppinsFont}>
       <Typography variant="h6" className={classes.root}>
@@ -15,9 +15,13 @@ const PanelHeader = ({ title }) => {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    color: theme.palette.common.black,
-    fontWeight: theme.typography.fontWeightBold,
-    fontSize: ".9rem",
+    color: (props) =>
+      props.isWhite ? theme.palette.common.white : theme.palette.common.black,
+    fontWeight: (props) =>
+      props.isSmall
+        ? theme.typography.fontWeightMedium
+        : theme.typography.fontWeightBold,
+    fontSize: (props) => (props.isSmall ? ".8rem" : ".9rem"),
     textTransform: "capitalize",
     marginBottom: theme.spacing(2),
   },

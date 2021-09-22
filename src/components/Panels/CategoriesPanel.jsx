@@ -5,18 +5,16 @@ import {
   Typography,
   ThemeProvider,
   Divider,
-  Button,
 } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useRouteMatch } from "react-router-dom";
 
 import { get_categories } from "../../redux/categoriesReducer";
 import SearchBar from "../Globals/Search/SearchBar";
 import { poppinsFont } from "../../theme/themes";
+import { SideNavButton } from "../Globals/Buttons";
 
 const CategoriesPanel = () => {
   // const Route = useRouteMatch("/forum/:category");
-  const { url } = useRouteMatch();
   const { categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
 
@@ -36,26 +34,7 @@ const CategoriesPanel = () => {
             CATEGORIES
           </Typography>
           {categories.map((cat) => (
-            <Link
-              to={`${url}/${cat._id}`}
-              key={cat._id}
-              className={classes.link}
-            >
-              <Button
-                disableRipple
-                disableFocusRipple
-                fullWidth
-                classes={{
-                  // root: `${classes.cat} ${
-                  //   cat._id === params.category ? classes.activeCat : ""
-                  // }`,
-                  root: classes.cat,
-                  label: classes.catlabel,
-                }}
-              >
-                {cat.name}
-              </Button>
-            </Link>
+            <SideNavButton data={cat} key={cat._id} />
           ))}
         </ThemeProvider>
       </div>
@@ -77,35 +56,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.common.white,
     fontSize: ".85rem",
     marginBottom: theme.spacing(2),
-  },
-  link: {
-    textDecoration: "none",
-    marginBottom: theme.spacing(2),
-    display: "block",
-    "&:last-child": {
-      marginBottom: 0,
-    },
-  },
-  cat: {
-    color: theme.palette.common.white,
-    textTransform: "capitalize",
-    fontWeight: theme.typography.fontWeightBold,
-    fontSize: ".8rem",
-    textAlign: "left",
-    padding: theme.spacing(1, 2),
-    transition: "background 400ms linear",
-    "&:hover": {
-      background: theme.palette.primary.dark,
-    },
-  },
-  activeCat: {
-    background: theme.palette.primary.dark,
-    "&:hover": {
-      background: theme.palette.primary.dark,
-    },
-  },
-  catlabel: {
-    justifyContent: "flex-start",
   },
 }));
 
