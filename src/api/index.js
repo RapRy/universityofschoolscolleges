@@ -21,8 +21,10 @@ export const getActiveUsersCount = (source) =>
   API.get("/users/activeCount", { cancelToken: source.token });
 export const getRegisteredCount = (source) =>
   API.get("/users/registeredCount", { cancelToken: source.token });
-export const getNewUsers = (limit) => API.get(`/users/newUsers/${limit}`);
-export const getActiveUsers = (limit) => API.get(`/users/activeUsers/${limit}`);
+export const getNewUsers = (limit, source) =>
+  API.get(`/users/newUsers/${limit}`, { cancelToken: source.token });
+export const getActiveUsers = (limit, source) =>
+  API.get(`/users/activeUsers/${limit}`, { cancelToken: source.token });
 export const getRegisteredUsers = () => API.get("/users/registeredUsers");
 export const getBlacklistedUsers = () => API.get("/users/blacklistedUsers");
 export const getParticipants = (formData, source) =>

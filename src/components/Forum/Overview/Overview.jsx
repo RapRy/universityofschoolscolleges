@@ -1,6 +1,5 @@
 import React from "react";
-import { Typography, Container, Grid } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Container, Grid } from "@material-ui/core";
 
 import { ForumStatsPanel, TopicsPanelLg, UsersPanelLg } from "../../Panels";
 import * as api from "../../../api";
@@ -14,32 +13,24 @@ import {
 } from "../../../redux/usersReducer";
 
 const Overview = () => {
-  const classes = useStyles();
-
   return (
     <Container>
-      <Typography className={classes.typoH2} variant="h2">
-        Overview
-      </Typography>
       <ForumStatsPanel />
-      <Grid container direction="row" spacing={5}>
-        <Grid item sm={6} xs={12}>
-          <UsersPanelLg
-            header="new users"
-            API={api.getNewUsers}
-            reduxDispatch={new_users_panel}
-            selectorName="newUsers"
-          />
-        </Grid>
-        <Grid item sm={6} xs={12}>
-          <UsersPanelLg
-            header="active users"
-            API={api.getActiveUsers}
-            reduxDispatch={active_users_panel}
-            selectorName="activeUsers"
-          />
-        </Grid>
-      </Grid>
+
+      <UsersPanelLg
+        header="new users"
+        API={api.getNewUsers}
+        reduxDispatch={new_users_panel}
+        selectorName="newUsers"
+      />
+
+      <UsersPanelLg
+        header="active users"
+        API={api.getActiveUsers}
+        reduxDispatch={active_users_panel}
+        selectorName="activeUsers"
+      />
+
       <TopicsPanelLg
         header="latest topics"
         API={api.getLatestTopics}
@@ -55,15 +46,5 @@ const Overview = () => {
     </Container>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  typoH2: {
-    fontWeight: 700,
-    fontSize: "1.2rem",
-    marginTop: "40px",
-    textTransform: "uppercase",
-    color: theme.palette.secondary.dark,
-  },
-}));
 
 export default Overview;

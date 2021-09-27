@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, makeStyles } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import { useSelector } from "react-redux";
 import { useRouteMatch } from "react-router-dom";
 
@@ -9,7 +9,7 @@ import DefaultUserSideNav from "./DefaultUserSideNav";
 
 const SideNavigation = () => {
   const { profile } = useSelector((state) => state.auth);
-  const classes = useStyles({ profile });
+  // const classes = useStyles({ profile });
 
   const matchProfile = useRouteMatch("/forum/profile/:userId");
 
@@ -23,7 +23,7 @@ const SideNavigation = () => {
   }
 
   return (
-    <Container className={classes.container}>
+    <Container>
       {profile.result?.accountType === 1 ? (
         <AdminSideNav />
       ) : (
@@ -32,12 +32,5 @@ const SideNavigation = () => {
     </Container>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  container: {
-    marginTop: (props) =>
-      props.profile.result?.accountType === 1 ? theme.spacing(4) : 0,
-  },
-}));
 
 export default SideNavigation;

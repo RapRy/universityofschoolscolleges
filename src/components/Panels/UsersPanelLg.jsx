@@ -1,80 +1,69 @@
 import React, { useEffect } from "react";
-import { Container, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Container, Grid, makeStyles } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useRouteMatch } from "react-router-dom";
+import DynamicFeedIcon from "@material-ui/icons/DynamicFeed";
+import axios from "axios";
 
-import PanelHeader from "../Globals/PanelHeader";
 import UserThumbnailPanel from "../Forum/Users/UserThumbnailPanel";
+import { HeaderWithCta } from "../Globals/Headers";
+import { IconTextBtn } from "../Globals/Buttons";
 
 const UsersPanelLg = ({ header, API, reduxDispatch, selectorName }) => {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users);
+  const classes = useStyles();
 
   const { url } = useRouteMatch();
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const { data, status } = await API(6);
+    const source = axios.CancelToken.source();
+    API(6, source)
+      .then((res) => {
+        if (res.status === 200) {
+          dispatch(reduxDispatch(res.data));
+        }
+      })
+      .catch((err) => console.log(err));
 
-        if (status === 200) dispatch(reduxDispatch(data));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchUsers();
+    return () => source.cancel("request cancelled");
   }, [dispatch]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
-    <Container className={classes.mainContainer}>
-      <PanelHeader title={header} />
-      <Container className={classes.subContainer}>
+    <Container className={classes.container}>
+      <HeaderWithCta
+        title={header}
+        ctaButton={
+          <Link
+            to={`${url}/${header.replace(" ", "-")}`}
+            style={{ textDecoration: "none" }}
+          >
+            <IconTextBtn
+              icon={<DynamicFeedIcon style={{ fontSize: "1.1rem" }} />}
+              text="show more"
+              color="primary"
+              size=".8rem"
+              isLowercase={true}
+              event={null}
+            />
+          </Link>
+        }
+      />
+      <Grid container direction="row" spacing={4}>
         {users[selectorName] &&
           users[selectorName].map((user) => (
-            <UserThumbnailPanel
-              user={user}
-              type={selectorName}
-              key={user._id}
-            />
+            <Grid item xs={6} sm={4} md={3} key={user._id}>
+              <UserThumbnailPanel user={user} type={selectorName} />
+            </Grid>
           ))}
-        <Link
-          to={`${url}/${header.replace(" ", "-")}`}
-          style={{ textDecoration: "none" }}
-        >
-          <Button variant="text" type="submit" className={classes.buttonSubmit}>
-            more
-          </Button>
-        </Link>
-      </Container>
+      </Grid>
     </Container>
   );
 };
 
 const useStyles = makeStyles((theme) => ({
-  mainContainer: {
-    padding: 0,
-  },
-  subContainer: {
-    padding: theme.spacing(1),
-    background: theme.palette.primary.contrastText,
-    marginTop: theme.spacing(1),
-    borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows[7],
-  },
-  buttonSubmit: {
-    borderRadius: "0px",
-    marginLeft: theme.spacing(3),
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
-    fontSize: ".9rem",
-    fontWeight: theme.typography.fontWeightRegular,
-    color: theme.palette.secondary.main,
-    [theme.breakpoints.down("xs")]: {
-      margin: `${theme.spacing(1)}px auto 0`,
-    },
+  container: {
+    marginBottom: theme.spacing(5),
   },
 }));
 
