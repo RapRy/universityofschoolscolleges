@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
       props.isSmall
         ? theme.typography.fontWeightMedium
         : theme.typography.fontWeightBold,
-    fontSize: (props) => (props.isSmall ? ".8rem" : ".9rem"),
+    fontSize: (props) => (props.isSmall ? ".8rem" : "1rem"),
     textTransform: "capitalize",
     marginBottom: theme.spacing(2),
   },

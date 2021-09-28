@@ -1,28 +1,26 @@
 import React, { useEffect } from "react";
-import { Typography, Container, LinearProgress } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { Container, LinearProgress } from "@material-ui/core";
 import { useSelector, useDispatch } from "react-redux";
 
 import AddCategoryForm from "../../Globals/Forms/AddCategoryForm";
 import { get_categories } from "../../../redux/categoriesReducer";
 import Category from "./Category";
 import Empty from "../../Globals/Empty/Empty";
+import { PanelHeader } from "../../Globals/Headers";
 
 const Categories = () => {
-  const classes = useStyles();
-
   const { status, categories } = useSelector((state) => state.categories);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(get_categories());
+    const promise = dispatch(get_categories());
+
+    return () => promise.abort();
   }, [dispatch]);
 
   return (
     <Container>
-      <Typography className={classes.typoH2} variant="h2">
-        Categories
-      </Typography>
+      <PanelHeader title="Categories" isWhite={false} isSmall={false} />
       <AddCategoryForm />
 
       {status === "loading" && categories.length === 0 && (
@@ -38,15 +36,5 @@ const Categories = () => {
     </Container>
   );
 };
-
-const useStyles = makeStyles((theme) => ({
-  typoH2: {
-    fontWeight: 700,
-    fontSize: "1.2rem",
-    marginTop: "40px",
-    textTransform: "uppercase",
-    color: theme.palette.secondary.dark,
-  },
-}));
 
 export default Categories;

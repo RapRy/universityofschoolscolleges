@@ -6,22 +6,53 @@ import {
   Typography,
   makeStyles,
   ThemeProvider,
+  useTheme,
 } from "@material-ui/core";
 import ForumIcon from "@material-ui/icons/Forum";
 import CommentIcon from "@material-ui/icons/Comment";
 import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import { useSnackbar } from "notistack";
 
 import { poppinsFont, ubuntuFont } from "../../../theme/themes";
+import { IconBtn } from "../../Globals/Buttons";
+import * as api from "../../../api";
 
 const UserThumbnailPanel = ({ user, type }) => {
   const classes = useStyles();
+  const theme = useTheme();
+  const { enqueueSnackbar } = useSnackbar();
+
+  const activateUser = async () => {
+    try {
+      const { status } = await api.activateUser(user._id);
+
+      if (status === 200) {
+        enqueueSnackbar(`${user.username} is now active`, {
+          variant: "success",
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Container className={classes.mainContainer}>
       <Box position="relative">
-        {type === "newUsers" && <PersonAddIcon className={classes.pAddIcon} />}
+        {type === "newUsers" && (
+          <div className={classes.pAddIconContainer}>
+            <IconBtn
+              icon={<PersonAddIcon />}
+              color={theme.palette.primary.light}
+              colorHover={theme.palette.primary.main}
+              event={activateUser}
+              type="button"
+            />
+          </div>
+        )}
+        {/* {type === "newUsers" && <PersonAddIcon className={classes.pAddIcon} />} */}
         <Link
           to={`/forum/profile/${user._id}`}
           style={{ textDecoration: "none" }}
@@ -85,21 +116,11 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.default,
     borderRadius: theme.spacing(2),
   },
-  pAddIcon: {
+  pAddIconContainer: {
     position: "absolute",
     top: theme.spacing(-1),
     zIndex: 5,
     left: 0,
-    background: theme.palette.primary.light,
-    borderRadius: theme.spacing(1),
-    padding: "5px",
-    boxShadow: theme.shadows[3],
-    fontSize: "1.8rem",
-    color: theme.palette.common.white,
-    cursor: "pointer",
-    "&:hover": {
-      background: theme.palette.primary.main,
-    },
   },
   avatar: {
     width: theme.spacing(8),

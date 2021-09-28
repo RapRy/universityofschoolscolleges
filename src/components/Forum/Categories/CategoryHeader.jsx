@@ -1,6 +1,11 @@
 import React, { useState } from "react";
-import { Typography, Grid, useMediaQuery } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core";
+import {
+  Typography,
+  Grid,
+  useMediaQuery,
+  makeStyles,
+  ThemeProvider,
+} from "@material-ui/core";
 import { useDispatch } from "react-redux";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -10,6 +15,7 @@ import IconBtn from "../../Globals/IconBtn";
 import { set_selected } from "../../../redux/categoriesReducer";
 import DeleteDialog from "../../Globals/DeleteDialog";
 import { update_active_status } from "../../../redux/categoriesReducer";
+import { poppinsFont, ubuntuFont } from "../../../theme/themes";
 
 const CategoryHeader = ({ cat, setShowForm, showForm }) => {
   const classes = useStyles();
@@ -54,9 +60,11 @@ const CategoryHeader = ({ cat, setShowForm, showForm }) => {
         />
       )}
       <Grid item md={"auto"} sm={"auto"} xs={12}>
-        <Typography variant="h4" className={classes.typoH4}>
-          {cat.name}
-        </Typography>
+        <ThemeProvider theme={poppinsFont}>
+          <Typography variant="h4" className={classes.typoH4}>
+            {cat.name}
+          </Typography>
+        </ThemeProvider>
       </Grid>
       <Grid item md={2} sm={2} xs={12}>
         <span className={classes.statsGrid}>
@@ -92,8 +100,8 @@ const CategoryHeader = ({ cat, setShowForm, showForm }) => {
 
 const useStyles = makeStyles((theme) => ({
   typoH4: {
-    color: theme.palette.secondary.dark,
-    fontSize: ".95rem",
+    color: theme.palette.common.black,
+    fontSize: ".9rem",
     fontWeight: theme.typography.fontWeightBold,
   },
   statsGrid: {

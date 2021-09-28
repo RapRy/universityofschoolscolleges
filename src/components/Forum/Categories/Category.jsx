@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Container, Divider, Grid, Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import {
+  Container,
+  Divider,
+  Grid,
+  Typography,
+  makeStyles,
+} from "@material-ui/core";
 
 import CategoryHeader from "./CategoryHeader";
 import AddTopicForm from "../../Globals/Forms/AddTopicForm";
@@ -84,11 +89,11 @@ const Category = ({ cat }) => {
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    background: theme.palette.primary.contrastText,
+    background: theme.palette.background.paper,
     marginTop: theme.spacing(4),
     padding: theme.spacing(3),
     borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows[7],
+    boxShadow: theme.shadows[3],
   },
   gridContainer: {
     marginTop: theme.spacing(2),

@@ -33,6 +33,8 @@ export const getParticipants = (formData, source) =>
     { params: formData },
     { cancelToken: source.token }
   );
+export const getLastCommenter = (id, source) =>
+  API.get(`/users/lastcommenter/${id}`, { cancelToken: source.token });
 export const signUp = (formData) => API.post("/users/signup", formData);
 export const signIn = (formData) => API.post("/users/signin", formData);
 export const blockUser = (id) => API.put(`/users/blockuser/${id}`);
