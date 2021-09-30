@@ -8,8 +8,8 @@ import {
   Drawer,
   ThemeProvider,
   Box,
+  makeStyles,
 } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
 import MenuIcon from "@material-ui/icons/Menu";
 

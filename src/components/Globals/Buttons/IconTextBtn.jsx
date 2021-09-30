@@ -2,8 +2,16 @@ import React from "react";
 import { Button, makeStyles, ThemeProvider } from "@material-ui/core";
 import { ubuntuFont } from "../../../theme/themes";
 
-const IconTextBtn = ({ icon, text, color, size, isLowercase, event }) => {
-  const classes = useStyles({ color, size, isLowercase });
+const IconTextBtn = ({
+  icon,
+  text,
+  color,
+  size,
+  isLowercase,
+  event,
+  isMarginRight,
+}) => {
+  const classes = useStyles({ color, size, isLowercase, isMarginRight });
   return (
     <ThemeProvider theme={ubuntuFont}>
       <Button
@@ -23,7 +31,7 @@ const IconTextBtn = ({ icon, text, color, size, isLowercase, event }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     padding: 0,
-    marginRight: theme.spacing(3),
+    marginRight: (props) => (props.isMarginRight ? theme.spacing(3) : 0),
     color: (props) =>
       props.color === "primary"
         ? theme.palette.primary.main

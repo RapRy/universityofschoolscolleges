@@ -73,9 +73,10 @@ export const getHotTopics = (limit, source) =>
   API.get(`/topics/hot/limit/${limit}`, { cancelToken: source.token });
 export const getRelatedTopics = (id, source) =>
   API.get(`/topics/related/${id}`, { cancelToken: source.token });
-export const getLatestTopicsByCategory = (id) =>
-  API.get(`/topics/latest/${id}`);
-export const getHotTopicsByCategory = (id) => API.get(`/topics/hot/${id}`);
+export const getLatestTopicsByCategory = (id, source) =>
+  API.get(`/topics/latest/${id}`, { cancelToken: source.token });
+export const getHotTopicsByCategory = (id, source) =>
+  API.get(`/topics/hot/${id}`, { cancelToken: source.token });
 export const getTopicsWithLimit = (limit, source) =>
   API.get(`/topics/fromForum/limit/${limit}`, { cancelToken: source.token });
 export const updateTopic = (formData) => API.put("/topics/update", formData);

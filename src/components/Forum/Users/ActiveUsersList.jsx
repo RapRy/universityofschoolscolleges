@@ -1,32 +1,23 @@
-import React from 'react'
-import { Container, Typography, LinearProgress } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import { useSelector } from 'react-redux'
+import React from "react";
+import { Container, Typography, LinearProgress } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
-import UsersList from './UsersList'
+import UsersList from "./UsersList";
+import { PanelHeader } from "../../Globals/Headers";
 
 const ActiveUsersList = () => {
-    const classes = useStyles()
-    const { status, activeUsers } = useSelector(state => state.users)
+  const { status, activeUsers } = useSelector((state) => state.users);
 
-    return (
-        <Container>
-            <Typography className={classes.typoH2} variant="h2">Active Users</Typography>
-            { (status === "loading" && activeUsers.length === 0) && <LinearProgress style={{ margin: "30px 0" }} /> }
+  return (
+    <Container>
+      <PanelHeader title="Active Users" isWhite={false} isSmall={false} />
+      {status === "loading" && activeUsers.length === 0 && (
+        <LinearProgress style={{ margin: "30px 0" }} />
+      )}
 
-            <UsersList selectorName="activeUsers" emptyMessage="No Active Users" />
-        </Container>
-    )
-}
+      <UsersList selectorName="activeUsers" emptyMessage="No Active Users" />
+    </Container>
+  );
+};
 
-const useStyles = makeStyles(theme => ({
-    typoH2: {
-        fontWeight: 700,
-        fontSize: "1.2rem",
-        marginTop: "40px",
-        textTransform: "uppercase",
-        color: theme.palette.secondary.dark
-    }
-}))
-
-export default ActiveUsersList
+export default ActiveUsersList;

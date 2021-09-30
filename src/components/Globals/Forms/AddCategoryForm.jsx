@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { Container, Grid, makeStyles } from "@material-ui/core";
+import { Container, Grid, Button, makeStyles } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import { useDispatch } from "react-redux";
 import { useSnackbar } from "notistack";
 
 import Input from "./Input";
-import { IconBtn } from "../../Globals/Buttons";
 import * as api from "../../../api";
 import { add_category } from "../../../redux/categoriesReducer";
 
@@ -65,12 +64,13 @@ const AddCategoryForm = () => {
             />
           </Grid>
           <Grid item xs={1}>
-            {/* <IconBtn
-              icon={<AddIcon />}
-              color="secondary"
-              event={null}
-              type="submit"
-            /> */}
+            <Button
+              disableFocusRipple
+              disableRipple
+              classes={{ root: classes.iconBtn }}
+            >
+              <AddIcon />
+            </Button>
           </Grid>
         </Grid>
       </form>
@@ -85,7 +85,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: theme.shape.borderRadius,
   },
   iconBtn: {
-    display: "inline-block",
+    width: "100%",
+    height: "100%",
+    borderRadius: theme.shape.borderRadius,
+    background: theme.palette.secondary.main,
+    color: theme.palette.common.white,
+    "&:hover": {
+      background: theme.palette.secondary.light,
+    },
   },
 }));
 

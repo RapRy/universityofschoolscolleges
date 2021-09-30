@@ -1,6 +1,13 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { TableRow, TableCell, IconButton, Avatar } from "@material-ui/core";
+import {
+  TableRow,
+  TableCell,
+  IconButton,
+  Avatar,
+  makeStyles,
+  ThemeProvider,
+  useTheme,
+} from "@material-ui/core";
 import PersonIcon from "@material-ui/icons/Person";
 import BlockIcon from "@material-ui/icons/Block";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -8,47 +15,17 @@ import PersonAddIcon from "@material-ui/icons/PersonAdd";
 import HowToRegIcon from "@material-ui/icons/HowToReg";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
+import Moment from "react-moment";
 
 import * as api from "../../../api";
+import { ubuntuFont } from "../../../theme/themes";
+import { IconBtn } from "../../Globals/Buttons";
 
 const UserDataList = ({ user, selectorName, setRefresher }) => {
   const classes = useRowStyles();
+  const theme = useTheme();
 
   const { enqueueSnackbar } = useSnackbar();
-
-  const dateString = () => {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-    const updatedAt = new Date(user.updatedAt);
-    const createdAt = new Date(user.createdAt);
-
-    switch (selectorName) {
-      case "activeUsers":
-        return `${
-          months[updatedAt.getMonth()]
-        } ${updatedAt.getDate()}, ${updatedAt.getFullYear()}`;
-      case "blacklistedUsers":
-        return `${
-          months[updatedAt.getMonth()]
-        } ${updatedAt.getDate()}, ${updatedAt.getFullYear()}`;
-      default:
-        return `${
-          months[createdAt.getMonth()]
-        } ${createdAt.getDate()}, ${createdAt.getFullYear()}`;
-    }
-  };
 
   const blockUser = async () => {
     try {
@@ -108,100 +85,105 @@ const UserDataList = ({ user, selectorName, setRefresher }) => {
 
   return (
     <>
-      <TableRow className={classes.tableRowMain}>
-        <TableCell>
-          <Avatar>{user.username.charAt(0)}</Avatar>
-        </TableCell>
-        <TableCell classes={{ root: classes.tableCellMainData }} align="left">
-          {user.schoolId}
-        </TableCell>
-        <TableCell classes={{ root: classes.tableCellMainData }} align="left">
-          <Link to={`/forum/profile/${user._id}`} className={classes.nameLink}>
-            {user.username}
-          </Link>
-        </TableCell>
-        <TableCell classes={{ root: classes.tableCellMainData }} align="left">
-          {user.email}
-        </TableCell>
-        <TableCell classes={{ root: classes.tableCellMainData }} align="left">
-          {dateString()}
-        </TableCell>
-        <TableCell align="left">
-          {(selectorName === "activeUsers" ||
-            selectorName === "blacklistedUsers") && (
-            <IconButton
-              classes={{ root: `${classes.buttonBlue} ${classes.marginRight}` }}
+      <ThemeProvider theme={ubuntuFont}>
+        <TableRow className={classes.tableRowMain}>
+          <TableCell>
+            <Avatar
+              src={
+                user?.accountType === 0
+                  ? `${process.env.PUBLIC_URL}/assets/defaultProPic.jpg`
+                  : `${process.env.PUBLIC_URL}/assets/adminProPic.jpg`
+              }
             >
-              <PersonIcon className={classes.globalBtn} />
-            </IconButton>
-          )}
-          {selectorName === "activeUsers" && (
-            <IconButton
-              onClick={blockUser}
-              classes={{
-                root: `${classes.buttonOrange} ${classes.marginRight}`,
-              }}
+              {user.username.charAt(0)}
+            </Avatar>
+          </TableCell>
+          <TableCell classes={{ root: classes.tableCellMainData }} align="left">
+            {user.schoolId}
+          </TableCell>
+          <TableCell classes={{ root: classes.tableCellMainData }} align="left">
+            <Link
+              to={`/forum/profile/${user._id}`}
+              className={classes.nameLink}
             >
-              <BlockIcon className={classes.globalBtn} />
-            </IconButton>
-          )}
-          {selectorName === "registeredUsers" && user.active === 0 && (
-            <IconButton
-              onClick={activateUser}
-              classes={{ root: `${classes.buttonBlue} ${classes.marginRight}` }}
-            >
-              <PersonAddIcon className={classes.globalBtn} />
-            </IconButton>
-          )}
-          {selectorName === "blacklistedUsers" && (
-            <IconButton
-              onClick={unblockUser}
-              classes={{ root: `${classes.buttonBlue} ${classes.marginRight}` }}
-            >
-              <HowToRegIcon className={classes.globalBtn} />
-            </IconButton>
-          )}
-          <IconButton
-            onClick={deactivateUser}
-            classes={{ root: classes.buttonOrange }}
-          >
-            <DeleteIcon className={classes.globalBtn} />
-          </IconButton>
-        </TableCell>
-      </TableRow>
+              {user.username}
+            </Link>
+          </TableCell>
+          <TableCell classes={{ root: classes.tableCellMainData }} align="left">
+            {user.email}
+          </TableCell>
+          <TableCell classes={{ root: classes.tableCellMainData }} align="left">
+            <Moment format="MMMM D, YYYY">{user.createdAt}</Moment>
+          </TableCell>
+          <TableCell align="left">
+            {(selectorName === "activeUsers" ||
+              selectorName === "blacklistedUsers") && (
+              <IconBtn
+                icon={<PersonIcon />}
+                color={theme.palette.primary.main}
+                colorHover={theme.palette.primary.light}
+                event={null}
+                type="button"
+              />
+            )}
+            {selectorName === "activeUsers" && (
+              <IconBtn
+                icon={<BlockIcon />}
+                color={theme.palette.error.dark}
+                colorHover={theme.palette.error.main}
+                event={blockUser}
+                type="button"
+              />
+            )}
+            {selectorName === "registeredUsers" && user.active === 0 && (
+              <IconBtn
+                icon={<PersonAddIcon />}
+                color={theme.palette.primary.main}
+                colorHover={theme.palette.primary.light}
+                event={activateUser}
+                type="button"
+              />
+            )}
+            {selectorName === "blacklistedUsers" && (
+              <IconBtn
+                icon={<HowToRegIcon />}
+                color={theme.palette.primary.main}
+                colorHover={theme.palette.primary.light}
+                event={unblockUser}
+                type="button"
+              />
+            )}
+            <IconBtn
+              icon={<DeleteIcon />}
+              color={theme.palette.error.dark}
+              colorHover={theme.palette.error.main}
+              event={deactivateUser}
+              type="button"
+            />
+          </TableCell>
+        </TableRow>
+      </ThemeProvider>
     </>
   );
 };
 
 const useRowStyles = makeStyles((theme) => ({
   tableRowMain: {
-    background: theme.palette.secondary.contrastText,
+    background: theme.palette.background.default,
+    borderRadius: theme.shape.borderRadius,
     padding: theme.spacing(3),
   },
   tableCellMainData: {
     fontSize: ".8rem",
-    color: theme.palette.secondary.dark,
+    color: theme.palette.common.black,
     fontWeight: theme.typography.fontWeightBold,
   },
   nameLink: {
     textDecoration: "none",
-    color: theme.palette.secondary.dark,
-  },
-  globalBtn: {
-    color: theme.palette.secondary.contrastText,
-  },
-  buttonBlue: {
-    background: theme.palette.primary.main,
-    padding: "5px",
-    borderRadius: theme.shape.borderRadius,
-  },
-  buttonOrange: {
-    background: theme.palette.secondary.main,
-    padding: "5px",
-    borderRadius: theme.shape.borderRadius,
-  },
-  marginRight: {
-    marginRight: "5px",
+    color: theme.palette.primary.main,
+    "&:hover": {
+      color: theme.palette.primary.light,
+    },
   },
 }));
 

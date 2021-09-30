@@ -9,13 +9,14 @@ import {
 import { useDispatch } from "react-redux";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import DeleteIcon from "@material-ui/icons/Delete";
+import ForumIcon from "@material-ui/icons/Forum";
 import { useSnackbar } from "notistack";
 
-import IconBtn from "../../Globals/IconBtn";
 import { set_selected } from "../../../redux/categoriesReducer";
 import DeleteDialog from "../../Globals/DeleteDialog";
 import { update_active_status } from "../../../redux/categoriesReducer";
-import { poppinsFont, ubuntuFont } from "../../../theme/themes";
+import { poppinsFont } from "../../../theme/themes";
+import { IconTextBtn } from "../../Globals/Buttons";
 
 const CategoryHeader = ({ cat, setShowForm, showForm }) => {
   const classes = useStyles();
@@ -68,29 +69,37 @@ const CategoryHeader = ({ cat, setShowForm, showForm }) => {
       </Grid>
       <Grid item md={2} sm={2} xs={12}>
         <span className={classes.statsGrid}>
-          <Typography variant="h5" className={classes.typoH5}>
-            {cat.meta.topics.length}
-          </Typography>
-          <Typography variant="body1" className={classes.body1}>
-            {cat.meta.topics.length === 1 ? "Topic" : "Topics"}
-          </Typography>
+          <ForumIcon className={classes.icon} />
+          <ThemeProvider theme={poppinsFont}>
+            <Typography variant="h5" className={classes.typoH5}>
+              {cat.meta.topics.length}
+            </Typography>
+          </ThemeProvider>
         </span>
       </Grid>
-      <Grid item md={8} sm={12} xs={12}>
+      <Grid item md={8} sm={8} xs={12}>
         <Grid
           container
           direction="row"
           justify={max600 === true ? "center" : "flex-end"}
         >
-          <IconBtn
-            icon={<PostAddIcon />}
-            text="Add Topic"
-            handleClick={handleAddTopic}
+          <IconTextBtn
+            icon={<PostAddIcon style={{ fontSize: "1.2rem" }} />}
+            text="add post"
+            color="secondary"
+            size=".9rem"
+            isLowercase={true}
+            event={handleAddTopic}
+            isMarginRight={true}
           />
-          <IconBtn
-            icon={<DeleteIcon />}
-            text="Delete"
-            handleClick={handleDelete}
+          <IconTextBtn
+            icon={<DeleteIcon style={{ fontSize: "1.2rem" }} />}
+            text="delete"
+            color="secondary"
+            size=".9rem"
+            isLowercase={true}
+            event={handleDelete}
+            isMarginRight={false}
           />
         </Grid>
       </Grid>
@@ -106,19 +115,22 @@ const useStyles = makeStyles((theme) => ({
   },
   statsGrid: {
     padding: theme.spacing(1, 2),
-    background: theme.palette.secondary.contrastText,
+    background: theme.palette.common.white,
     borderRadius: theme.shape.borderRadius,
   },
-  typoH5: {
-    color: theme.palette.primary.dark,
-    fontSize: "1.2rem",
-    fontWeight: theme.typography.fontWeightBlack,
+  icon: {
+    color: theme.palette.secondary.main,
     marginRight: theme.spacing(1),
-    display: "inline-block",
+    fontSize: "1.2rem",
+    position: "relative",
+    top: "-2px",
+    left: 0,
+    verticalAlign: "middle",
   },
-  body1: {
-    color: theme.palette.secondary.dark,
-    fontSize: ".8rem",
+  typoH5: {
+    color: theme.palette.secondary.main,
+    fontSize: "1rem",
+    fontWeight: theme.typography.fontWeightBold,
     display: "inline-block",
   },
 }));

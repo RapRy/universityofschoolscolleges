@@ -1,34 +1,26 @@
-import React from 'react'
-import { Container, Typography, LinearProgress } from '@material-ui/core'
-import { makeStyles } from '@material-ui/styles'
-import { useSelector } from 'react-redux'
+import React from "react";
+import { Container, Typography, LinearProgress } from "@material-ui/core";
+import { useSelector } from "react-redux";
 
-import UsersList from './UsersList'
+import UsersList from "./UsersList";
+import { PanelHeader } from "../../Globals/Headers";
 
 const BlacklistedUsersList = () => {
-    const classes = useStyles()
-    const { status, blacklistedUsers } = useSelector(state => state.users)
+  const { status, blacklistedUsers } = useSelector((state) => state.users);
 
-    return (
-        <Container>
-            <Typography className={classes.typoH2} variant="h2">Blacklisted Users</Typography>
+  return (
+    <Container>
+      <PanelHeader title="Blacklisted Users" isWhite={false} isSmall={false} />
+      {status === "loading" && blacklistedUsers.length === 0 && (
+        <LinearProgress style={{ margin: "30px 0" }} />
+      )}
 
-            { (status === "loading" && blacklistedUsers.length === 0) && <LinearProgress style={{ margin: "30px 0" }} /> }
+      <UsersList
+        selectorName="blacklistedUsers"
+        emptyMessage="No Blacklisted Users"
+      />
+    </Container>
+  );
+};
 
-            <UsersList selectorName="blacklistedUsers" emptyMessage="No Blacklisted Users" />
-
-        </Container>
-    )
-}
-
-const useStyles = makeStyles(theme => ({
-    typoH2: {
-        fontWeight: 700,
-        fontSize: "1.2rem",
-        marginTop: "40px",
-        textTransform: "uppercase",
-        color: theme.palette.secondary.dark
-    }
-}))
-
-export default BlacklistedUsersList
+export default BlacklistedUsersList;

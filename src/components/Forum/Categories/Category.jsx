@@ -1,49 +1,25 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   Divider,
   Grid,
   Typography,
   makeStyles,
+  ThemeProvider,
 } from "@material-ui/core";
 
 import CategoryHeader from "./CategoryHeader";
 import AddTopicForm from "../../Globals/Forms/AddTopicForm";
 import TopicThumb from "./TopicThumb";
-import * as api from "../../../api";
+import { poppinsFont } from "../../../theme/themes";
+import { withAuthor } from "../../HOC";
+import Empty from "../../Globals/Empty/Empty";
 
-const Category = ({ cat }) => {
+const TopicWithAuthor = withAuthor(TopicThumb);
+const Category = ({ cat, latestTopics, hotTopics }) => {
   const classes = useStyles();
 
   const [showForm, setShowForm] = useState(false);
-  const [topics, setTopics] = useState({
-    latestTopics: [],
-    hotTopics: [],
-    category: {},
-  });
-
-  useEffect(() => {
-    const fetchAll = async () => {
-      try {
-        const result = await Promise.all([
-          api.getLatestTopicsByCategory(cat._id),
-          api.getHotTopicsByCategory(cat._id),
-        ]);
-
-        if (result[0].status === 200 && result[1].status === 200) {
-          setTopics({
-            latestTopics: result[0].data.topics,
-            hotTopics: result[1].data.hotTopics,
-            category: result[0].data.category || result[1].data.category,
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchAll();
-  }, [cat]);
 
   return (
     <Container className={classes.container}>
@@ -61,25 +37,37 @@ const Category = ({ cat }) => {
         spacing={3}
         className={classes.gridContainer}
       >
-        {topics.latestTopics.length > 0 && (
+        {latestTopics.length > 0 ? (
           <Grid item md={6} xs={12}>
-            <Typography variant="h6" className={classes.typoH6}>
-              Latest Topics
-            </Typography>
-            {topics.latestTopics.map((top) => (
-              <TopicThumb top={top} key={top._id} category={topics.category} />
+            <ThemeProvider theme={poppinsFont}>
+              <Typography variant="h6" className={classes.typoH6}>
+                Latest Topics
+              </Typography>
+            </ThemeProvider>
+            {latestTopics.map((top) => (
+              <TopicWithAuthor topic={top} key={top._id} category={cat} />
             ))}
+          </Grid>
+        ) : (
+          <Grid item md={6} xs={12}>
+            <Empty message="No Topics" />
           </Grid>
         )}
 
-        {topics.hotTopics.length > 0 && (
+        {hotTopics.length > 0 ? (
           <Grid item md={6} xs={12}>
-            <Typography variant="h6" className={classes.typoH6}>
-              Hot Topics
-            </Typography>
-            {topics.hotTopics.map((top) => (
-              <TopicThumb top={top} key={top._id} category={topics.category} />
+            <ThemeProvider theme={poppinsFont}>
+              <Typography variant="h6" className={classes.typoH6}>
+                Hot Topics
+              </Typography>
+            </ThemeProvider>
+            {hotTopics.map((top) => (
+              <TopicWithAuthor topic={top} key={top._id} category={cat} />
             ))}
+          </Grid>
+        ) : (
+          <Grid item md={6} xs={12}>
+            <Empty message="No Topics" />
           </Grid>
         )}
       </Grid>
@@ -93,14 +81,13 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(4),
     padding: theme.spacing(3),
     borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows[3],
   },
   gridContainer: {
     marginTop: theme.spacing(2),
   },
   typoH6: {
-    color: theme.palette.secondary.dark,
-    fontSize: ".9rem",
+    color: theme.palette.common.black,
+    fontSize: ".8rem",
     fontWeight: theme.typography.fontWeightBold,
     marginBottom: theme.spacing(1),
   },

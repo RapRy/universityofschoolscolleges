@@ -8,7 +8,6 @@ const withLastCommentor = (Component) => {
     const [commentor, setCommentor] = useState({});
 
     useEffect(() => {
-      console.log(props.topic);
       const source = axios.CancelToken.source();
       if (props.topic.meta.replies.length > 0) {
         api

@@ -212,6 +212,7 @@ const Topic = (props) => {
                   size=".8rem"
                   isLowercase={true}
                   event={handleEdit}
+                  isMarginRight={true}
                 />
                 <IconTextBtn
                   icon={<Delete style={{ fontSize: "1.1rem" }} />}
@@ -220,6 +221,7 @@ const Topic = (props) => {
                   size=".8rem"
                   isLowercase={true}
                   event={handleDelete}
+                  isMarginRight={false}
                 />
               </div>
             )}

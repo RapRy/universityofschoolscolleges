@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Grid } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 
 import { ForumStatsPanel, TopicsPanelLg, UsersPanelLg } from "../../Panels";
 import * as api from "../../../api";

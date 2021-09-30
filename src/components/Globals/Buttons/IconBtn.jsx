@@ -19,6 +19,7 @@ const IconBtn = ({ icon, color, colorHover, event, type }) => {
 const useStyles = makeStyles((theme) => ({
   root: {
     background: (props) => props.color,
+    marginLeft: theme.spacing(1),
     borderRadius: theme.spacing(1),
     padding: "5px",
     boxShadow: theme.shadows[3],
