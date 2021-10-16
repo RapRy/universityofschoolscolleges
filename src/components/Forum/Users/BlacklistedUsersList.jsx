@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Typography, LinearProgress } from "@material-ui/core";
+import { Container, LinearProgress } from "@material-ui/core";
 import { useSelector } from "react-redux";
 
 import UsersList from "./UsersList";
