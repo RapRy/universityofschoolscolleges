@@ -172,6 +172,7 @@ const Topic = (props) => {
     return () => {
       props.isFromProfile && source.cancel("request cancelled");
     };
+    // eslint-disable-next-line
   }, [url, props.isFromProfile, props.topic?.meta?.replies]);
 
   return (

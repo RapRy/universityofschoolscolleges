@@ -16,7 +16,6 @@ const withAuthor = (Component) => {
         })
         .catch((err) => {
           if (axios.isCancel(err)) {
-            console.log(err.message);
             return;
           }
           console.log(err);

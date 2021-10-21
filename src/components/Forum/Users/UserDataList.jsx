@@ -2,7 +2,6 @@ import React from "react";
 import {
   TableRow,
   TableCell,
-  IconButton,
   Avatar,
   makeStyles,
   ThemeProvider,
