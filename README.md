@@ -1,5 +1,5 @@
 ### Simple Blog Site
-This is a simple blog site. In the Home/Landing Page, only the Home and Forum Links are working.
+This project is not yet fully functional, there are still bugs you may encounter. In the Home/Landing Page, only the Home and Forum Links are working.
 
 **Demo: [Simple Blog](https://university-colleges.netlify.app/)**
 
