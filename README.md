@@ -1,4 +1,14 @@
 ### Simple Blog Site
+This is a simple blog site. In the Home/Landing Page, only the Home and Forum Links are working.
+
+**Demo: [Simple Blog](https://university-colleges.netlify.app/)**
+
+Steps to start blogging:
+- Register at sign up page.
+- Sign in using these credentials to activate your account, **email: admin@gmail.com**, **password: admin123**
+- Once inside the forum using admin credentials, navigate to registered user menu, registered menu is at the left side of the page.
+- Inside the the registered user menu, find the account that you registered and activate it by clicking the plus user icon.
+- There you go, Happy Blogging. 
 
 #### Tech's used on this project
 - **[React Js](https://reactjs.org/)**
