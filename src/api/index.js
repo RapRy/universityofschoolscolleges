@@ -1,9 +1,9 @@
 import axios from "axios";
 
 const API = axios.create({
-  // baseURL: "https://universityofschoolscolleges.herokuapp.com",
-  baseURL: "http://localhost:5000",
-  headers: { "Content-Type": "application/json" },
+  baseURL: "https://universityofschoolscolleges.herokuapp.com",
+  // baseURL: "http://localhost:5000",
+  // headers: { "Content-Type": "application/json" },
 });
 
 API.interceptors.request.use((req) => {
